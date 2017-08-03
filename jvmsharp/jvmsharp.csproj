@@ -1,0 +1,282 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3BC3540B-4F06-46E5-B0FD-780107954A5B}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>jvmsharp</RootNamespace>
+    <AssemblyName>jvmsharp</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup>
+    <StartupObject>jvmsharp.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <PlatformTarget>x64</PlatformTarget>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <PlatformTarget>x64</PlatformTarget>
+    <OutputPath>bin\x64\Release\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="classfile\attributes\AttributeInfo.cs" />
+    <Compile Include="classfile\attributes\InnerClassesAttribute.cs" />
+    <Compile Include="classfile\attributes\LocalVariableTableAttribute.cs" />
+    <Compile Include="classfile\attributes\LocalVariableTypeTableAttribute.cs" />
+    <Compile Include="classfile\attributes\BootstrapMethodsAttribute.cs" />
+    <Compile Include="classfile\ClassFile.cs" />
+    <Compile Include="classfile\ClassReader.cs" />
+    <Compile Include="classfile\attributes\CodeAttribute.cs" />
+    <Compile Include="classfile\constant\ConstantClassInfo.cs" />
+    <Compile Include="classfile\constant\ConstantInfo.cs" />
+    <Compile Include="classfile\constant\ConstantInvokeDynamicInfo.cs" />
+    <Compile Include="classfile\constant\ConstantMemberrefInfo.cs" />
+    <Compile Include="classfile\constant\ConstantNameAndTypeInfo.cs" />
+    <Compile Include="classfile\constant\ConstantNumeric.cs" />
+    <Compile Include="classfile\constant\ConstantPool.cs" />
+    <Compile Include="classfile\constant\ConstantStringInfo.cs" />
+    <Compile Include="classfile\constant\ConstantUtf8Info.cs" />
+    <Compile Include="classfile\attributes\ConstantValueAttribute.cs" />
+    <Compile Include="classfile\attributes\EnclosingMethodAttribute.cs" />
+    <Compile Include="classfile\attributes\ExceptionsAttribute.cs" />
+    <Compile Include="classfile\attributes\LineNumberTableAttribute.cs" />
+    <Compile Include="classfile\attributes\MarkerAttribute.cs" />
+    <Compile Include="instructions\base\classInit_logic.cs" />
+    <Compile Include="instructions\base\invoke_logic.cs" />
+    <Compile Include="instructions\constants\ldc.cs" />
+    <Compile Include="instructions\control\return.cs" />
+    <Compile Include="instructions\references\checkcast.cs" />
+    <Compile Include="instructions\references\getfield.cs" />
+    <Compile Include="instructions\references\instanceof.cs" />
+    <Compile Include="instructions\references\invokedynamic.cs" />
+    <Compile Include="instructions\references\invokeinterface.cs" />
+    <Compile Include="instructions\references\invokespecial.cs" />
+    <Compile Include="instructions\references\invokestatic.cs" />
+    <Compile Include="instructions\references\invokevirtual.cs" />
+    <Compile Include="instructions\references\new.cs" />
+    <Compile Include="instructions\references\putfield.cs" />
+    <Compile Include="instructions\references\putstatic.cs" />
+    <Compile Include="rtda\heap\ArrayClass.cs" />
+    <Compile Include="rtda\heap\ClassAttributes.cs" />
+    <Compile Include="rtda\heap\ClassHierarchy.cs" />
+    <Compile Include="rtda\heap\ClassMember.cs" />
+    <Compile Include="rtda\heap\ClassNameHelper.cs" />
+    <Compile Include="rtda\heap\constant\ConstantInterfaceMethodref.cs" />
+    <Compile Include="rtda\heap\constant\ConstantInvokeDynamic.cs" />
+    <Compile Include="rtda\heap\constant\ConstantMethodHandle.cs" />
+    <Compile Include="rtda\heap\constant\ConstantMethodType.cs" />
+    <Compile Include="rtda\heap\constant\ConstantUtf8.cs" />
+    <Compile Include="rtda\heap\DescriptorHelper.cs" />
+    <Compile Include="rtda\heap\MethodDescriptorParser.cs" />
+    <Compile Include="rtda\heap\constant\ConstantMethodRef.cs" />
+    <Compile Include="classfile\MemberInfo.cs" />
+    <Compile Include="classfile\attributes\SignatureAttribute.cs" />
+    <Compile Include="classfile\attributes\SourceFileAttribute.cs" />
+    <Compile Include="classpath\Classpath.cs" />
+    <Compile Include="classpath\CompositeEntry.cs" />
+    <Compile Include="classpath\DirEntry.cs" />
+    <Compile Include="classpath\Entry.cs" />
+    <Compile Include="classpath\CreateEntry.cs" />
+    <Compile Include="classpath\ZipEntry.cs" />
+    <Compile Include="Cmd.cs" />
+    <Compile Include="instructions\base\branch_logic.cs" />
+    <Compile Include="instructions\base\Instruction.cs" />
+    <Compile Include="instructions\base\BytecodeReader.cs" />
+    <Compile Include="instructions\comparisons\fcmp.cs" />
+    <Compile Include="instructions\comparisons\ifcond.cs" />
+    <Compile Include="instructions\comparisons\if_acmp.cs" />
+    <Compile Include="instructions\comparisons\if_icmp.cs" />
+    <Compile Include="instructions\comparisons\lcmp.cs" />
+    <Compile Include="instructions\comparisons\dcmp.cs" />
+    <Compile Include="instructions\constants\consts.cs" />
+    <Compile Include="instructions\constants\ipush.cs" />
+    <Compile Include="instructions\constants\nop.cs" />
+    <Compile Include="instructions\control\goto.cs" />
+    <Compile Include="instructions\control\lookupswitch.cs" />
+    <Compile Include="instructions\control\tableswitch.cs" />
+    <Compile Include="instructions\conversions\d2x.cs" />
+    <Compile Include="instructions\conversions\f2x.cs" />
+    <Compile Include="instructions\conversions\i2x.cs" />
+    <Compile Include="instructions\conversions\l2x.cs" />
+    <Compile Include="instructions\extended\goto_w.cs" />
+    <Compile Include="instructions\extended\ifnull.cs" />
+    <Compile Include="instructions\extended\wide.cs" />
+    <Compile Include="instructions\factory.cs" />
+    <Compile Include="instructions\loads\aload.cs" />
+    <Compile Include="instructions\loads\dload.cs" />
+    <Compile Include="instructions\loads\fload.cs" />
+    <Compile Include="instructions\loads\iload.cs" />
+    <Compile Include="instructions\loads\lload.cs" />
+    <Compile Include="instructions\math\add.cs" />
+    <Compile Include="instructions\math\and.cs" />
+    <Compile Include="instructions\math\iinc.cs" />
+    <Compile Include="instructions\math\mul.cs" />
+    <Compile Include="instructions\math\or.cs" />
+    <Compile Include="instructions\math\rem.cs" />
+    <Compile Include="instructions\math\sh.cs" />
+    <Compile Include="instructions\math\sub.cs" />
+    <Compile Include="instructions\math\xor.cs" />
+    <Compile Include="instructions\math\div.cs" />
+    <Compile Include="instructions\math\neg.cs" />
+    <Compile Include="instructions\references\getstatic.cs" />
+    <Compile Include="instructions\stack\dup.cs" />
+    <Compile Include="instructions\stack\pop.cs" />
+    <Compile Include="instructions\stack\swap.cs" />
+    <Compile Include="instructions\stores\lstore.cs" />
+    <Compile Include="instructions\stores\istore.cs" />
+    <Compile Include="instructions\stores\fstore.cs" />
+    <Compile Include="instructions\stores\dstore.cs" />
+    <Compile Include="instructions\stores\astore.cs" />
+    <Compile Include="interpreter.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="classfile\attributes\UnparsedAttribute.cs" />
+    <Compile Include="rtda\Frame.cs" />
+    <Compile Include="rtda\heap\AccessFlags.cs" />
+    <Compile Include="rtda\heap\Class.cs" />
+    <Compile Include="rtda\heap\ClassLoader.cs" />
+    <Compile Include="rtda\heap\constant\ConstantClassRef.cs" />
+    <Compile Include="rtda\heap\ConstantPool.cs" />
+    <Compile Include="rtda\heap\Field.cs" />
+    <Compile Include="rtda\heap\constant\ConstantFieldRef.cs" />
+    <Compile Include="rtda\heap\MemberRef.cs" />
+    <Compile Include="rtda\heap\Method.cs" />
+    <Compile Include="rtda\heap\MethodVtable.cs" />
+    <Compile Include="rtda\heap\ObjInstanceOf.cs" />
+    <Compile Include="rtda\heap\ObjMonitor.cs" />
+    <Compile Include="rtda\heap\PrimitiveTypes.cs" />
+    <Compile Include="rtda\heap\SymRef.cs" />
+    <Compile Include="rtda\LocalVars.cs" />
+    <Compile Include="rtda\heap\Object.cs" />
+    <Compile Include="rtda\OperandStack.cs" />
+    <Compile Include="rtda\heap\Slot.cs" />
+    <Compile Include="rtda\Stack.cs" />
+    <Compile Include="rtda\Thread.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Properties\app.manifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 Client Profile %28x86 和 x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="README.txt" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

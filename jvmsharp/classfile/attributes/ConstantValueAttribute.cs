@@ -1,16 +1,14 @@
-﻿using System;
-
-namespace jvmsharp.classfile
+﻿namespace jvmsharp.classfile
 {
     class ConstantValueAttribute : AttributeInfoInterface
     {
-        UInt16 constantValueIndex;
+        ushort constantValueIndex;
 
         public void readInfo(ref ClassReader reader)
         {
             constantValueIndex = reader.readUint16();
         }
 
-        public UInt16 ConstantValueIndex() { return constantValueIndex; }
+        public ushort ConstantValueIndex() { return constantValueIndex; }
     }
 }

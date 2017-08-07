@@ -21,7 +21,7 @@ namespace jvmsharp.classfile
 
         public ConstantPool read(ref ClassReader reader)
         {
-            UInt16 cpCount = reader.readUint16();
+            ushort cpCount = reader.readUint16();
             ConstantPool cp = new ConstantPool();
             cp.constantInfos = new ConstantInfo[cpCount];
             for (int i = 1; i < cpCount; i++)
@@ -41,7 +41,7 @@ namespace jvmsharp.classfile
             return constantInfos;
         }
 
-        ConstantInfo getConstantInfo(UInt16 index)
+        ConstantInfo getConstantInfo(ushort index)
         {
             ConstantInfo cpInfo = constantInfos[index];
             if (cpInfo != null)
@@ -49,7 +49,7 @@ namespace jvmsharp.classfile
             throw new Exception("Invalid constant pool index!");
         }
 
-        public Tuple<string, string> getNameAndType(UInt16 index)
+        public Tuple<string, string> getNameAndType(ushort index)
         {
             ConstantNameAndTypeInfo ntInfo = (ConstantNameAndTypeInfo)getConstantInfo(index);
             string name = getUtf8(ntInfo.nameIndex);
@@ -57,13 +57,13 @@ namespace jvmsharp.classfile
             return Tuple.Create(name, _type);
         }
 
-        public string getClassName(UInt16 index)
+        public string getClassName(ushort index)
         {
             ConstantClassInfo classInfo = (ConstantClassInfo)getConstantInfo(index);
             return getUtf8(classInfo.nameIndex);
         }
 
-        public string getUtf8(UInt16 index)
+        public string getUtf8(ushort index)
         {
             ConstantUtf8Info cui = (ConstantUtf8Info)getConstantInfo(index);
             return cui.str;

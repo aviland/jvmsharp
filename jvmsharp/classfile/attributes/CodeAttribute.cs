@@ -1,37 +1,35 @@
-﻿using System;
-
-namespace jvmsharp.classfile
+﻿namespace jvmsharp.classfile
 {
     struct ExceptionTableEntry
     {
-        public UInt16 startPc;
-        public UInt16 endPc;
-        public UInt16 handlerPc;
-        public UInt16 catchType;
+        public ushort startPc;
+        public ushort endPc;
+        public ushort handlerPc;
+        public ushort catchType;
 
-        UInt16 StartPc() { return startPc; }
-        UInt16 EndPc() { return endPc; }
-        UInt16 HandlerPc() { return handlerPc; }
-        UInt16 CatchType() { return catchType; }
+        ushort StartPc() { return startPc; }
+        ushort EndPc() { return endPc; }
+        ushort HandlerPc() { return handlerPc; }
+        ushort CatchType() { return catchType; }
     }
 
     class CodeAttribute : AttributeInfoInterface
     {
         private ConstantPool cp;
-       private UInt16 maxStack;
-       private UInt16 maxLocals;
+       private ushort maxStack;
+       private ushort maxLocals;
        private byte[] code;
        private ExceptionTableEntry[] exceptionTable;
        private AttributeInfoInterface[] attributes;
 
         public byte[] Code() {  return code; }
 
-        public UInt16 MaxStack()
+        public ushort MaxStack()
         {
             return maxStack;
         }
 
-        public UInt16 MaxLocals()
+        public ushort MaxLocals()
         {
             return maxLocals;
         }
@@ -53,7 +51,7 @@ namespace jvmsharp.classfile
 
         ExceptionTableEntry[] readExceptionTable(ref ClassReader reader)
         {
-            UInt16 exceptionTableLength = reader.readUint16();
+            ushort exceptionTableLength = reader.readUint16();
             ExceptionTableEntry[] exceptionTable = new ExceptionTableEntry[exceptionTableLength];
             for (int i = 0; i < exceptionTable.Length; i++)
             {

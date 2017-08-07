@@ -1,13 +1,11 @@
-﻿using System;
-
-namespace jvmsharp.instructions.control
+﻿namespace jvmsharp.instructions.control
 {
     struct TABLE_SWITCH : Instruction
     {
-        Int32 defaultOffset;
-        Int32 low;
-        Int32 high;
-        Int32[] jumpOffsets;
+        int defaultOffset;
+        int low;
+        int high;
+        int[] jumpOffsets;
 
         public void FetchOperands(ref BytecodeReader reader)
         {

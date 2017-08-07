@@ -33,7 +33,7 @@ namespace jvmsharp.rtda.heap
             char ch2 = Convert.ToChar(readUint8());//endParams();
             if (ch2 != ')')
                 causePanic();
-            var t2= parseFieldType();//  parseReturnType();
+            var t2 = parseFieldType();//  parseReturnType();
             if (t2 != null)
                 md.returnType = t2;
             else causePanic();

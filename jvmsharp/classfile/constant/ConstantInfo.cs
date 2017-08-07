@@ -45,8 +45,9 @@ namespace jvmsharp.classfile
                 case CONSTANT_InterfaceMethodref: return new ConstantInterfaceMethodrefInfo(cp);
                 case CONSTANT_NameAndType: return new ConstantNameAndTypeInfo();
                 case CONSTANT_MethodType: return new ConstantMethodTypeInfo();
+                case CONSTANT_MethodHandle:return new ConstantMethodHandleInfo();
                 case CONSTANT_InvokeDynamic: return new ConstantInvokeDynamicInfo(cp);
-                default: throw new Exception("java.lang.ClassFormatError: constant pool tag!");
+                default: throw new Exception("java.lang.ClassFormatError: constant pool tag! Tag: "+tag);
             }
         }
     }

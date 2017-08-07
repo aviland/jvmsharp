@@ -1,12 +1,10 @@
-﻿using System;
-
-namespace jvmsharp.instructions.control
+﻿namespace jvmsharp.instructions.control
 {
     class LOOKUP_SWITCH:Instruction
     {
-        Int32 defaultOffset;
-        Int32 npairs;
-        Int32[] matchOffsets;
+        int defaultOffset;
+        int npairs;
+        int[] matchOffsets;
 
         public void FetchOperands(ref BytecodeReader reader)
         {
@@ -19,11 +17,11 @@ namespace jvmsharp.instructions.control
         public void Execute(ref rtda.Frame frame)
         {
             int key = frame.OperandStack().PopInt();
-            for (Int32 i = 0; i < npairs * 2; i += 2)
+            for (int i = 0; i < npairs * 2; i += 2)
             {
                 if (matchOffsets[i] == key)
                 {
-                    Int32 offset = matchOffsets[i + 1];
+                    int offset = matchOffsets[i + 1];
                     branch_logic.Branch(ref frame, offset);
                     return;
                 }

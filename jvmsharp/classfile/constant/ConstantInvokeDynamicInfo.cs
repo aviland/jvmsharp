@@ -5,8 +5,8 @@ namespace jvmsharp.classfile
     class ConstantInvokeDynamicInfo : ConstantInfo
     {
         ConstantPool cp;
-        UInt16 bootstrapMethodAttrIndex;
-        UInt16 nameAndTypeIndex;
+        ushort bootstrapMethodAttrIndex;
+        ushort nameAndTypeIndex;
 
         public ConstantInvokeDynamicInfo(ConstantPool cp)
         {
@@ -24,7 +24,7 @@ namespace jvmsharp.classfile
             return cp.getNameAndType(nameAndTypeIndex);
         }
 
-        public Tuple<UInt16, UInt16[]> BootstrapMethodInfo()
+        public Tuple<ushort, ushort[]> BootstrapMethodInfo()
         {
             BootstrapMethodsAttribute bmAttr = cp.cf.BootstrapMethodsAttribute();
             BootstrapMethod bm = bmAttr.bootstrapMethods[bootstrapMethodAttrIndex];
@@ -35,7 +35,7 @@ namespace jvmsharp.classfile
     class ConstantMethodHandleInfo : ConstantInfo
     {
         public byte referenceKind;
-        public UInt16 referenceIndex;
+        public ushort referenceIndex;
 
         public override void readInfo(ref ClassReader reader)
         {
@@ -46,7 +46,7 @@ namespace jvmsharp.classfile
 
     class ConstantMethodTypeInfo : ConstantInfo
     {
-        UInt16 descriptorIndex;
+        ushort descriptorIndex;
         public override void readInfo(ref ClassReader reader)
         {
             descriptorIndex = reader.readUint16();

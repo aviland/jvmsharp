@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace jvmsharp.instructions
+﻿namespace jvmsharp.instructions
 {
     interface Instruction
     {
@@ -43,7 +41,7 @@ namespace jvmsharp.instructions
 
      abstract class Index16Instruction : Instruction
     {
-        protected UInt16 Index;
+        protected ushort Index;
 
         void Instruction.FetchOperands(ref BytecodeReader reader)
         {

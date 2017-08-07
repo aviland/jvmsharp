@@ -5,13 +5,12 @@ namespace jvmsharp.classfile
     class ClassFile : MemberInfo
     {
         // uint magic;
-        private UInt16 minorVersion;
-        private UInt16 majorVersion;
+        private ushort minorVersion;
+        private ushort majorVersion;
         private ConstantPool constantPool;//常量池
-        private UInt16 accessFlags;//访问标识符
-        private UInt16 thisClass;//该类信息
-        private UInt16 superClass;//超类信息
-        private UInt16[] interfaces;//接口信息
+        private ushort thisClass;//该类信息
+        private ushort superClass;//超类信息
+        private ushort[] interfaces;//接口信息
         private MemberInfo[] fields;//字段信息
         private MemberInfo[] methods;//方法信息
         private AttributeInfoInterface[] attributes;//属性表
@@ -73,13 +72,11 @@ namespace jvmsharp.classfile
             constantPool.read(ref reader);
         }
 
-        public UInt16 MinorVersion() { return minorVersion; }
+        public ushort MinorVersion() { return minorVersion; }
 
-        public UInt16 MajorVersion() { return majorVersion; }
+        public ushort MajorVersion() { return majorVersion; }
 
         public ConstantPool  ConstantPool() { return constantPool; }
-
-        public UInt16 AccessFlags() { return accessFlags; }
 
         public string ClassName() { return constantPool.getClassName(thisClass); }
 

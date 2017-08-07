@@ -20,15 +20,15 @@ namespace jvmsharp.classfile
 
     class ConstantLongInfo : ConstantInfo
     {
-        private Int64 val;
+        private long val;
 
         public override void readInfo(ref ClassReader reader)
         {
             UInt64 bytes = reader.readUint64();
-            val = (Int64)bytes;
+            val = (long)bytes;
         }
 
-        public Int64 Value()
+        public long Value()
         {
             return val;
         }

@@ -4,97 +4,117 @@ namespace jvmsharp.rtda
 {
     class OperandStack//操作数栈
     {
-        public uint size;//栈容量
-        public Slot[] slots;//slot为栈元素
+        internal uint size;//栈容量
+        internal object[] slots;//slot为栈元素
 
         public OperandStack(uint maxStack)
         {
             //初始化操作数栈
             if (maxStack > 0)
-                slots = new Slot[maxStack];
+                slots = new object[maxStack];
             else slots = null;
+            size = 0;
         }
 
         public void PushInt(int val)
         {
-            slots[size].num = val;
+            slots[size] = val;
             size++;
+        //   Console.WriteLine("PushInt " + val);
         }
 
         public int PopInt()
         {
             size--;
-            return slots[size].num;
+      //      Console.WriteLine(size + "PopInt " + slots.Length);
+            return (int)slots[size]; 
         }
 
         public void PushFloat(float val)
         {
             //float转换为二进制再转换为int32存储
-            slots[size].num = BitConverter.ToInt32(BitConverter.GetBytes(val), 0);
+            slots[size] = BitConverter.ToInt32(BitConverter.GetBytes(val), 0);
             size++;
+      //      Console.WriteLine("PushFloat " +val);
         }
 
         public float PopFloat()
         {
             size--;
-            float f = slots[size].num;
+            float f =(float) slots[size];
+     //       Console.WriteLine(size + "PopFloat " + slots.Length);
             return BitConverter.ToSingle(BitConverter.GetBytes(f), 0);
         }
 
-        public void PushLong(Int64 val)
+        public void PushLong(long val)
         {
-            slots[size].num = (Int32)val;
-            slots[size + 1].num = (Int32)(val >> 32);
+            slots[size] = val;
             size += 2;
+   //         Console.WriteLine( "PushLong " +val);
         }
 
-        public Int64 PopLong()
+        public long PopLong()
         {
             size -= 2;
-            UInt32 low = (UInt32)slots[size].num;
-            UInt32 high = (UInt32)slots[size + 1].num;
-            return (Int64)high << 32 | low;
+            var top = slots[size];
+
+            slots[size] = null;
+            return (long)top;
         }
 
         public void PushDouble(double val)
         {
-            PushLong(BitConverter.ToInt64(BitConverter.GetBytes(val), 0));
+            slots[size] = val;
+            size += 2;
+         //   Console.WriteLine( "PushDouble " + val);
         }
 
         public double PopDouble()
         {
-            return BitConverter.ToDouble(BitConverter.GetBytes(PopLong()), 0);
+            size -= 2;
+            var top = slots[size];
+            slots[size] = null;
+     //       Console.WriteLine(size + "PushDouble " + slots.Length);
+            return (float)top;
         }
 
-        public void PushRef(ref  heap.Object refer)
+        public void PushRef( heap.Object refer)
         {
-            slots[size].refer = refer;
+            slots[size] = refer;
             size++;
+        //    Console.WriteLine( "PushRef "  +refer);
         }
 
         public heap.Object  PopRef()
         {
             size--;
-            object refer = slots[size].refer;
-            slots[size].refer = null;
-            return (heap.Object)refer;
+            var top =  slots[size];
+           slots[size] = null;
+     //     Console.WriteLine(size + "PopRef " + slots.Length);
+            if (top == null)
+                return null;
+            else return (heap.Object)top;
         }
 
-        public void PushSlot(ref Slot slot)
+        public void PushSlot(ref object slot)
         {
             slots[size] = slot;
             size++;
+     //    Console.WriteLine( "PushSlot " +slot);
         }
 
-        public Slot PopSlot()
+        public object PopSlot()
         {
             size--;
-            return slots[size];
+            var top = slots[size];
+            slots[size] = null;
+     //     Console.WriteLine(size + "PopSlot " + slots.Length);
+            return top;
         }
 
         public heap.Object GetRefFromTop(uint n)
         {
-            return this.slots[size - n-1].refer;// return this.slots[size - n-1].refer;
+            return (heap.Object)this.slots[size - n-1];// return this.slots[size - n-1].refer;
         }
     }
 }

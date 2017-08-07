@@ -9,9 +9,9 @@
 
   abstract  class ClassAttributes:AccessFlags
     {
-        string sourceFile;
-        string signature;
-        byte[] annotationData;// RuntimeVisibleAnnotations_attribute
+     internal   string sourceFile;
+        internal string signature;
+        internal byte[] annotationData;// RuntimeVisibleAnnotations_attribute
         EnclosingMethod enclosingMethod;
 
         EnclosingMethod EnclosingMethod()

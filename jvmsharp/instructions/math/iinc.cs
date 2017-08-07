@@ -4,13 +4,13 @@ namespace jvmsharp.instructions.math
 {
     struct IINC : Instruction
     {
-        public uint Index;
-        public Int32 Const;
+        internal uint Index;
+        internal int Const;
 
         public void FetchOperands(ref BytecodeReader reader)
         {
-            Index = reader.ReadUint8();
-            Const = reader.ReadInt8();
+            Index = Convert.ToUInt32(reader.ReadUint8());
+            Const = Convert.ToInt32(reader.ReadInt8());
         }
 
         public void Execute(ref rtda.Frame frame)

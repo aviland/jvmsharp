@@ -1,8 +1,10 @@
-﻿namespace jvmsharp.rtda.heap
+﻿using System;
+
+namespace jvmsharp.rtda.heap
 {
     partial class Class : ClassAttributes
     {
- 
+
         public bool isSubClassOf(Class c)//是否为c的子类
         {
             for (Class k = superClass; k != null; k = k.superClass)
@@ -46,15 +48,42 @@
             return iface.isSubInterfaceOf(this);
         }
 
-        public bool IsAssignableFrom(ref Class other)
+        public bool IsAssignableFrom(Class other)
         {
             Class s = other;
             Class t = this;
             if (s == t)
                 return true;
-            if (!t.IsInterface())
-                return s.isSubClassOf(t);
-            else return s.isImplements(t);
+            if (!s.IsArray())//s非数组
+            {
+                if (!s.IsInterface())
+                {
+                    if (!t.IsInterface())
+                        return s.isSubClassOf(t);
+                    else return s.isImplements(t);
+                }
+                else
+                {
+                    if (!t.IsInterface())
+                        return t.isJlObject();
+                    else return t.isSubInterfaceOf(s);
+                }
+            }
+            else
+            {
+                if (!t.IsArray())
+                {
+                    if (!t.IsInterface())
+                        return t.isJlObject();
+                    else return t.isJlCloneable() || t.isJioSerializable();
+                }
+                else
+                {
+                    var sc = s.ComponentClass();
+                    var tc = t.ComponentClass();
+                    return sc == tc || tc.IsAssignableFrom(sc);
+                }
+            }
         }
     }
 }

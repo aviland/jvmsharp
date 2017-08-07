@@ -22,7 +22,7 @@ namespace jvmsharp.instructions.references
                 throw new Exception("java.lang.InstantiationError");
 
             rtda.heap.Object refs = clas.NewObject();//创建类的对象
-            frame.OperandStack().PushRef(ref refs);//压入操作数栈
+            frame.OperandStack().PushRef(refs);//压入操作数栈
         }
     }
 }

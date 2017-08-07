@@ -28,7 +28,7 @@ namespace jvmsharp.rtda.heap
             new PrimitiveType("C", "[C", "char", "java/lang/Character"),
                           new PrimitiveType("S", "[S", "short", "java/lang/Short"),
                              new PrimitiveType("I", "[I", "int", "java/lang/Integer"),
-                                new PrimitiveType("J", "[J", "long", "java/lang/Long"),
+                                new PrimitiveType("J", "[J", "long", "java/lang/Longs"),
                              new PrimitiveType("F", "[F", "float", "java/lang/Float"),
                                    new PrimitiveType("D", "[D", "double", "java/lang/Double")
         };

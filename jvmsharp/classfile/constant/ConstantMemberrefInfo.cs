@@ -5,8 +5,8 @@ namespace jvmsharp.classfile
     class ConstantMemberrefInfo : ConstantInfo
     {
         protected ConstantPool cp;
-        UInt16 classIndex;
-        UInt16 nameAndTypeIndex;
+        ushort classIndex;
+        ushort nameAndTypeIndex;
 
         public override void readInfo(ref ClassReader reader)
         {

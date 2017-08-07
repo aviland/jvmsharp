@@ -15,28 +15,28 @@ namespace jvmsharp.rtda.heap
             copyMemberRefInfo(ref cmi);
         }
 
-        internal Method StaticMethod()
+      /*  internal Method StaticMethod()
         {
             if (method == null)
             {
                 resolveStaticMethod();
             }
             return method;
-        }
+        }*/
 
-        internal Method findMethod(bool isStatic)
+      /*  internal Method findMethod(bool isStatic)
         {
             var clas = ClassLoader.bootLoader.LoadClass(className);
             return clas.getMethod(name, descriptor, isStatic);
-        }
+        }*/
 
-        internal void resolveStaticMethod()
+      /*  internal void resolveStaticMethod()
         {
             var method = findMethod(true);
             if (method != null)
                 this.method = method;
             else throw new Exception("static method not found!");
-        }
+        }*/
 
     
 

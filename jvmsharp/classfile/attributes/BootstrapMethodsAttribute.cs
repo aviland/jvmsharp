@@ -1,23 +1,21 @@
-﻿using System;
-
-namespace jvmsharp.classfile
+﻿namespace jvmsharp.classfile
 {
     struct BootstrapMethod
     {
-        private UInt16 bootstrapMethodRef;
-        private UInt16[] bootstrapArguments;
+        private ushort bootstrapMethodRef;
+        private ushort[] bootstrapArguments;
 
-        public UInt16 GetBootstrapMethodRef()
+        public ushort GetBootstrapMethodRef()
         {
             return bootstrapMethodRef;
         }
 
-        public UInt16[] GetBootstrapArguments()
+        public ushort[] GetBootstrapArguments()
         {
             return bootstrapArguments;
         }
 
-        public BootstrapMethod(UInt16 bootstrapMethodRef, UInt16[] bootstrapArguments)
+        public BootstrapMethod(ushort bootstrapMethodRef, ushort[] bootstrapArguments)
         {
             this.bootstrapMethodRef = bootstrapMethodRef;
             this.bootstrapArguments = bootstrapArguments;
@@ -29,7 +27,7 @@ namespace jvmsharp.classfile
         public BootstrapMethod[] bootstrapMethods;
         public void readInfo(ref ClassReader reader)
         {
-            UInt16 numBootstrapMethods = reader.readUint16();
+            ushort numBootstrapMethods = reader.readUint16();
             bootstrapMethods = new BootstrapMethod[numBootstrapMethods];
             for (int i = 0; i < bootstrapMethods.Length; i++)
             {

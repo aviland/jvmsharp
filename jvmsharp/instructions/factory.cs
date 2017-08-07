@@ -75,6 +75,7 @@ namespace jvmsharp.instructions
     {
         public Instruction NewInstruction(byte opcode)
         {
+           // Console.WriteLine("0x" + Convert.ToString(opcode, 16));
             switch (Convert.ToInt32(opcode))
             {
                 #region  constants
@@ -101,64 +102,39 @@ namespace jvmsharp.instructions
                 case 0x14: return new LDC2_W();
                 #endregion
                 #region loads
-                case 0x15:
-                    return new ILOAD();
-                case 0x16:
-                    return new LLOAD();
-                case 0x17:
-                    return new FLOAD();
-                case 0x18:
-                    return new DLOAD();
-                case 0x19:
-                    return new ALOAD();
-                case 0x1a:
-                    return new ILOAD_0();
-                case 0x1b:
-                    return new ILOAD_1();
-                case 0x1c:
-                    return new ILOAD_2();
-                case 0x1d:
-                    return new ILOAD_3();
-                case 0x1e:
-                    return new LLOAD_0();
-                case 0x1f:
-                    return new LLOAD_1();
-                case 0x20:
-                    return new LLOAD_2();
-                case 0x21:
-                    return new LLOAD_3();
-                case 0x22:
-                    return new FLOAD_0();
-                case 0x23:
-                    return new FLOAD_1();
-                case 0x24:
-                    return new FLOAD_2();
-                case 0x25:
-                    return new FLOAD_3();
-                case 0x26:
-                    return new DLOAD_0();
-                case 0x27:
-                    return new DLOAD_1();
-                case 0x28:
-                    return new DLOAD_2();
-                case 0x29:
-                    return new DLOAD_3();
-                case 0x2a:
-                    return new ALOAD_0();
-                case 0x2b:
-                    return new ALOAD_1();
-                case 0x2c:
-                    return new ALOAD_2();
-                case 0x2d:
-                    return new ALOAD_3();
-                case 0x2e:
-                case 0x2f:
-                case 0x30:
-                case 0x31:
-                case 0x32:
-                case 0x33:
-                case 0x34:
-                case 0x35:
+                case 0x15: return new ILOAD();
+                case 0x16: return new LLOAD();
+                case 0x17: return new FLOAD();
+                case 0x18: return new DLOAD();
+                case 0x19: return new ALOAD();
+                case 0x1a: return new ILOAD_0();
+                case 0x1b: return new ILOAD_1();
+                case 0x1c: return new ILOAD_2();
+                case 0x1d: return new ILOAD_3();
+                case 0x1e: return new LLOAD_0();
+                case 0x1f: return new LLOAD_1();
+                case 0x20: return new LLOAD_2();
+                case 0x21: return new LLOAD_3();
+                case 0x22: return new FLOAD_0();
+                case 0x23: return new FLOAD_1();
+                case 0x24: return new FLOAD_2();
+                case 0x25: return new FLOAD_3();
+                case 0x26: return new DLOAD_0();
+                case 0x27: return new DLOAD_1();
+                case 0x28: return new DLOAD_2();
+                case 0x29: return new DLOAD_3();
+                case 0x2a: return new ALOAD_0();
+                case 0x2b: return new ALOAD_1();
+                case 0x2c: return new ALOAD_2();
+                case 0x2d: return new ALOAD_3();
+                case 0x2e: return new IALOAD();
+                case 0x2f: return new LALOAD();
+                case 0x30: return new FALOAD();
+                case 0x31: return new DALOAD();
+                case 0x32: return new AALOAD();
+                case 0x33: return new BALOAD();
+                case 0x34: return new CALOAD();
+                case 0x35: return new SALOAD();
                 #endregion
                 #region stores
                 case 0x36: return new ISTORE();
@@ -186,14 +162,14 @@ namespace jvmsharp.instructions
                 case 0x4c: return new ASTORE_1();
                 case 0x4d: return new ASTORE_2();
                 case 0x4e: return new ASTORE_3();
-                /*  case 0x4f:
-                  case 0x50:
-                  case 0x51:
-                  case 0x52:
-                  case 0x53:
-                  case 0x54:
-                  case 0x55:
-                  case 0x56:*/
+                case 0x4f: return new IASTORE();
+                case 0x50: return new LASTORE();
+                case 0x51: return new FASTORE();
+                case 0x52: return new DASTORE();
+                case 0x53: return new AASTORE();
+                case 0x54: return new BASTORE();
+                case 0x55: return new CASTORE();
+                case 0x56: return new SASTORE();
                 #endregion
                 #region stack
                 case 0x57: return new POP();
@@ -263,44 +239,25 @@ namespace jvmsharp.instructions
                 case 0x93: return new I2S();
                 #endregion
                 #region conparisons
-                case 0x94:
-                    return new lcmp();
-                case 0x95:
-                    return new fcmpl();
-                case 0x96:
-                    return new fcmpg();
-                case 0x97:
-                    return new dcmpl();
-                case 0x98:
-                    return new dcmpg();
-                case 0x99:
-                    return new ifeq();
-                case 0x9a:
-                    return new ifne();
-                case 0x9b:
-                    return new iflt();
-                case 0x9c:
-                    return new ifge();
-                case 0x9d:
-                    return new ifgt();
-                case 0x9e:
-                    return new ifle();
-                case 0x9f:
-                    return new if_icmpeq();
-                case 0xa0:
-                    return new if_icmpne();
-                case 0xa1:
-                    return new if_icmplt();
-                case 0xa2:
-                    return new if_icmpge();
-                case 0xa3:
-                    return new if_icmpgt();
-                case 0xa4:
-                    return new if_icmple();
-                case 0xa5:
-                    return new if_acmpeq();
-                case 0xa6:
-                    return new if_acmpne();
+                case 0x94: return new lcmp();
+                case 0x95: return new fcmpl();
+                case 0x96: return new fcmpg();
+                case 0x97: return new dcmpl();
+                case 0x98: return new dcmpg();
+                case 0x99: return new ifeq();
+                case 0x9a: return new ifne();
+                case 0x9b: return new iflt();
+                case 0x9c: return new ifge();
+                case 0x9d: return new ifgt();
+                case 0x9e: return new ifle();
+                case 0x9f: return new if_icmpeq();
+                case 0xa0: return new if_icmpne();
+                case 0xa1: return new if_icmplt();
+                case 0xa2: return new if_icmpge();
+                case 0xa3: return new if_icmpgt();
+                case 0xa4: return new if_icmple();
+                case 0xa5: return new if_acmpeq();
+                case 0xa6: return new if_acmpne();
                 #endregion
                 #region control
                 case 0xa7: return new GOTO();
@@ -326,10 +283,10 @@ namespace jvmsharp.instructions
                 case 0xb9: return new INVOKE_INTERFACE();
                 case 0xba: return new INVOKE_DYNAMIC();
                 case 0xbb: return new NEW();
-                /*     case 0xbc:
-                     case 0xbd:
-                     case 0xbe:
-                     case 0xbf*/
+                case 0xbc: return new NEW_ARRAY();
+                case 0xbd: return new ANEW_ARRAY();
+                case 0xbe: return new ARRAY_LENGTH();
+                /*  case 0xbf:*/
                 case 0xc0: return new CHECK_CAST();
                 case 0xc1: return new INSTANCE_OF();
                 /*   case 0xc2: 
@@ -337,7 +294,7 @@ namespace jvmsharp.instructions
                 #endregion
                 #region extended
                 case 0xc4: return new WIDE();
-                /*   case 0xc5:*/
+                case 0xc5: return new MULTI_ANEW_ARRAY();
                 case 0xc6: return new IFNULL();
                 case 0xc7: return new IFNONNULL();
                 case 0xc8: return new GOTO_W();

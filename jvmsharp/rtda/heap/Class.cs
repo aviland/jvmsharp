@@ -11,13 +11,13 @@
         public string name;
         public string superClassName;
         public string[] interfaceNames;
-        bool initStarted;
+        internal bool initStarted;
         public Field[] fields;
         public Method[] methods;
-        public uint instanceFieldCount;
-        public uint staticFieldCount;
-        public object[] staticFieldSlots;
-        public Method[] vtable;// virtual method table
+    //    public uint instanceFieldCount;
+//public uint staticFieldCount;
+     //   public object[] staticFieldSlots;
+   //     public Method[] vtable;// virtual method table
         public Object jClass;  // java.lang.Class instance
         public Class superClass;
         public Class[] interfaces;
@@ -65,7 +65,7 @@
             initState = _fullyInitialized;
         }
 
-        public Class newClass(ref classfile.ClassFile cf)
+        public Class newClass(classfile.ClassFile cf)
         {
             Class c = new Class();
             c.accessFlags = cf.AccessFlags();
@@ -103,7 +103,7 @@
         Object newObject(Class clas)
         {
             Slots s = new Slots(clas.instanceSlotCount);
-            return new Object(ref clas, ref s);
+            return new heap.Object(clas, s);
         }
         /*      public Object NewObj()
               {

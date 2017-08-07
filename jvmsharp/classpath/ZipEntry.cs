@@ -25,7 +25,6 @@ namespace jvmsharp.classpath
                 {
                     byte[] data = new byte[entry.Length];
                     BinaryReader br = new BinaryReader(entry.Open());
-                    int i;
                     long l =0;
                     while (l< entry.Length)
                     {

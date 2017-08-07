@@ -1,13 +1,11 @@
-﻿using System;
-
-namespace jvmsharp.classfile
+﻿namespace jvmsharp.classfile
 {
     struct LineNumberTableEntry
     {
-        public UInt16 startPc;
-        public UInt16 lineNumber;
+        public ushort startPc;
+        public ushort lineNumber;
 
-        public LineNumberTableEntry(UInt16 startPc, UInt16 lineNumber)
+        public LineNumberTableEntry(ushort startPc, ushort lineNumber)
         {
             this.startPc = startPc;
             this.lineNumber = lineNumber;
@@ -20,7 +18,7 @@ namespace jvmsharp.classfile
 
         public void readInfo(ref ClassReader reader)
         {
-            UInt16 lineNumberTableLength = reader.readUint16();
+            ushort lineNumberTableLength = reader.readUint16();
             lineNumberTable = new LineNumberTableEntry[lineNumberTableLength];
             for (int i = 0; i < lineNumberTableLength; i++)
             {

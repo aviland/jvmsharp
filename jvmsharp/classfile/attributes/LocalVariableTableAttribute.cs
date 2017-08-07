@@ -1,16 +1,14 @@
-﻿using System;
-
-namespace jvmsharp.classfile
+﻿namespace jvmsharp.classfile
 {
     struct LocalVariableTableEntry
     {
-        UInt16 startPc;
-        UInt16 length;
-        UInt16 nameIndex;
-        UInt16 descriptorIndex;
-        UInt16 index;
+        ushort startPc;
+        ushort length;
+        ushort nameIndex;
+        ushort descriptorIndex;
+        ushort index;
 
-        public LocalVariableTableEntry(UInt16 startPc, UInt16 length, UInt16 nameIndex, UInt16 descriptorIndex, UInt16 index)
+        public LocalVariableTableEntry(ushort startPc, ushort length, ushort nameIndex, ushort descriptorIndex, ushort index)
         {
             this.startPc = startPc;
             this.length = length;
@@ -26,7 +24,7 @@ namespace jvmsharp.classfile
 
         public void readInfo(ref ClassReader reader)
         {
-            UInt16 localVariableTableLength = reader.readUint16();
+            ushort localVariableTableLength = reader.readUint16();
             localVariableTable = new LocalVariableTableEntry[localVariableTableLength];
             for (int i = 0; i < localVariableTableLength; i++)
             {

@@ -1,31 +1,29 @@
-﻿using System;
-
-namespace jvmsharp.rtda.heap
+﻿namespace jvmsharp.rtda.heap
 {
     class AccessFlags
     {
-        const UInt16 ACC_PUBLIC = 0x0001;
-        const UInt16 ACC_PRIVATE = 0x0002;
-        const UInt16 ACC_PROTECTED = 0x0004;
-        const UInt16 ACC_STATIC = 0x0008;
-        const UInt16 ACC_FINAL = 0x0010;
-        const UInt16 ACC_SUPER = 0x0020;
-        const UInt16 ACC_SYNCHRONIZED = 0x0020;
-        const UInt16 ACC_VOLATILE = 0x0040;
-        const UInt16 ACC_BRIDGE = 0x0040;
-        const UInt16 ACC_TRANSIENT = 0x0080;
-        const UInt16 ACC_VARARGS = 0x0080;
-        const UInt16 ACC_NATIVE = 0x0100;
-        const UInt16 ACC_INTERFACE = 0x0200;
-        const UInt16 ACC_ABSTRACT = 0x0400;
-        const UInt16 ACC_STRICT = 0x0800;
-        const UInt16 ACC_SYNTHETIC = 0x1000;
-        const UInt16 ACC_ANNOTATION = 0x2000;
-        const UInt16 ACC_ENUM = 0x4000;
+      internal  const ushort ACC_PUBLIC = 0x0001;
+         const ushort ACC_PRIVATE = 0x0002;
+         const ushort ACC_PROTECTED = 0x0004;
+         const ushort ACC_STATIC = 0x0008;
+         const ushort ACC_FINAL = 0x0010;
+         const ushort ACC_SUPER = 0x0020;
+         const ushort ACC_SYNCHRONIZED = 0x0020;
+         const ushort ACC_VOLATILE = 0x0040;
+         const ushort ACC_BRIDGE = 0x0040;
+         const ushort ACC_TRANSIENT = 0x0080;
+         const ushort ACC_VARARGS = 0x0080;
+         const ushort ACC_NATIVE = 0x0100;
+         const ushort ACC_INTERFACE = 0x0200;
+         const ushort ACC_ABSTRACT = 0x0400;
+         const ushort ACC_STRICT = 0x0800;
+         const ushort ACC_SYNTHETIC = 0x1000;
+         const ushort ACC_ANNOTATION = 0x2000;
+         const ushort ACC_ENUM = 0x4000;
 
-        protected UInt16 accessFlags;
+        internal ushort accessFlags;
 
-        public UInt16 GetAccessFlags()
+        public ushort GetAccessFlags()
         {
             return accessFlags;
         }

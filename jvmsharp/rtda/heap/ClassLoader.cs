@@ -16,7 +16,7 @@ namespace jvmsharp.rtda.heap
         const string jlCloneableClassName = "java/lang/Cloneable";
         const string ioSerializableClassName = "java/io/Serializable";
 
-        public static ClassLoader bootLoader;
+        //public static ClassLoader bootLoader;
         public static Class _jlObjectClass;
         public static Class _jlClassClass;
         public static Class _jlStringClass;
@@ -24,7 +24,7 @@ namespace jvmsharp.rtda.heap
         public static Class _jlCloneableClass;
         public static Class _ioSerializableClass;
 
-        public ClassLoader(ref classpath.Classpath cp,bool verboseFlag)
+        public ClassLoader(ref classpath.Classpath cp, bool verboseFlag)
         {
             this.cp = cp;
             classMap = new Dictionary<string, Class>();
@@ -32,57 +32,40 @@ namespace jvmsharp.rtda.heap
         }
 
 
-        /*    public void InitBootLoader(classpath.Classpath cp)
-            {
-                ClassLoader bootLoader = new ClassLoader(ref cp);
-                bootLoader._init();
-            }
-            */
-        /*     public void _init()
-             {
-                 Class _jlObjectClass = LoadClass(jlObjectClassName);
-                 Class _jlClassClass = LoadClass(jlClassClassName);
-                 foreach (Class clas in classMap.Values)
-                 {
-                     if (clas.jClass == null)
-                     {
-                         clas.jClass = _jlClassClass.NewObj();
-                         clas.jClass.extra = clas;
-                     }
-                 }
-                 Class _jlCloneableClass = LoadClass(jlCloneableClassName); ;
-                 Class _ioSerializableClass = LoadClass(ioSerializableClassName);
-                 Class _jlThreadClass = LoadClass(jlThreadClassName);
-                 Class _jlStringClass = LoadClass(jlStringClassName);
-                 this.loadPrimitiveClasses();
-                 this.loadPrimitiveArrayClasses();
-     }*/
-        /*  void loadPrimitiveArrayClasses()
-          {
-              foreach (PrimitiveType pt in PrimitiveTypes.primitiveTypes)
-                  loadArrayClass(pt.ArrayClassName);
-          }*/
+       /* public void InitBootLoader(classpath.Classpath cp)
+        {
+            bootLoader = new ClassLoader(ref cp, verboseFlag);
+            bootLoader._init();
+        }*/
 
-        /*    Class loadArrayClass(string className)
+        public void _init()
+        {
+            _jlObjectClass = LoadClass(jlObjectClassName);
+            _jlClassClass = LoadClass(jlClassClassName);
+            foreach (Class clas in classMap.Values)
             {
-                Class clas = new Class(className);
-              // clas.classLoader = this;
-                clas.superClass = _jlObjectClass;
-                clas.interfaces = new Class[] { _jlCloneableClass, _ioSerializableClass };
-                clas.jClass = _jlClassClass.NewObj();
-                clas.jClass.extra = clas;
-             //   createVtable(clas);
-                clas.MarkFullyInitialized();
-                classMap[className] = clas;
-                return clas;
+                if (clas.jClass == null)
+                {
+                    clas.jClass = _jlClassClass.NewObject();
+                }
             }
-            */
+            _jlCloneableClass = LoadClass(jlCloneableClassName); ;
+            _ioSerializableClass = LoadClass(ioSerializableClassName);
+            _jlThreadClass = LoadClass(jlThreadClassName);
+            _jlStringClass = LoadClass(jlStringClassName);
+            this.loadPrimitiveClasses();
+            this.loadPrimitiveArrayClasses();
+        }
+        void loadPrimitiveArrayClasses()
+        {
+            foreach (PrimitiveType pt in PrimitiveTypes.primitiveTypes)
+                loadArrayClass(pt.ArrayClassName);
+        }
+
         void loadPrimitiveClasses()
         {
             foreach (PrimitiveType pt in PrimitiveTypes.primitiveTypes)
-            {
                 loadPrimitiveClass(pt.Name);
-            }
         }
 
         void loadPrimitiveClass(string className)
@@ -91,7 +74,6 @@ namespace jvmsharp.rtda.heap
             Class clas = new Class(className);
             //class.classLoader = self
             //     clas.jClass = _jlClassClass.NewObj();
-            clas.jClass.extra = clas;
 
             clas.MarkFullyInitialized();
             classMap[className] = clas;
@@ -100,20 +82,37 @@ namespace jvmsharp.rtda.heap
 
         public Class LoadClass(string name)
         {
-            if (name != null && classMap.ContainsKey(name))
+            if (name != null && classMap.ContainsKey(name))//若类已加载，则直接查找并返回
                 return classMap[name];
-            else return loadNonArrayClass(name);
+            if (name[0] == '[')
+            {
+                return loadArrayClass(name);
+            }
+            else return loadNonArrayClass(name);//否则加载该类
+        }
+
+        Class loadArrayClass(string name)
+        {
+            Class clas = new Class();
+            clas.accessFlags = AccessFlags.ACC_PUBLIC;
+            clas.name = name;
+            clas.loader = this;
+            clas.initStarted = true;
+            clas.superClass = LoadClass("java/lang/Object");
+            clas.interfaces = new Class[] { LoadClass("java/lang/Cloneable"), LoadClass("java/io/Serializable") };
+            classMap[name] = clas;
+            return clas;
         }
 
         public Class loadNonArrayClass(string name)
         {
             Tuple<byte[], classpath.Entry> tbe = readClass(name);
-            byte[] data = tbe.Item1;
+            byte[] data = tbe.Item1;//取得class文件的二进制数据
 
-            Class clas = defineClass(ref data);
+            Class clas = defineClass(ref data);//定义类
 
             link(ref clas);//链接类
-            if (verboseFlag)
+            if (verboseFlag)//参数确定是否打印类加载信息
                 Console.WriteLine("[Loaded  " + name + " from " + tbe.Item2.String() + " ]");
             return clas;
         }
@@ -122,12 +121,12 @@ namespace jvmsharp.rtda.heap
         {
             try
             {
-                Tuple<byte[], classpath.Entry> tbe  = cp.ReadClass(name);
+                Tuple<byte[], classpath.Entry> tbe = cp.ReadClass(name);//从解析的类中读取数据
                 return tbe;
             }
             catch (Exception exp)
             {
-                throw new Exception("java.lang.ClassNotFoundException:" + name);
+                throw new Exception("java.lang.ClassNotFoundException:" + name + "\n" + exp);
             }
         }
 
@@ -148,12 +147,12 @@ namespace jvmsharp.rtda.heap
             try
             {
                 classfile.ClassFile cf = new classfile.ClassFile().Parse(ref data);//读取二进制data，初始化classfile
-                Class c = new Class().newClass(ref cf);//将classfile转换为Class类型?
+                Class c = new Class().newClass(cf);//将classfile转换为Class类型?
                 return c;
             }
             catch (Exception e)
             {
-                throw new Exception("java.lang.ClassFormatError"+e);
+                throw new Exception("java.lang.ClassFormatError" + e);
             }
         }
 
@@ -257,7 +256,7 @@ namespace jvmsharp.rtda.heap
                     case "C":
                     case "S":
                     case "I":
-                        Int32 val = (Int32)cp.GetConstant(cpIndex);
+                        int val = (int)cp.GetConstant(cpIndex);
                         vars.SetInt(slotId, val);
                         break;
                     case "J":

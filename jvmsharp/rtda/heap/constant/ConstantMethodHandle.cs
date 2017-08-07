@@ -1,12 +1,11 @@
-﻿using System;
-using jvmsharp.classfile;
+﻿using jvmsharp.classfile;
 
 namespace jvmsharp.rtda.heap
 {
     struct ConstantMethodHandle
     {
         byte referenceKind;
-        UInt16 referenceIndex;
+        ushort referenceIndex;
 
         public ConstantMethodHandle(ConstantMethodHandleInfo mhInfo)
         {

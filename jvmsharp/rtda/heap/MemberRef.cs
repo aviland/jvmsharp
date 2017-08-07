@@ -4,8 +4,8 @@ namespace jvmsharp.rtda.heap
 {
     class MemberRef : SymRef
     {
-        protected string name;
-        protected string descriptor;
+        internal string name;
+        internal string descriptor;
 
         internal string Name()
         {

@@ -5,8 +5,8 @@ namespace jvmsharp.classfile
     class EnclosingMethodAttribute : AttributeInfoInterface
     {
         ConstantPool cp;
-        UInt16 classIndex;
-        UInt16 methodIndex;
+        ushort classIndex;
+        ushort methodIndex;
 
         public EnclosingMethodAttribute(ConstantPool cp)
         {

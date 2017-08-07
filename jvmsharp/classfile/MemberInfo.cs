@@ -1,13 +1,11 @@
-﻿using System;
-
-namespace jvmsharp.classfile
+﻿namespace jvmsharp.classfile
 {
     class MemberInfo
     {
         ConstantPool cp;
-        UInt16 accessFlags;
-        UInt16 nameIndex;
-        UInt16 descriptiorIndex;
+     internal   ushort accessFlags;
+        ushort nameIndex;
+        ushort descriptiorIndex;
         AttributeInfoInterface[] attributes;
         /* group 1 */
         #region
@@ -154,14 +152,14 @@ namespace jvmsharp.classfile
         }
         #endregion
 
-        public UInt16 AccessFlags()
+        internal ushort AccessFlags()
         {
             return accessFlags;
         }
 
         public MemberInfo() {    }
 
-        public MemberInfo(ConstantPool cp, UInt16 accessFlags, UInt16 nameIndex, UInt16 descriptiorIndex, AttributeInfoInterface[] attributes)
+        public MemberInfo(ConstantPool cp, ushort accessFlags, ushort nameIndex, ushort descriptiorIndex, AttributeInfoInterface[] attributes)
         {
             this.cp = cp;
             this.accessFlags = accessFlags;
@@ -172,7 +170,7 @@ namespace jvmsharp.classfile
 
         public MemberInfo[] readMembers(ref ClassReader reader, ConstantPool cp)
         {
-            UInt16 memberCount = reader.readUint16();
+            ushort memberCount = reader.readUint16();
             MemberInfo[] members = new MemberInfo[memberCount];
             for(int i = 0; i < members.Length; i++)
             {

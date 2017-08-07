@@ -6,17 +6,16 @@ namespace jvmsharp.instructions.constants
 {
     class _LDC
     {
-       public static void _ldc(ref Frame frame, uint index)
+        public static void _ldc(ref Frame frame, uint index)
         {
-            
             OperandStack stack = frame.OperandStack();
             ConstantPool cp = frame.Method().Class().ConstantPool();
-       //     Console.WriteLine("======================"+cp.consts.Length);
+            //     Console.WriteLine("======================"+cp.consts.Length);
             object c = cp.GetConstant(index);
-   //       Console.WriteLine("_LDC\t" + c.GetType().Name);
+            //       Console.WriteLine("_LDC\t" + c.GetType().Name);
             switch (c.GetType().Name)
             {
-                case  "Int32": stack.PushInt((int)c); break;
+                case "Int32": stack.PushInt((int)c); break;
                 case "Single":
                     stack.PushFloat((float)c); break;
                 default:
@@ -51,9 +50,9 @@ namespace jvmsharp.instructions.constants
             var c = cp.GetConstant(Index);
             switch (c.GetType().Name)
             {
-                case "Int64": stack.PushLong((long)c);break;
-                case "Double":stack.PushDouble((double)c);break;
-                default:throw new Exception("java.lang.ClassFormatError");
+                case "Int64": stack.PushLong((long)c); break;
+                case "Double": stack.PushDouble((double)c); break;
+                default: throw new Exception("java.lang.ClassFormatError");
             }
         }
     }

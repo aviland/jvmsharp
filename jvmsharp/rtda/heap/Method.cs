@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace jvmsharp.rtda.heap
+﻿namespace jvmsharp.rtda.heap
 {
     class Method : ClassMember
     {

@@ -19,7 +19,7 @@ namespace jvmsharp.classfile
             return b;
         }
 
-        public UInt16 readUint16()
+        public ushort readUint16()
         {
             byte[] newd = new byte[2];
 
@@ -49,10 +49,10 @@ namespace jvmsharp.classfile
             return BitConverter.ToUInt32(newd, 0);
         }
 
-        public UInt16[] readUint16s()
+        public ushort[] readUint16s()
         {
-            UInt16 n = readUint16();
-            UInt16[] s = new UInt16[n];
+            ushort n = readUint16();
+            ushort[] s = new ushort[n];
             for (int i = 0; i < s.Length; i++)
             {
                 s[i] = readUint16();

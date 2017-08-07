@@ -4,7 +4,7 @@
     {
         public bool IsInstanceOf(ref Class clas)
         {
-            return clas.IsAssignableFrom(ref this.clas);
+            return clas.IsAssignableFrom(this.clas);
         }
 
         /*

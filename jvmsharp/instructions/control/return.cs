@@ -18,7 +18,7 @@ namespace jvmsharp.instructions.control
             var currentFrame = thread.PopFrame();
             var invokerFrame = thread.TopFrame();
             var retVal = currentFrame.OperandStack().PopRef();
-            invokerFrame.OperandStack().PushRef(ref retVal);
+            invokerFrame.OperandStack().PushRef(retVal);
         }
     }
 

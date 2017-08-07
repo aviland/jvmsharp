@@ -4,7 +4,7 @@ namespace jvmsharp.rtda.heap
 {
     struct Slot
     {
-        public Int32 num;//num存储数值
+        public int num;//num存储数值
         public Object refer;//refer存储方法等引用
     }
 
@@ -17,17 +17,22 @@ namespace jvmsharp.rtda.heap
             slots = new Slot[slotCount];
         }
 
-        public Slots(ref Slot[] slots)
+        public Slots(object slots)
         {
-            this.slots = slots;
+            int[] sl = (int[])slots;
+            this.slots = new Slot[sl.Length];
+            for(int i = 0; i < sl.Length; i++)
+            {
+                this.slots[i].num = sl[i];
+            }
         }
 
-        public void SetInt(uint index, Int32 val)
+        public void SetInt(uint index, int val)
         {
             slots[index].num = val;
         }
 
-        public Int32 GetInt(uint index)
+        public int GetInt(uint index)
         {
             return slots[index].num;
         }
@@ -42,17 +47,17 @@ namespace jvmsharp.rtda.heap
             return BitConverter.ToSingle(BitConverter.GetBytes((float)slots[index].num), 0);
         }
 
-        public void SetLong(uint index, Int64 val)
+        public void SetLong(uint index, long val)
         {
-            slots[index].num = (Int32)val;
-            slots[index + 1].num = (Int32)(val >> 32);
+            slots[index].num = (int)val;
+            slots[index + 1].num = (int)(val >> 32);
         }
 
-        public Int64 GetLong(uint index)
+        public long GetLong(uint index)
         {
             uint low = (uint)(slots[index].num);
             uint high = (uint)(slots[index + 1].num);
-            return (Int64)high << 32 | low;
+            return (long)high << 32 | low;
         }
 
         public void SetDouble(uint index, double val)
@@ -62,19 +67,19 @@ namespace jvmsharp.rtda.heap
 
         public double GetDouble(uint index)
         {
-            Int64 u64 = GetLong(index);
+            long u64 = GetLong(index);
             return BitConverter.ToDouble(BitConverter.GetBytes(u64), 0);
         }
 
-        public void SetRef(uint index, ref heap.Object refer)
+        public void SetRef(uint index, Object refer)
         {
             slots[index].refer = refer;
         }
 
-        public heap.Object GetRef(uint index)
+        public Object GetRef(uint index)
         {
-            object refs = slots[index];
-            return refs == null ? null : slots[index].refer;
+            Object refs = (Object)slots[index].refer;
+            return refs == null ? null : refs;
         }
     }
 }

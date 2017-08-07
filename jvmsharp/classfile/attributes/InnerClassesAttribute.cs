@@ -1,15 +1,13 @@
-﻿using System;
-
-namespace jvmsharp.classfile
+﻿namespace jvmsharp.classfile
 {
     struct InnerClassInfo
     {
-        UInt16 innerClassInfoIndex;
-        UInt16 outerClassInfoIndex;
-        UInt16 innerNameIndex;
-        UInt16 innerClassAccessFlags;
+        ushort innerClassInfoIndex;
+        ushort outerClassInfoIndex;
+        ushort innerNameIndex;
+        ushort innerClassAccessFlags;
 
-        public InnerClassInfo(UInt16 innerClassInfoIndex, UInt16 outerClassInfoIndex, UInt16 innerNameIndex, UInt16 innerClassAccessFlags)
+        public InnerClassInfo(ushort innerClassInfoIndex, ushort outerClassInfoIndex, ushort innerNameIndex, ushort innerClassAccessFlags)
         {
             this.innerClassInfoIndex = innerClassInfoIndex;
             this.outerClassInfoIndex = outerClassInfoIndex;
@@ -24,7 +22,7 @@ namespace jvmsharp.classfile
 
         public void readInfo(ref ClassReader reader)
         {
-            UInt16 numberOfClasses = reader.readUint16();
+            ushort numberOfClasses = reader.readUint16();
             classes = new InnerClassInfo[numberOfClasses];
             for (int i = 0; i < classes.Length; i++)
             {

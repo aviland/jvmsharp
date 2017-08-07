@@ -1,5 +1,6 @@
 ﻿using System;
 using jvmsharp.rtda;
+using jvmsharp.rtda.heap;
 
 namespace jvmsharp.instructions.references
 {
@@ -12,16 +13,17 @@ namespace jvmsharp.instructions.references
             var cp = currentClass.ConstantPool();
             var fieldRef = (rtda.heap.ConstantFieldRef)cp.GetConstant(Index);
             var field = fieldRef.ResolvedField();
-
+          
             if (field.IsStatic())
                 throw new Exception("java.lang.IncompatibleClassChangeError");
             if (field.IsFinal())
                 if (currentClass != field.Class() || currentMethod.Name() != "<init>")
                     throw new Exception("java.lang.IllegalAccessError");
 
-            var descriptor = field.Descriptor();
-            var slotId = field.slotId;
-            var stack = frame.OperandStack();
+            string descriptor = field.Descriptor();
+            uint slotId = field.slotId;
+            OperandStack stack = frame.OperandStack();
+            Console.WriteLine("ddddddddddddddddddddd" + descriptor[0]);
             switch (descriptor[0])
             {
                 case 'Z':
@@ -29,8 +31,8 @@ namespace jvmsharp.instructions.references
                 case 'C':
                 case 'S':
                 case 'I':
-                    var val = stack.PopInt();
-                    var refs = stack.PopRef();
+                    int val = stack.PopInt();
+                    rtda.heap.Object refs = stack.PopRef();
                     if (refs == null)
                         throw new Exception("java.lang.NullPointerException");
                    refs.Fields().SetInt(slotId, val);
@@ -62,7 +64,7 @@ namespace jvmsharp.instructions.references
                     var refsr = stack.PopRef();
                     if (refsr == null)
                         throw new Exception("java.lang.NullPointerException");
-                    refsr.Fields().SetRef(slotId, ref valr);
+                    refsr.Fields().SetRef(slotId,  valr);
                     break;
             }
         }

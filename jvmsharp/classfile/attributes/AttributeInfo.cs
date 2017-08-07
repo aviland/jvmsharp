@@ -11,7 +11,7 @@ namespace jvmsharp.classfile
     {
         public AttributeInfoInterface[] readAttributes(ref ClassReader reader, ConstantPool cp)
         {
-            UInt16 attributesCount = reader.readUint16();
+            ushort attributesCount = reader.readUint16();
             AttributeInfoInterface[] attributes = new AttributeInfoInterface[attributesCount];
             for (int i = 0; i < attributesCount; i++)
             {
@@ -22,7 +22,7 @@ namespace jvmsharp.classfile
 
         AttributeInfoInterface readAttribute(ref ClassReader reader, ConstantPool cp)
         {
-            UInt16 attrNameIndex = reader.readUint16();
+            ushort attrNameIndex = reader.readUint16();
             string attrName = cp.getUtf8(attrNameIndex);
             UInt32 attrLen = reader.readUint32();
             AttributeInfoInterface attrInfo = newAttributeInfo(attrName, attrLen, cp);

@@ -1,11 +1,9 @@
-﻿using System;
-
-namespace jvmsharp.classfile
+﻿namespace jvmsharp.classfile
 {
     class ConstantNameAndTypeInfo:ConstantInfo
     {
-        public UInt16 nameIndex;
-        public UInt16 descriptorIndex;
+        public ushort nameIndex;
+        public ushort descriptorIndex;
 
         public override void readInfo(ref ClassReader reader)
         {

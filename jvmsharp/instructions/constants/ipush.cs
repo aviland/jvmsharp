@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace jvmsharp.instructions.constants
+﻿namespace jvmsharp.instructions.constants
 {
     struct BIPUSH:Instruction
     {
-        int val;
+        sbyte val;
         public void FetchOperands(ref BytecodeReader reader)
         {
             val = reader.ReadInt8();
@@ -12,13 +10,13 @@ namespace jvmsharp.instructions.constants
 
         public void Execute(ref rtda.Frame frame)
         {
-            frame.OperandStack().PushInt(val);
+            frame.OperandStack().PushInt((int)val);
         }
     }
 
     struct SIPUSH : Instruction
     {
-        Int16 val;
+        short val;
 
         public void FetchOperands(ref BytecodeReader reader)
         {

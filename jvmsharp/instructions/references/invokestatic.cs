@@ -5,7 +5,7 @@ namespace jvmsharp.instructions.references
 {
     class INVOKE_STATIC : Index16Instruction
     {
-        Method method;
+  //      Method method;
 
         public override void Execute(ref Frame frame)
         {

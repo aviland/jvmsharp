@@ -5,46 +5,47 @@ namespace jvmsharp.rtda
 {
     class LocalVars
     {
-        public Slot[] localVars;
+        public object[] localVars;
 
         public LocalVars(uint maxLocals)
         {
             if (maxLocals > 0)
-                localVars = new Slot[maxLocals];
+                localVars = new object[maxLocals];
             else localVars = null;
         }
 
-        public void SetInt(uint index, Int32 val)
+        public void SetInt(uint index, int val)
         {
-            localVars[index].num = val;
+            localVars[index] = val;
         }
 
-        public Int32 GetInt(uint index)
+        public int GetInt(uint index)
         {
-            return localVars[index].num;
+            return(int)localVars[index];
         }
 
         public void SetFloat(uint index, float val)
         {
-            localVars[index].num = BitConverter.ToInt32(BitConverter.GetBytes(val), 0);
+            localVars[index] = BitConverter.ToInt32(BitConverter.GetBytes(val), 0);
         }
 
         public float GetFloat(uint index)
         {
-            return BitConverter.ToSingle(BitConverter.GetBytes((float)localVars[index].num), 0);
+            return BitConverter.ToSingle(BitConverter.GetBytes((float)localVars[index]), 0);
         }
 
-        public void SetLong(uint index, Int64 val)
+        public void SetLong(uint index, long val)
         {
-            localVars[index].num = (Int32)val;
-            localVars[index + 1].num = (Int32)(val >> 32);
+            localVars[index] = (int)val;
+            localVars[index + 1] = (int)(val >> 32);
         }
 
-        public Int64 GetLong(uint index)
+        public long GetLong(uint index)
         {
-            uint low = (uint)(localVars[index].num);
-            uint high = (uint)(localVars[index + 1].num);
-            return (Int64)high << 32 | low;
+         //   Console.WriteLine(localVars[index].GetType().Name);
+            uint low =Convert.ToUInt32((localVars[index]));
+            uint high = Convert.ToUInt32((localVars[index + 1]));
+            return (long)high << 32 | low;
         }
 
         public void SetDouble(uint index, double val)
@@ -54,19 +55,19 @@ namespace jvmsharp.rtda
 
         public double GetDouble(uint index)
         {
-            Int64 u64 = GetLong(index);
+            long u64 = GetLong(index);
             return BitConverter.ToDouble(BitConverter.GetBytes(u64), 0);
         }
 
         public void SetRef(uint index, heap.Object refer)
         {
-            localVars[index].refer = refer;
+            localVars[index] = refer;
         }
 
         internal heap.Object GetRef(uint index)
         {
             object refs = localVars[index];
-            return refs == null ? null : localVars[index].refer;
+            return refs == null ? null :(heap.Object) localVars[index];
         }
 
         internal heap.Object GetThis()
@@ -74,7 +75,7 @@ namespace jvmsharp.rtda
             return GetRef(0);
         }
 
-        internal void SetSlot(uint index,ref Slot slot)
+        internal void SetSlot(uint index, object slot)
         {
             localVars[index] = slot;
         }

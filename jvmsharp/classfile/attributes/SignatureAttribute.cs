@@ -1,11 +1,9 @@
-﻿using System;
-
-namespace jvmsharp.classfile
+﻿namespace jvmsharp.classfile
 {
     class SignatureAttribute : AttributeInfoInterface
     {
         ConstantPool cp;
-        UInt16 signatureIndex;
+        ushort signatureIndex;
 
         public SignatureAttribute(ConstantPool cp)
         {

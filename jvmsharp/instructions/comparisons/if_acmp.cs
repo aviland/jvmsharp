@@ -7,8 +7,8 @@ namespace jvmsharp.instructions.comparisons
         public override void Execute(ref rtda.Frame frame)
         {
             rtda.OperandStack stack = frame.OperandStack();
-            Object ref2 = stack.PopRef();
-            Object ref1 = stack.PopRef();
+            rtda.heap.Object ref2 = stack.PopRef();
+            rtda.heap.Object ref1 = stack.PopRef();
             if (ref1 == ref2)
                 branch_logic.Branch(ref frame, Offset);
         }
@@ -19,8 +19,8 @@ namespace jvmsharp.instructions.comparisons
         public override void Execute(ref rtda.Frame frame)
         {
             rtda.OperandStack stack = frame.OperandStack();
-            Object ref2 = stack.PopRef();
-            Object ref1 = stack.PopRef();
+            rtda.heap.Object ref2 = stack.PopRef();
+            rtda.heap.Object ref1 = stack.PopRef();
             if (ref1 != ref2)
                 branch_logic.Branch(ref frame, Offset);
         }

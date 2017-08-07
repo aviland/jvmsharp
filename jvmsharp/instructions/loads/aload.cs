@@ -5,7 +5,7 @@
         public static void _aload(ref rtda.Frame frame, uint index)
         {
             rtda.heap.Object val = frame.LocalVars().GetRef(index);
-            frame.OperandStack().PushRef(ref val);
+            frame.OperandStack().PushRef(val);
         }
     }
 

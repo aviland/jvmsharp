@@ -26,17 +26,16 @@ namespace jvmsharp
 
         static void startJVM(Cmd cmd)
         {
-            Classpath cp = new Classpath().Parse(cmd.XjreOption, cmd.cpOption);
-            ClassLoader classLoader = new ClassLoader(ref cp, cmd.verboseClassFlag);
+            Classpath cp = new Classpath().Parse(cmd.XjreOption, cmd.cpOption);//解析class文件
+            ClassLoader classLoader = new ClassLoader(ref cp, cmd.verboseClassFlag);//初始化类加载器
+         //  classLoader.InitBootLoader(cp);
             string className = cmd.classes.Replace('.', '/');
-            Class mainClass = classLoader.LoadClass(className);//big time
-            Method mainMethod = mainClass.GetMainMethod();
-
+            Class mainClass = classLoader.LoadClass(className);//类加载，耗时长
+            Method mainMethod = mainClass.GetMainMethod();//主方法获取
          
             if (mainMethod != null)
-                new interpreter().interpret(ref mainMethod,cmd.verboseInstFlag);//big time
+                new interpreter().interpret(ref mainMethod,cmd.verboseInstFlag);//耗时长
             else Console.WriteLine("Main method not found in class " + cmd.classes);
-
         }
 
      

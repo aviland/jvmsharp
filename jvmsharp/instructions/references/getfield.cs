@@ -22,7 +22,7 @@ namespace jvmsharp.instructions.references
             var descriptor = field.Descriptor();
             var slotId = field.slotId;
             Slots slots = refs.Fields();
-        
+
             switch (descriptor[0])
             {
                 case 'Z':
@@ -44,7 +44,7 @@ namespace jvmsharp.instructions.references
                 case 'L':
                 case '[':
                     rtda.heap.Object rho = slots.GetRef(slotId);
-                    stack.PushRef(ref rho);
+                    stack.PushRef(rho);
                     break;
             }
 

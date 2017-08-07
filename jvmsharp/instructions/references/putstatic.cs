@@ -59,7 +59,7 @@ namespace jvmsharp.instructions.references
                 case 'L':
                 case '[':
                     rtda.heap.Object rho = stack.PopRef();
-                    slots.SetRef(slotId, ref rho);
+                    slots.SetRef(slotId, rho);
                     break;
             }
         }

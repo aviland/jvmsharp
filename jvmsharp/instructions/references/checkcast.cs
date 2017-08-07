@@ -10,7 +10,7 @@ namespace jvmsharp.instructions.references
         {
             var stack = frame.OperandStack();
             var refs = stack.PopRef();
-            stack.PushRef(ref refs);
+            stack.PushRef(refs);
             if (refs == null) return;
             var cp = frame.Method().Class().ConstantPool();
             var classRef = (ConstantClassRef)cp.GetConstant(Index);

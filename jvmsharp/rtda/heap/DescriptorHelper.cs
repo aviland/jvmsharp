@@ -6,37 +6,19 @@ namespace jvmsharp.rtda.heap
     {
         public static string getArrayClassName(string className)
         {
-            char[] ch = className.ToCharArray();
-            if (ch[0] == '[')
-            {
-                // array
-                return "[" + className;
-            }
-            foreach (PrimitiveType pt in PrimitiveTypes.primitiveTypes)
-            {
-                if (pt.Name == className)
-                {
-                    // primitive
-                    return pt.ArrayClassName;
-
-                }
-            }
-            // object
-            return "[L" + className + ";";
+            return "[" + toDescriptor(className);
         }
 
-        public static string getClassName(string descriptor)
+        static string toDescriptor(string className)
         {
-            char[] ch = descriptor.ToCharArray();
-            switch (ch[0])
-            {
-                case '[': // array
-                    return descriptor;
-                case 'L': // object
-                    return ch.Skip(1).Take(descriptor.Length - 1).ToString();
-                default: // primirive
-                    return PrimitiveTypes.getPrimitiveType(descriptor);
-            }
+            if (className[0] == '[')
+                return className;
+            string d = ClassNameHelper.primitiveTypes[className];
+            if (d != null)
+                return d;
+            return 'L' + className + ";";
         }
+
+
     }
 }

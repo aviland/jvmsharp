@@ -1,11 +1,13 @@
-﻿namespace jvmsharp.instructions.constants
+﻿using System;
+
+namespace jvmsharp.instructions.constants
 {
     class ACONST_NULL : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
-            var v = (rtda.heap.Object)null;
-            frame.OperandStack().PushRef(ref v);
+            rtda.heap.Object v = null;
+            frame.OperandStack().PushRef(v);
         }
     }
 

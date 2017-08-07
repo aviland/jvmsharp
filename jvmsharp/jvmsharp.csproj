@@ -80,6 +80,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <OutputPath>bin\Release\</OutputPath>
@@ -129,10 +130,12 @@
     <Compile Include="classfile\attributes\ExceptionsAttribute.cs" />
     <Compile Include="classfile\attributes\LineNumberTableAttribute.cs" />
     <Compile Include="classfile\attributes\MarkerAttribute.cs" />
-    <Compile Include="instructions\base\classInit_logic.cs" />
-    <Compile Include="instructions\base\invoke_logic.cs" />
+    <Compile Include="instructions\base\x_logic.cs" />
     <Compile Include="instructions\constants\ldc.cs" />
     <Compile Include="instructions\control\return.cs" />
+    <Compile Include="instructions\loads\xaload.cs" />
+    <Compile Include="instructions\references\anewarray.cs" />
+    <Compile Include="instructions\references\arraylength.cs" />
     <Compile Include="instructions\references\checkcast.cs" />
     <Compile Include="instructions\references\getfield.cs" />
     <Compile Include="instructions\references\instanceof.cs" />
@@ -141,10 +144,14 @@
     <Compile Include="instructions\references\invokespecial.cs" />
     <Compile Include="instructions\references\invokestatic.cs" />
     <Compile Include="instructions\references\invokevirtual.cs" />
+    <Compile Include="instructions\references\multianewarray.cs" />
     <Compile Include="instructions\references\new.cs" />
+    <Compile Include="instructions\references\newarray.cs" />
     <Compile Include="instructions\references\putfield.cs" />
     <Compile Include="instructions\references\putstatic.cs" />
+    <Compile Include="instructions\stores\xastore.cs" />
     <Compile Include="rtda\heap\ArrayClass.cs" />
+    <Compile Include="rtda\heap\ArrayObject.cs" />
     <Compile Include="rtda\heap\ClassAttributes.cs" />
     <Compile Include="rtda\heap\ClassHierarchy.cs" />
     <Compile Include="rtda\heap\ClassMember.cs" />
@@ -167,7 +174,6 @@
     <Compile Include="classpath\CreateEntry.cs" />
     <Compile Include="classpath\ZipEntry.cs" />
     <Compile Include="Cmd.cs" />
-    <Compile Include="instructions\base\branch_logic.cs" />
     <Compile Include="instructions\base\Instruction.cs" />
     <Compile Include="instructions\base\BytecodeReader.cs" />
     <Compile Include="instructions\comparisons\fcmp.cs" />

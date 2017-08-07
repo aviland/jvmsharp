@@ -1,11 +1,9 @@
-﻿using System;
-
-namespace jvmsharp.classfile
+﻿namespace jvmsharp.classfile
 {
     class SourceFileAttribute : AttributeInfoInterface
     {
         ConstantPool cp;
-        UInt16 sourceFileIndex;
+        ushort sourceFileIndex;
 
         public SourceFileAttribute(ConstantPool cp)
         {

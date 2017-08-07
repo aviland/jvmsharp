@@ -1,11 +1,9 @@
-﻿using System;
-
-namespace jvmsharp.classfile
+﻿namespace jvmsharp.classfile
 {
     class ConstantClassInfo : ConstantInfo
     {
         public ConstantPool cp;
-        public UInt16 nameIndex;
+        public ushort nameIndex;
 
         public ConstantClassInfo(ConstantPool cp)
         {

@@ -11,7 +11,7 @@ namespace jvmsharp.rtda.heap
             return cp;
         }
 
-        public ConstantFieldRef( ref ConstantPool cp,  classfile.ConstantFieldrefInfo refInfo)
+        public ConstantFieldRef(ref ConstantPool cp, classfile.ConstantFieldrefInfo refInfo)
         {
             this.cp = cp;
             classfile.ConstantMemberrefInfo cmi = refInfo;
@@ -28,9 +28,9 @@ namespace jvmsharp.rtda.heap
         public void resolvedFieldRef()
         {
             Class d = cp.clas;
-        
+
             Class c = ResolvedClass();
-           Field f = lookupField(ref c, name, descriptor);
+            Field f = lookupField(ref c, ref name, ref descriptor);
             if (f == null)
                 throw new Exception("java.lang.NoSuchFieldError");
             if (!f.isAccessibleTo(ref d))
@@ -38,21 +38,22 @@ namespace jvmsharp.rtda.heap
             field = f;
         }
 
-        public Field lookupField(ref Class c, string name, string descriptor)
+        public Field lookupField(ref Class c, ref string name, ref string descriptor)
         {
             foreach (Field field in c.fields)
             {
                 if (field.Name() == name && field.Descriptor() == descriptor)
                     return field;
             }
-            for (int i = 0; i < c.interfaces.Length; i++)
-            {
-                Field field = lookupField(ref c.interfaces[i], name, descriptor);
-                if (field != null)
-                    return field;
-            }
+            if (c.interfaces != null && c.interfaces.Length > 0)
+                for (int i = 0; i < c.interfaces.Length; i++)
+                {
+                    Field field = lookupField(ref c.interfaces[i], ref name, ref descriptor);
+                    if (field != null)
+                        return field;
+                }
             if (c.superClass != null)
-                return lookupField(ref c.superClass, name, descriptor);
+                return lookupField(ref c.superClass, ref name, ref descriptor);
             return null;
         }
     }

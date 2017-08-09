@@ -16,7 +16,7 @@ namespace jvmsharp.rtda.heap
         const string jlCloneableClassName = "java/lang/Cloneable";
         const string ioSerializableClassName = "java/io/Serializable";
 
-        //public static ClassLoader bootLoader;
+        public static ClassLoader bootLoader;
         public static Class _jlObjectClass;
         public static Class _jlClassClass;
         public static Class _jlStringClass;
@@ -24,20 +24,41 @@ namespace jvmsharp.rtda.heap
         public static Class _jlCloneableClass;
         public static Class _ioSerializableClass;
 
-        public ClassLoader(ref classpath.Classpath cp, bool verboseFlag)
+        public ClassLoader newClassLoader(ref classpath.Classpath cp, bool verboseFlag)
         {
-            this.cp = cp;
-            classMap = new Dictionary<string, Class>();
-            this.verboseFlag = verboseFlag;
+            ClassLoader loader = new ClassLoader();
+            loader.cp = cp;
+            loader.classMap = new Dictionary<string, Class>();
+            loader.verboseFlag = verboseFlag;
+            loader.loadBasicClasses();
+            loader.loadPrimitiveClasses();
+            return loader;
         }
 
-
-       /* public void InitBootLoader(classpath.Classpath cp)
+        void loadBasicClasses()
         {
-            bootLoader = new ClassLoader(ref cp, verboseFlag);
-            bootLoader._init();
-        }*/
+            var jlClassClass = LoadClass("java/lang/Class");
+            if (classMap.Count > 0)
+                foreach (string s in classMap.Keys)
+                {
+                    if (classMap[s].jClass == null)
+                    {
+                        classMap[s].jClass = jlClassClass.NewObject();
+                        classMap[s].jClass.extra = classMap[s];
+                    }
+                }
+        }
 
+        public void InitBootLoader(classpath.Classpath cp)
+        {
+            bootLoader = new ClassLoader().newClassLoader(ref cp, verboseFlag);
+            bootLoader._init();
+        }
+
+        public Class JLStringClass()
+        {
+            return _jlStringClass;
+        }
         public void _init()
         {
             _jlObjectClass = LoadClass(jlObjectClassName);
@@ -71,24 +92,40 @@ namespace jvmsharp.rtda.heap
         void loadPrimitiveClass(string className)
         {
 
-            Class clas = new Class(className);
-            //class.classLoader = self
-            //     clas.jClass = _jlClassClass.NewObj();
-
-            clas.MarkFullyInitialized();
+            Class clas = new Class();
+            clas.accessFlags = AccessFlags.ACC_PUBLIC;
+            clas.name = className;
+            clas.loader = this;
+            clas.initStarted = true;
+            clas.jClass = this.classMap["java/lang/Class"].NewObject();
+            clas.jClass.extra = clas;
             classMap[className] = clas;
         }
 
+        public Class getClass(string name)
+        {
+            var clas = classMap[name];
+
+            if (clas != null)
+                return clas;
+            throw new Exception("class not loaded! " + name);
+        }
 
         public Class LoadClass(string name)
         {
-            if (name != null && classMap.ContainsKey(name))//若类已加载，则直接查找并返回
+            if (name != null && classMap!=null&& classMap.ContainsKey(name))//若类已加载，则直接查找并返回
                 return classMap[name];
-            if (name[0] == '[')
+            Class clas=null;
+                if (name[0] == '[')
+                    clas = loadArrayClass(name);
+                else clas = loadNonArrayClass(name);//否则加载该类
+            if (classMap != null && classMap.ContainsKey("java/lang/Class"))
             {
-                return loadArrayClass(name);
+                var jlClassClass = classMap["java/lang/Class"];
+                clas.jClass = jlClassClass.NewObject();
+                clas.jClass.extra = clas;
             }
-            else return loadNonArrayClass(name);//否则加载该类
+            return clas;
         }
 
         Class loadArrayClass(string name)
@@ -121,7 +158,11 @@ namespace jvmsharp.rtda.heap
         {
             try
             {
-                Tuple<byte[], classpath.Entry> tbe = cp.ReadClass(name);//从解析的类中读取数据
+            //    Console.WriteLine("-----------------"+cp.bootClasspath.GetType().Name);
+                var v = cp.ReadClass(name);
+         //       Console.WriteLine(v == null);
+                Tuple<byte[], classpath.Entry> tbe = v;//从解析的类中读取数据
+
                 return tbe;
             }
             catch (Exception exp)
@@ -272,7 +313,10 @@ namespace jvmsharp.rtda.heap
                         vars.SetDouble(slotId, vald);
                         break;
                     case "Ljava/lang/String;":
-                        throw new Exception("todo");
+                        var goStr =(string) cp.GetConstant(cpIndex);
+                        var jStr = StringHelper.JString(ref clas.loader, goStr);
+                        vars.SetRef(slotId, jStr);
+                        break;
                 }
             }
         }

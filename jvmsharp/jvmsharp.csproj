@@ -108,7 +108,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="classfile\attributes\AttributeInfo.cs" />
+    <Compile Include="classfile\attributes\AttributeTable.cs" />
     <Compile Include="classfile\attributes\InnerClassesAttribute.cs" />
     <Compile Include="classfile\attributes\LocalVariableTableAttribute.cs" />
     <Compile Include="classfile\attributes\LocalVariableTypeTableAttribute.cs" />
@@ -149,7 +149,16 @@
     <Compile Include="instructions\references\newarray.cs" />
     <Compile Include="instructions\references\putfield.cs" />
     <Compile Include="instructions\references\putstatic.cs" />
+    <Compile Include="instructions\reserved\InvokeNative.cs" />
     <Compile Include="instructions\stores\xastore.cs" />
+    <Compile Include="native\java\lang\Class.cs" />
+    <Compile Include="native\java\lang\Double.cs" />
+    <Compile Include="native\java\lang\Float.cs" />
+    <Compile Include="native\java\lang\Object.cs" />
+    <Compile Include="native\java\lang\System.cs" />
+    <Compile Include="native\Registry.cs" />
+    <Compile Include="options\Options.cs" />
+    <Compile Include="rtda\heap\Array.cs" />
     <Compile Include="rtda\heap\ArrayClass.cs" />
     <Compile Include="rtda\heap\ArrayObject.cs" />
     <Compile Include="rtda\heap\ClassAttributes.cs" />
@@ -245,6 +254,8 @@
     <Compile Include="rtda\OperandStack.cs" />
     <Compile Include="rtda\heap\Slot.cs" />
     <Compile Include="rtda\Stack.cs" />
+    <Compile Include="rtda\StringHelper.cs" />
+    <Compile Include="rtda\StringPool.cs" />
     <Compile Include="rtda\Thread.cs" />
   </ItemGroup>
   <ItemGroup>

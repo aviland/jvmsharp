@@ -14,26 +14,24 @@ namespace jvmsharp.classfile
         
         public ConstantPool() { }
 
-        public ConstantPool(ConstantInfo[] ConstantPools)
+        public ConstantPool(ClassFile cf)
         {
-            constantInfos = ConstantPools;
+            this.cf = cf;
         }
 
-        public ConstantPool read(ref ClassReader reader)
+        public void read(ref ClassReader reader)
         {
             ushort cpCount = reader.readUint16();
-            ConstantPool cp = new ConstantPool();
-            cp.constantInfos = new ConstantInfo[cpCount];
+            this.constantInfos = new ConstantInfo[cpCount];
             for (int i = 1; i < cpCount; i++)
             {
-                cp.constantInfos[i] = ConstantInfo.readConstantInfo(ref reader, ref cp);
-                switch (cp.constantInfos[i].GetType().Name)
+                this.constantInfos[i] = ConstantInfo.readConstantInfo(ref reader, this);
+                switch (this.constantInfos[i].GetType().Name)
                 {
                     case "ConstantLongInfo":
                     case "ConstantDoubleInfo": i++; break;
                 }
             }
-            return cp;
         }
 
         public ConstantInfo[] Infos()

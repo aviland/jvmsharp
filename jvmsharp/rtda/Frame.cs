@@ -9,7 +9,7 @@
         internal int nextPC;
         internal heap.Method method;
 
-        public Frame(Thread thread, ref heap.Method method)
+        public Frame(Thread thread, heap.Method method)
         {
             this.thread = thread;
             this.method = method;
@@ -17,12 +17,12 @@
             operandStack = new OperandStack(method.MaxStack());
         }
 
-        public Frame(Thread thread, uint maxLocals, uint maxStack)
+      /*  public Frame(Thread thread, uint maxLocals, uint maxStack)
         {
             this.thread = thread;
             localVars = new LocalVars(maxLocals);
             operandStack = new OperandStack(maxStack);
-        }
+        }*/
 
         internal int NextPC()
         {

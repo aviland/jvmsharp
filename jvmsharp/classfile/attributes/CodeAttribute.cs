@@ -22,6 +22,11 @@
        private ExceptionTableEntry[] exceptionTable;
        private AttributeInfoInterface[] attributes;
 
+        public CodeAttribute(ConstantPool cp)
+        {
+            this.cp = cp;
+        }
+
         public byte[] Code() {  return code; }
 
         public ushort MaxStack()
@@ -33,10 +38,7 @@
         {
             return maxLocals;
         }
-        public void SetConstantPool(ConstantPool cp)
-        {
-            this.cp = cp;
-        }
+
         public void readInfo(ref ClassReader reader)
         {
             maxStack = reader.readUint16();
@@ -44,7 +46,7 @@
             uint codeLength = reader.readUint32();
             code = reader.readBytes(codeLength);
             exceptionTable = readExceptionTable(ref reader);
-            attributes = new AttributeInfo().readAttributes(ref reader, cp);
+            attributes = new AttributeTable().readAttributes(ref reader, cp);
         }
 
         ExceptionTableEntry[] ExceptionTable() { return exceptionTable; }

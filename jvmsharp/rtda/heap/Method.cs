@@ -1,4 +1,6 @@
-﻿namespace jvmsharp.rtda.heap
+﻿using System.Collections.Generic;
+
+namespace jvmsharp.rtda.heap
 {
     class Method : ClassMember
     {
@@ -35,13 +37,51 @@
             Method[] methods = new Method[cfMethods.Length];
             for (int i = 0; i < cfMethods.Length; i++)
             {
-                methods[i] = new Method();
-                methods[i].clas = clas;
-                methods[i].copyMemberInfo(ref cfMethods[i]);
-                methods[i].copyAttributes(ref cfMethods[i]);
-                methods[i].calcArgSlotCount();//当前方法参数计数计算
+                methods[i] = newMethod(ref clas, ref cfMethods[i]);
             }
             return methods;
+        }
+        public Method newMethod(ref Class clas, ref classfile.MemberInfo cfMethod)
+        {
+            Method method = new Method();
+            method.clas = clas;
+            method.copyMemberInfo(ref cfMethod);
+            method.copyAttributes(ref cfMethod);
+            var md = new MethodDescriptorParser().parseMethodDescriptor(method.descriptor);
+            method.calcArgSlotCount(md.parameterTypes);
+            if (method.IsNative())
+                method.injectCodeAttribute(md.returnType);
+            return method;
+        }
+
+        void injectCodeAttribute(string returnType)
+        {
+            this.maxStack = 4;
+            maxLocals = argSlotCount;
+            switch (returnType[0])
+            {
+                case 'V': code =new byte[]{0xfe,0xb1 };break;
+                case 'D': code = new byte[] { 0xfe, 0xaf }; break;
+                case 'F': code = new byte[] { 0xfe, 0xae }; break;
+                case 'J': code = new byte[] { 0xfe, 0xad }; break;
+                case 'L':
+                case '[':
+                    code = new byte[] { 0xfe, 0xb0 }; break;
+                default: code = new byte[] { 0xfe, 0xac }; break;
+            }
+        }
+
+        void calcArgSlotCount(List<string> paramTypes)
+        {
+            MethodDescriptor parsedDescriptor = new MethodDescriptorParser().parseMethodDescriptor(descriptor);
+            foreach (string paramType in paramTypes)
+            {
+                argSlotCount++;//一般参数占1个
+                if (paramType == "J" || paramType == "D")
+                    argSlotCount++;//long、double类型参数占2个
+            }
+            if (!IsStatic())
+                argSlotCount++;//实例方法的参数列表前多一个this
         }
 
         void calcArgSlotCount()
@@ -55,7 +95,6 @@
             }
             if (!IsStatic())
                 argSlotCount++;//实例方法的参数列表前多一个this
-       
         }
 
         public void copyAttributes(ref classfile.MemberInfo cfMethod)

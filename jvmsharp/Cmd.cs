@@ -16,8 +16,8 @@ namespace jvmsharp
 
         public Cmd parseCmd(string[] args)
         {
-            this.args = args;
             Cmd cmdStruct = new Cmd();
+            cmdStruct.args = args;
             cmdStruct.helpFlag = false;
             cmdStruct.versionFlag = false;
             cmdStruct.verboseClassFlag = false;
@@ -26,7 +26,6 @@ namespace jvmsharp
             cmdStruct.classes = null;
             cmdStruct.XjreOption = null;
             cmdStruct.XssOption = null;
-            cmdStruct.args = null;
             if (args.Length > 0)
             {
                 for (int i = 0; i < args.Length; i++)

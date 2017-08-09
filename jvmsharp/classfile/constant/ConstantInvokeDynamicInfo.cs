@@ -26,6 +26,7 @@ namespace jvmsharp.classfile
 
         public Tuple<ushort, ushort[]> BootstrapMethodInfo()
         {
+        //    Console.WriteLine(cp.cf == null);
             BootstrapMethodsAttribute bmAttr = cp.cf.BootstrapMethodsAttribute();
             BootstrapMethod bm = bmAttr.bootstrapMethods[bootstrapMethodAttrIndex];
             return Tuple.Create<UInt16, UInt16[]>(bm.GetBootstrapMethodRef(), bm.GetBootstrapArguments());

@@ -7,7 +7,7 @@ using jvmsharp.instructions.loads;
 using jvmsharp.instructions.conversions;
 using jvmsharp.instructions.stores;
 using jvmsharp.instructions.stack;
-
+using jvmsharp.instructions.reserved;
 #region  jvmsharp.instructions.math
 using iadd = jvmsharp.instructions.math.IADD;
 using ladd = jvmsharp.instructions.math.LADD;
@@ -300,6 +300,7 @@ namespace jvmsharp.instructions
                 case 0xc8: return new GOTO_W();
                 case 0xc9:
                 #endregion
+                case 0xfe:return new INVOKE_NATIVE();
                 default: throw new Exception("Unsupported opcode: 0x" + Convert.ToString(opcode, 16) + "!");
             }
         }

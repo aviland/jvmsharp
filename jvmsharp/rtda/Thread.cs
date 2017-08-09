@@ -1,15 +1,17 @@
-﻿namespace jvmsharp.rtda
+﻿using System.Collections.Generic;
+
+namespace jvmsharp.rtda
 {
     class Thread
     {
         private int pc;//程序计数器
-        private rtda.Stack stack;//虚拟机栈
+        public Stack<Frame> stack;//虚拟机栈
 
         public Thread() { }
 
         public Thread(int deep)
         {
-            stack = new rtda.Stack((uint)deep);
+            stack = new Stack<Frame>(deep);
         }
 
         public Thread newThread()
@@ -19,7 +21,7 @@
 
         internal bool isStackEmpty()
         {
-            return this.stack.isStackEmpty();
+            return this.stack.Count==0;
         }
 
 
@@ -32,32 +34,32 @@
 
         public void PushFrame(ref Frame frame)
         {
-            stack.push(ref frame);
+            stack.Push(frame);
         }
 
         public Frame PopFrame()
         {
-            return stack.pop();
+            return stack.Pop();
         }
 
         public Frame CurrentFrame()
         {
-            return stack.top();
+            return stack.Peek();
         }
 
-        public Frame newFrame(uint maxLocals, uint maxStack)
+     /*   public Frame newFrame(uint maxLocals, uint maxStack)
         {
             return new Frame(this, maxLocals, maxStack);
-        }
+        }*/
 
         public Frame newFrame(ref heap.Method method)
         {
-            return new Frame(this, ref method);
+            return new Frame(this,  method);
         }
 
         public Frame TopFrame()
         {
-            return stack.top();
+            return stack.Peek();
         }
 
         public int PC()

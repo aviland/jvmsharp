@@ -24,7 +24,7 @@ namespace jvmsharp.rtda.heap
             for (int i = 1; i < cpCount; i++)
             {
                 cf.ConstantInfo cpInfo = cfCp[i];
-            //    Console.WriteLine(cpInfo.GetType().Name);
+        //    Console.WriteLine("ConstantInfo:"+cpInfo.GetType().Name);
                 switch (cpInfo.GetType().Name)
                 {
                     case "ConstantIntegerInfo":

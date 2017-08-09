@@ -26,19 +26,26 @@ namespace jvmsharp
 
         static void startJVM(Cmd cmd)
         {
+            native.java.lang.Class.init();
+            native.java.lang.Object.init();
+            native.java.lang.System.init();
+            native.java.lang.Float.init();
+            native.java.lang.Double.init();
             Classpath cp = new Classpath().Parse(cmd.XjreOption, cmd.cpOption);//解析class文件
-            ClassLoader classLoader = new ClassLoader(ref cp, cmd.verboseClassFlag);//初始化类加载器
-         //  classLoader.InitBootLoader(cp);
+            ClassLoader classLoader = new ClassLoader().newClassLoader(ref cp, cmd.verboseClassFlag);//初始化类加载器
+                                                                                                     // classLoader.InitBootLoader(cp);
             string className = cmd.classes.Replace('.', '/');
             Class mainClass = classLoader.LoadClass(className);//类加载，耗时长
+
+            //    classLoader.InitBootLoader(cp);
             Method mainMethod = mainClass.GetMainMethod();//主方法获取
-         
+
             if (mainMethod != null)
-                new interpreter().interpret(ref mainMethod,cmd.verboseInstFlag);//耗时长
+                new interpreter().interpret(ref mainMethod, cmd.verboseInstFlag, cmd.args);//耗时长
             else Console.WriteLine("Main method not found in class " + cmd.classes);
         }
 
-     
+
 
         //以下是注释代码
         #region ch05

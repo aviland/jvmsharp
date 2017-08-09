@@ -10,7 +10,7 @@
 
         public void Execute(ref rtda.Frame frame)
         {
-            frame.OperandStack().PushInt((int)val);
+            frame.OperandStack().PushInt(val);
         }
     }
 

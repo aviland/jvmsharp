@@ -1,10 +1,17 @@
-﻿namespace jvmsharp.rtda.heap
+﻿using System;
+
+namespace jvmsharp.rtda.heap
 {
     partial class Object
     {
         public bool IsInstanceOf(ref Class clas)
         {
             return clas.IsAssignableFrom(this.clas);
+        }
+
+        internal Class Class()
+        {
+            return clas;
         }
 
         /*

@@ -52,21 +52,21 @@ namespace jvmsharp.instructions
             Thread thread = invokerFrame.Thread();//获取当前帧所在的线程
             Frame newFrame = thread.newFrame(ref method);//传入method，创建新栈帧
             thread.PushFrame(ref newFrame);
-            int argSlotslot = (int)method.ArgSlotCount();//因为uint大小限制，所以需要转换为int
-           
+
+    /*        if (method.IsNative())
+                if (method.Name() == "registerNatives")
+                    thread.PopFrame();
+                else throw new Exception("native method: " + method.Class().name + "." + method.Name() + method.Descriptor());
+                */
+            int argSlotslot = Convert.ToInt32(method.ArgSlotCount());//因为uint大小限制，所以需要转换为int
             if (argSlotslot > 0)
             {
                 for (int i = argSlotslot - 1; i >= 0; i--)
                 {
                     object slot = invokerFrame.OperandStack().PopSlot();
-                    newFrame.LocalVars().SetSlot((uint)i, slot);
+                    newFrame.localVars.SetSlot(Convert.ToUInt32(i), slot);
                 }
             }
-
-            if (method.IsNative())
-                if (method.Name() == "registerNatives")
-                    thread.PopFrame();
-                else throw new Exception("native method: "+method.Class().name+"."+method.Name()+method.Descriptor());
         }
     }
 }

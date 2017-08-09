@@ -23,10 +23,21 @@ namespace jvmsharp.rtda
         //   Console.WriteLine("PushInt " + val);
         }
 
+        public void PushBoolean(bool val)
+        {
+            if (val) PushInt(1);
+            else PushInt(0);
+        }
+
+        public bool PopBoolean()
+        {
+            return PopInt() == 1;
+        }
+
         public int PopInt()
         {
             size--;
-      //      Console.WriteLine(size + "PopInt " + slots.Length);
+      //     Console.WriteLine( "PopInt? " + slots[size].GetType().Name);
             return (int)slots[size]; 
         }
 
@@ -48,7 +59,8 @@ namespace jvmsharp.rtda
 
         public void PushLong(long val)
         {
-            slots[size] = val;
+            slots[size] = (int)val;
+            slots[size + 1] = (int)(val >> 32);
             size += 2;
    //         Console.WriteLine( "PushLong " +val);
         }
@@ -56,26 +68,22 @@ namespace jvmsharp.rtda
         public long PopLong()
         {
             size -= 2;
-            var top = slots[size];
-
-            slots[size] = null;
-            return (long)top;
+     //       Console.WriteLine(slots[size].GetType().Name);
+            uint low = (uint)((int)slots[size]);
+            uint high =(uint)((int)slots[size + 1]);
+            return (long)high << 32 | low;
         }
 
         public void PushDouble(double val)
         {
-            slots[size] = val;
-            size += 2;
-         //   Console.WriteLine( "PushDouble " + val);
+            PushLong( BitConverter.ToInt64(BitConverter.GetBytes(val), 0));
+            //   Console.WriteLine( "PushDouble " + val);
         }
 
         public double PopDouble()
         {
-            size -= 2;
-            var top = slots[size];
-            slots[size] = null;
-     //       Console.WriteLine(size + "PushDouble " + slots.Length);
-            return (float)top;
+            long u64 = PopLong();
+            return BitConverter.ToDouble(BitConverter.GetBytes(u64), 0);
         }
 
         public void PushRef( heap.Object refer)

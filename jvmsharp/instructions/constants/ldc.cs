@@ -9,15 +9,23 @@ namespace jvmsharp.instructions.constants
         public static void _ldc(ref Frame frame, uint index)
         {
             OperandStack stack = frame.OperandStack();
-            ConstantPool cp = frame.Method().Class().ConstantPool();
-            //     Console.WriteLine("======================"+cp.consts.Length);
-            object c = cp.GetConstant(index);
-            //       Console.WriteLine("_LDC\t" + c.GetType().Name);
+            Class clas = frame.Method().Class();
+            object c = clas.ConstantPool().GetConstant(index);
+     //      Console.WriteLine("_LDC\t" + c.GetType().Name);
             switch (c.GetType().Name)
             {
                 case "Int32": stack.PushInt((int)c); break;
                 case "Single":
                     stack.PushFloat((float)c); break;
+                case "String":
+                    var internedStr = StringHelper.JString(ref clas.loader, (string)c);
+                    stack.PushRef(internedStr);
+                    break;
+                case "ConstantClassRef":
+                    ConstantClassRef classRef = (ConstantClassRef)c;
+                    rtda.heap.Object classObj = classRef.ResolvedClass().jClass;
+                    stack.PushRef(classObj);
+                    break;
                 default:
                     // todo
                     // ref to MethodType or MethodHandle
@@ -48,6 +56,7 @@ namespace jvmsharp.instructions.constants
             var stack = frame.OperandStack();
             var cp = frame.Method().Class().ConstantPool();
             var c = cp.GetConstant(Index);
+        //    Console.WriteLine("_LDC\t" + c.GetType().Name);
             switch (c.GetType().Name)
             {
                 case "Int64": stack.PushLong((long)c); break;

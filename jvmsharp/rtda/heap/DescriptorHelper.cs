@@ -13,12 +13,12 @@ namespace jvmsharp.rtda.heap
         {
             if (className[0] == '[')
                 return className;
-            string d = ClassNameHelper.primitiveTypes[className];
+            string d = null;
+            if (ClassNameHelper.primitiveTypes.ContainsKey(className))
+                d = ClassNameHelper.primitiveTypes[className];
             if (d != null)
                 return d;
             return 'L' + className + ";";
         }
-
-
     }
 }

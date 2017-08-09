@@ -22,11 +22,12 @@ namespace jvmsharp.rtda.heap
 
         public bool isSubInterfaceOf(Class iface)
         {
-            foreach (Class superInterface in interfaces)
-            {
-                if (superInterface == iface || superInterface.isSubInterfaceOf(iface))
-                    return true;
-            }
+            if (interfaces != null && interfaces.Length > 0)
+                foreach (Class superInterface in interfaces)
+                {
+                    if (superInterface == iface || superInterface.isSubInterfaceOf(iface))
+                        return true;
+                }
             return false;
         }
 

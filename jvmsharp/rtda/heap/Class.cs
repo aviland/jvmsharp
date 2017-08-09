@@ -14,10 +14,10 @@
         internal bool initStarted;
         public Field[] fields;
         public Method[] methods;
-    //    public uint instanceFieldCount;
-//public uint staticFieldCount;
-     //   public object[] staticFieldSlots;
-   //     public Method[] vtable;// virtual method table
+        //    public uint instanceFieldCount;
+        //public uint staticFieldCount;
+        //   public object[] staticFieldSlots;
+        //     public Method[] vtable;// virtual method table
         public Object jClass;  // java.lang.Class instance
         public Class superClass;
         public Class[] interfaces;
@@ -38,22 +38,31 @@
         {
             initStarted = true;
         }
-
+        internal classpath.Entry LoadedFrom()
+        {
+            return loadedFrom;
+        }
         public Method GetClinitMethod()
         {
             return GetStaticMethod("<clinit>", "()V");
         }
 
-        Method GetStaticMethod(string name,  string descriptor)  {
+     internal   Method GetStaticMethod(string name, string descriptor)
+        {
             return getMethod(name, descriptor, true);
-}
+        }
 
-    public ConstantPool ConstantPool()
+        public ConstantPool ConstantPool()
         {
             return constantPool;
         }
 
         public Class() { }
+
+        public string JavaName()
+        {
+            return name.Replace('/', '.');
+        }
 
         public Class(string name)
         {
@@ -117,6 +126,12 @@
                   else
                       return Object.newObj(this, null, null);
               }*/
+
+        public Field GetInstanceField(string name, string descriptor)
+        {
+            return getField(name, descriptor, false);
+        }
+
         public bool isJlObject()
         {
             return this == ClassLoader._jlObjectClass;
@@ -165,5 +180,19 @@
             // todo
             return null;
         }
+
+        public Field getField(string name, string descriptor, bool isStatic)
+        {
+            for (var k = this; k != null; k = k.superClass)
+            {
+                foreach (Field field in fields)
+                {
+                    if (field.IsStatic() == isStatic && field.Name() == name && field.Descriptor() == descriptor)
+                        return field;
+                }
+            }
+            return null;
+        }
+
     }
 }

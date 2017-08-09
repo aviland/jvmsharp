@@ -1,6 +1,5 @@
 ﻿using System;
 using jvmsharp.rtda;
-using jvmsharp.rtda.heap;
 
 namespace jvmsharp.instructions.references
 {
@@ -23,7 +22,7 @@ namespace jvmsharp.instructions.references
             string descriptor = field.Descriptor();
             uint slotId = field.slotId;
             OperandStack stack = frame.OperandStack();
-            Console.WriteLine("ddddddddddddddddddddd" + descriptor[0]);
+       //     Console.WriteLine("ddddddddddddddddddddd" + descriptor[0]);
             switch (descriptor[0])
             {
                 case 'Z':

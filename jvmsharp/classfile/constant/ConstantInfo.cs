@@ -21,7 +21,7 @@ namespace jvmsharp.classfile
 
         public abstract void readInfo(ref ClassReader reader);
 
-        public static ConstantInfo readConstantInfo(ref ClassReader reader, ref ConstantPool cp)
+        public static ConstantInfo readConstantInfo(ref ClassReader reader, ConstantPool cp)
         {
             byte tag = reader.readUint8();
             ConstantInfo c = newConstantInfo(tag, ref cp);

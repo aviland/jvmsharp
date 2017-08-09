@@ -46,11 +46,10 @@ namespace jvmsharp.rtda.heap
 
         internal int ArrayLength()
         {
-             //     Console.WriteLine("++++++++++++++"+data.GetType().Name);
             switch (data.GetType().Name)
             {
                 case "Byte[]": return ((byte[])data).Length;
-                case "Int16[]": return ((Int16[])data).Length;
+                case "Int16[]": return ((short[])data).Length;
                 case "Int32[]": return ((Int32[])data).Length;
                 case "Int64[]": return ((Int64[])data).Length;
                 case "UInt16[]": return ((UInt16[])data).Length;

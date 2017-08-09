@@ -18,7 +18,6 @@ namespace jvmsharp.instructions.references
                 throw new Exception("java.lang.NoSuchMethodError");
             if (resolvedMethod.IsStatic())
                 throw new System.Exception("java.lang.IncompatibleClassChangeError");
-        //    Console.WriteLine("++++++++++++++++++++++++"+resolvedMethod.ArgSlotCount());
             rtda.heap.Object refs = frame.OperandStack().GetRefFromTop(resolvedMethod.ArgSlotCount()-1);
             if (refs == null)
                 throw new Exception("java.lang.NullPointerException");

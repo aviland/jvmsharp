@@ -1,11 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace jvmsharp.rtda.heap
 {
-    struct Slot
+    class Slot
     {
         public int num;//num存储数值
-        public Object refer;//refer存储方法等引用
+        public object refer;//refer存储方法等引用
+
+        public Slot()
+        {
+            num = 0;
+            refer = null;
+        }
     }
 
     class Slots
@@ -14,17 +21,19 @@ namespace jvmsharp.rtda.heap
 
         public Slots(uint slotCount)
         {
-            slots = new Slot[slotCount];
+            List<Slot> ls = new List<Slot>();
+            int i = 0;
+            while (i < slotCount)
+            {
+                ls.Add(new Slot());
+                i++;
+            }
+            slots = ls.ToArray();
         }
 
         public Slots(object slots)
         {
-            int[] sl = (int[])slots;
-            this.slots = new Slot[sl.Length];
-            for(int i = 0; i < sl.Length; i++)
-            {
-                this.slots[i].num = sl[i];
-            }
+            this.slots = ((Slots)slots).slots;
         }
 
         public void SetInt(uint index, int val)
@@ -71,15 +80,14 @@ namespace jvmsharp.rtda.heap
             return BitConverter.ToDouble(BitConverter.GetBytes(u64), 0);
         }
 
-        public void SetRef(uint index, Object refer)
+        public void SetRef(uint index, rtda.heap.Object refer)
         {
             slots[index].refer = refer;
         }
 
-        public Object GetRef(uint index)
+        public rtda.heap.Object GetRef(uint index)
         {
-            Object refs = (Object)slots[index].refer;
-            return refs == null ? null : refs;
+            return (rtda.heap.Object)slots[index].refer;
         }
     }
 }

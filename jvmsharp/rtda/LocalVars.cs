@@ -26,12 +26,12 @@ namespace jvmsharp.rtda
 
         public void SetFloat(uint index, float val)
         {
-            localVars[index] = BitConverter.ToInt32(BitConverter.GetBytes(val), 0);
+            localVars[index] = val;
         }
 
         public float GetFloat(uint index)
         {
-            return BitConverter.ToSingle(BitConverter.GetBytes((float)localVars[index]), 0);
+            return Convert.ToSingle(localVars[index]);
         }
 
         public void SetLong(uint index, long val)

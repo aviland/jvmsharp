@@ -16,11 +16,11 @@ namespace jvmsharp.instructions.references
         public void Execute(ref Frame frame)
         {
             ConstantPool cp = frame.Method().Class().ConstantPool();
-            ConstantClassRef classRef = (ConstantClassRef)cp.GetConstant((uint)index);
+            ConstantClassRef classRef = (ConstantClassRef)cp.GetConstant(index);
             Class arrClass = classRef.ResolvedClass();
 
             OperandStack stack = frame.OperandStack();
-            var counts = popAndCheckCounts(ref stack, (int)dimensions);
+            var counts = popAndCheckCounts(ref stack, dimensions);
             rtda.heap.Object arr = newMultiDimensionalArray(counts, arrClass);
             stack.PushRef(arr);
         }

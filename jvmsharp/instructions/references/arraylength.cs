@@ -7,7 +7,7 @@ using jvmsharp.rtda;
 
 namespace jvmsharp.instructions.references
 {
-    class ARRAY_LENGTH : NoOperandsInstruction
+ unsafe   class ARRAY_LENGTH : NoOperandsInstruction
     {
         public override void Execute(ref Frame frame)
         {

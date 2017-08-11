@@ -1,19 +1,20 @@
 ﻿using System;
 using jvmsharp.rtda;
+using jvmsharp.rtda.heap;
 
 namespace jvmsharp.instructions.references
 {
-    class INVOKE_VIRTUAL : Index16Instruction
+    unsafe class INVOKE_VIRTUAL : Index16Instruction
     {
         public override void Execute(ref Frame frame)
         {
-            var currentClass = frame.Method().Class();
-            var cp = currentClass.ConstantPool();
-            var methodRef = (rtda.heap.ConstantMethodRef)cp.GetConstant(Index);
-            var resolvedMethod = methodRef.ResolvedMethod();
+            Class currentClass = frame.method.Class();
+            ConstantPool cp = currentClass.constantPool;
+            ConstantMethodRef methodRef = (ConstantMethodRef)cp.GetConstant(Index);
+            Method resolvedMethod = methodRef.ResolvedMethod();
             if (resolvedMethod.IsStatic())
                 throw new Exception("java.lang.IncompatibleClassChangeError");
-            var refs = frame.OperandStack().GetRefFromTop(resolvedMethod.ArgSlotCount() - 1);
+            rtda.heap.Object refs = frame.OperandStack().GetRefFromTop(resolvedMethod.ArgSlotCount() - 1);
             if (refs == null)
             {
            //     Console.WriteLine("*************************"+methodRef.Name());
@@ -40,7 +41,7 @@ namespace jvmsharp.instructions.references
 
         void println(ref OperandStack stack, string descriptor)
         {
-           // Console.WriteLine("_println:" + descriptor);
+      //     Console.WriteLine("_println:" + descriptor);
             switch (descriptor)
             {
                 case "(Z)V": Console.WriteLine(stack.PopInt() != 0); break;
@@ -54,7 +55,7 @@ namespace jvmsharp.instructions.references
                 case "(Ljava/lang/String;)V":
                     var jStr = stack.PopRef();
                     var goStr = StringPool.GoString(ref jStr);
-                    Console.WriteLine(goStr);
+              //      Console.WriteLine(goStr);
                     break;
                 default: throw new Exception("println:" + descriptor);
             }

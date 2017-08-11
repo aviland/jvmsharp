@@ -1,6 +1,6 @@
 ﻿namespace jvmsharp.instructions.stores
 {
-    class _ISTORE
+    unsafe class _ISTORE
     {
         public static void _istore(ref rtda.Frame frame, uint index)
         {

@@ -1,6 +1,6 @@
 ﻿namespace jvmsharp.instructions.math
 {
-    class IMUL : NoOperandsInstruction
+    unsafe class IMUL : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
@@ -12,7 +12,7 @@
         }
     }
 
-    class LMUL : NoOperandsInstruction
+    unsafe class LMUL : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
@@ -24,7 +24,7 @@
         }
     }
 
-    class FMUL : NoOperandsInstruction
+    unsafe class FMUL : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
@@ -36,7 +36,7 @@
         }
     }
 
-    class DMUL : NoOperandsInstruction
+    unsafe class DMUL : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {

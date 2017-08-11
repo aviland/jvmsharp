@@ -41,11 +41,11 @@
 
      abstract class Index16Instruction : Instruction
     {
-        protected ushort Index;
+        protected static ushort Index;
 
         void Instruction.FetchOperands(ref BytecodeReader reader)
         {
-            Index = reader.ReadUint16();
+            Index16Instruction.Index = reader.ReadUint16();
         }
 
        public  abstract void Execute(ref rtda.Frame frame);

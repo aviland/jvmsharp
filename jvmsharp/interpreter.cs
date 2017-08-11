@@ -6,19 +6,19 @@ namespace jvmsharp
 {
     class interpreter
     {
-        public void interpret(ref Method method, bool logInst,string[] args)
+    unsafe    public void interpret(ref Method method, bool logInst,string[] args)
         {
             Thread thread = new Thread().newThread();
             Frame frame = thread.newFrame(ref method);
             try
             {
-                thread.PushFrame(ref frame);
+                Thread.PushFrame(ref frame);
                 var jArgs = createArgsArray(ref method.Class().loader, args);
                 frame.LocalVars().SetRef(0, jArgs);
-                //     long t1 = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
+                 long t1 = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
                 loop(ref thread, logInst);
-                //  long t2 = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
-                //   Console.WriteLine("interpret time: " + (t2 - t1) + " ms");
+                  long t2 = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
+                 Console.WriteLine("interpret time: " + (t2 - t1) + " ms");
             }
             catch (Exception e)
             {
@@ -35,9 +35,7 @@ namespace jvmsharp
           
             var jArgs = argsArr.Refs();
             for (int i = 0; i < args.Length; i++)
-            {
-                jArgs[i] = StringHelper.JString(ref loader, args[i]);
-            }
+                jArgs[i] = StringPool.JString(ref loader, args[i]);
             return argsArr;
         }
         /*   public void interpret(ref Method method)
@@ -107,7 +105,7 @@ namespace jvmsharp
                 reader.Reset(frame.method.code, pc);
                 byte opcode = reader.ReadUint8();
                 instructions.Instruction inst = new instructions.factory().NewInstruction(opcode);
-            //     Console.WriteLine(inst.GetType().Name);
+//       Console.WriteLine(inst.GetType().Name);
                 inst.FetchOperands(ref reader);
                 frame.SetNextPC(reader.GetPC());
 
@@ -115,14 +113,14 @@ namespace jvmsharp
                     logInstruction(ref frame, ref inst);
 
                 inst.Execute(ref frame);
-     /*        Console.Write("LocalVars:[");
-                if(frame.LocalVars().localVars!=null)
-                foreach (object s in frame.LocalVars().localVars)
-                    Console.Write(s + " ");
+         /*   Console.Write("LocalVars:[");
+                if(frame.LocalVars().slots!=null)
+                foreach (Slot s in frame.LocalVars().slots)
+                    Console.Write(s.num + " ");
                 Console.Write("]\nOperandStack:[");
                 if (frame.OperandStack().slots != null)
-                    foreach (object s in frame.OperandStack().slots)
-                    Console.Write(s + " ");
+                    foreach (Slot s in frame.OperandStack().slots)
+                    Console.Write(s.num + " ");
                 Console.WriteLine("]");*/
                 if (thread.isStackEmpty())
                     break;
@@ -142,7 +140,7 @@ namespace jvmsharp
 
         void logInstruction(ref Frame frame, ref instructions.Instruction inst)
         {
-            var method = frame.Method();
+            var method = frame.method;
             string className = method.Class().name;
             string methodName = method.Name();
             int pc = frame.Thread().PC();

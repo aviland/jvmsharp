@@ -23,29 +23,89 @@ namespace jvmsharp
             }
             else startJVM(cmdStruct);
         }
+        
+        /*   static void startJVM(Cmd cmdStruct)
+              {
+                  rtda.Frame frame = new rtda.Frame(100, 100);
+                  rtda.LocalVars localVars = frame.LocalVars();
+                  rtda.OperandStack operandStack = frame.OperandStack();
+                  testLocalvars(ref localVars);
+                  testOperandStack(ref operandStack);
+              }
+           unsafe    static void testLocalvars(ref rtda.LocalVars vars)
+              {
+                  int i = 100, ii = -100 ;
+                  long l = 299887789;
+                  long ll = -299887789;
+                  vars.SetInt(0, &i);
+                  vars.SetInt(1,&ii);
+                  vars.SetLong(2, &l);
+                  vars.SetLong(4, &ll);
+                  float f = 3.1415926f;
+                  double d = 2.71822432523d;
+                  vars.SetFloat(6, &f);
+                  vars.SetDouble(7, &d);
+                  vars.SetRef(9, null);
+                  Console.WriteLine(*vars.GetInt(0));
+                  Console.WriteLine(*vars.GetInt(1));
+                  Console.WriteLine(*vars.GetLong(2));
+                  Console.WriteLine(*vars.GetLong(4));
+                  Console.WriteLine(*vars.GetFloat(6));
+                  Console.WriteLine(*vars.GetDouble(7));
+                  Console.WriteLine(vars.GetRef(9));
+              }
+
+          unsafe    static void testOperandStack(ref rtda.OperandStack ops)
+              {
+                  int i = 100, ii = -100;
+                  long l = 299887789;
+                  long ll = -299887789;
+                  ops.PushInt(&i);
+                  ops.PushInt(&ii);
+                  ops.PushLong(&l);
+                  ops.PushLong (& ll);
+                  float f = 3.1415926f;
+                  double d = 2.71822432523d;
+                  ops.PushFloat(&f);
+                  ops.PushDouble(&d);
+                  ops.PushRef(null);
+                  Console.WriteLine(ops.PopRef());
+                  Console.WriteLine(*ops.PopDouble());
+                  Console.WriteLine(*ops.PopFloat());
+                  Console.WriteLine(*ops.PopLong());
+                  Console.WriteLine(*ops.PopLong());
+                  Console.WriteLine(*ops.PopInt());
+                  Console.WriteLine(*ops.PopInt());
+              }*/
 
         static void startJVM(Cmd cmd)
-        {
-            native.java.lang.Class.init();
-            native.java.lang.Object.init();
-            native.java.lang.System.init();
-            native.java.lang.Float.init();
-            native.java.lang.Double.init();
-            Classpath cp = new Classpath().Parse(cmd.XjreOption, cmd.cpOption);//解析class文件
-            ClassLoader classLoader = new ClassLoader().newClassLoader(ref cp, cmd.verboseClassFlag);//初始化类加载器
-                                                                                                     // classLoader.InitBootLoader(cp);
-            string className = cmd.classes.Replace('.', '/');
-            Class mainClass = classLoader.LoadClass(className);//类加载，耗时长
+           {
+               RegistNative();//注册本地方法
+               Classpath cp = new Classpath().Parse(cmd.XjreOption, cmd.cpOption);//解析class文件
+               ClassLoader classLoader = new ClassLoader().newClassLoader(ref cp, cmd.verboseClassFlag);//初始化类加载器
+                                                                                                        // classLoader.InitBootLoader(cp);
+               string className = cmd.classes.Replace('.', '/');
+               Class mainClass = classLoader.LoadClass(className);//类加载，耗时长
 
-            //    classLoader.InitBootLoader(cp);
-            Method mainMethod = mainClass.GetMainMethod();//主方法获取
+               //    classLoader.InitBootLoader(cp);
+               Method mainMethod = mainClass.GetMainMethod();//主方法获取
 
-            if (mainMethod != null)
-                new interpreter().interpret(ref mainMethod, cmd.verboseInstFlag, cmd.args);//耗时长
-            else Console.WriteLine("Main method not found in class " + cmd.classes);
-        }
+               if (mainMethod != null)
+                   new interpreter().interpret(ref mainMethod, cmd.verboseInstFlag, cmd.args);//耗时长
+               else Console.WriteLine("Main method not found in class " + cmd.classes);
+           }
 
-
+           static void RegistNative()
+           {
+               native.java.lang.Class.init();
+               native.java.lang.Object.init();
+               native.java.lang.System.init();
+               native.java.lang.Float.init();
+               native.java.lang.Double.init();
+               native.java.lang.ClassLoader.init();
+               native.java.lang.String.init();
+               native.sun.misc.VM.init();
+           }
 
         //以下是注释代码
         #region ch05

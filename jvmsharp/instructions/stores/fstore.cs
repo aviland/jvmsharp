@@ -1,6 +1,6 @@
 ﻿namespace jvmsharp.instructions.stores
 {
-    class _FSTORE
+  unsafe  class _FSTORE
     {
         public static void _fstore(ref rtda.Frame frame, uint index)
         {

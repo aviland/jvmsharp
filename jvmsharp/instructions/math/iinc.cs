@@ -2,7 +2,7 @@
 
 namespace jvmsharp.instructions.math
 {
-    struct IINC : Instruction
+   unsafe struct IINC : Instruction
     {
         internal uint Index;
         internal int Const;

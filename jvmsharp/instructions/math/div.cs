@@ -1,6 +1,6 @@
 ﻿namespace jvmsharp.instructions.math
 {
-    class IDIV : NoOperandsInstruction
+  unsafe  class IDIV : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
@@ -12,31 +12,31 @@
         }
     }
 
-    class LDIV : NoOperandsInstruction
+    unsafe class LDIV : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
             rtda.OperandStack stack = frame.OperandStack();
             long v2 = stack.PopLong();
-            long v1 = stack.PopLong();
+            long v1 =stack.PopLong();
             long result = v1 / v2;
             stack.PushLong(result);
         }
     }
 
-    class FDIV : NoOperandsInstruction
+    unsafe class FDIV : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
             rtda.OperandStack stack = frame.OperandStack();
-            float v2 = stack.PopFloat();
-            float v1 = stack.PopFloat();
+            float v2 =stack.PopFloat();
+            float v1 =stack.PopFloat();
             float result = v1 / v2;
             stack.PushFloat(result);
         }
     }
 
-    class DDIV : NoOperandsInstruction
+    unsafe class DDIV : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {

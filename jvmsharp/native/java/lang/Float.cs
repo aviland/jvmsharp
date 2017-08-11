@@ -2,7 +2,7 @@
 
 namespace jvmsharp.native.java.lang
 {
-    class Float
+  unsafe  class Float
     {
         public static void init()
         {
@@ -12,11 +12,10 @@ namespace jvmsharp.native.java.lang
         static void floatToRawIntBits(ref rtda.Frame frame)
         {
             var vars = frame.LocalVars();
-                float value = vars.GetFloat(0);
-                int bits = Convert.ToInt32(value);
-                var stack = frame.OperandStack();
-                stack.PushInt(bits); // todo 
-            
+            float value = vars.GetFloat(0);
+            int bits = BitConverter.ToInt32(BitConverter.GetBytes(value), 0);
+            var stack = frame.OperandStack();
+            stack.PushInt(bits);
         }
     }
 }

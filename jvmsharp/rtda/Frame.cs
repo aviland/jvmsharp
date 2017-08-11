@@ -2,27 +2,32 @@
 {
     class Frame
     {
-        internal Frame lower;
-        internal LocalVars localVars;
-        internal OperandStack operandStack;
+        private  LocalVars localVars;       
+        internal  OperandStack operandStack;
         internal Thread thread;
         internal int nextPC;
-        internal heap.Method method;
+        internal  heap.Method method;
 
         public Frame(Thread thread, heap.Method method)
         {
             this.thread = thread;
             this.method = method;
-            localVars = new rtda.LocalVars(method.MaxLocals());
+            localVars = new LocalVars(method.MaxLocals());
             operandStack = new OperandStack(method.MaxStack());
         }
 
-      /*  public Frame(Thread thread, uint maxLocals, uint maxStack)
+        public Frame(Thread thread, uint maxLocals, uint maxStack)
         {
             this.thread = thread;
             localVars = new LocalVars(maxLocals);
             operandStack = new OperandStack(maxStack);
-        }*/
+        }
+
+        public Frame( uint maxLocals, uint maxStack)
+        {
+            localVars = new LocalVars(maxLocals);
+            operandStack = new OperandStack(maxStack);
+        }
 
         internal int NextPC()
         {
@@ -47,11 +52,6 @@
         internal void SetNextPC(int nextPC)
         {
             this.nextPC = nextPC;
-        }
-
-        internal heap.Method Method()
-        {
-            return method;
         }
 
         internal void RevertNextPC()

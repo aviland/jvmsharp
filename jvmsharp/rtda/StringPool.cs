@@ -1,4 +1,5 @@
-﻿using System;
+﻿using jvmsharp.rtda.heap;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,20 +30,42 @@ namespace jvmsharp.rtda
            string str= Encoding.Default.GetString(bytes);
             return str;
         }
-
-        public static heap.Object InternString(string goStr, heap.Object jStr)
+        public static heap.Object InternString(ref heap.Object jStr)
         {
+            string goStr = GoString(ref jStr);
+           
             heap.Object internedStr = null;
-            if (internedStrings.Count > 0)
+            if (internedStrings.ContainsKey(goStr)) {
                 internedStr = internedStrings[goStr];
-
-            if (internedStr != null)
-            {
                 return internedStr;
             }
 
             internedStrings[goStr] = jStr;
             return jStr;
+        }
+        public static heap.Object JString(ref ClassLoader loader, string goStr)
+        {
+            var internedStr = StringPool.getInternedString(goStr);
+            if (internedStr != null)
+            {
+                return internedStr;
+            }
+
+            var chars = stringToUtf16(goStr);
+            var jChars = new rtda.heap.Object(loader.LoadClass("[C"), chars);
+            heap.Object jStr = loader.LoadClass("java/lang/String").NewObject();
+            jStr.SetRefVar("value", "[C", ref jChars);
+            StringPool.internedStrings[goStr] = jStr;
+            return jStr;
+        }
+
+        public static UInt16[] stringToUtf16(string s)
+        {
+            char[] ch = s.ToCharArray();
+            UInt16[] u16 = new UInt16[ch.Length];
+            for (int i = 0; i < u16.Length; i++)
+                u16[i] = Convert.ToUInt16(ch[i]);
+            return u16; // func Encode(s []rune) []uint16
         }
     }
 }

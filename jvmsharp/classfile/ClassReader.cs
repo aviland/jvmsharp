@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace jvmsharp.classfile
 {
-    unsafe struct ClassReader
+    struct ClassReader
     {
         public byte[] data;
 
@@ -26,7 +26,6 @@ namespace jvmsharp.classfile
             Array.Copy(data, 0, newd, 0, 2);
             Array.Reverse(newd);//intel cpu是小端芯片，需要倒序
             data = data.Skip(2).ToArray();
-            //  Console.WriteLine(BitConverter.ToUInt16(newd, 0));
             return BitConverter.ToUInt16(newd, 0);
         }
 
@@ -46,7 +45,7 @@ namespace jvmsharp.classfile
             Array.Copy(data, newd, 8);
             Array.Reverse(newd);
             data = data.Skip(8).ToArray();
-            return BitConverter.ToUInt32(newd, 0);
+            return BitConverter.ToUInt64(newd, 0);
         }
 
         public ushort[] readUint16s()

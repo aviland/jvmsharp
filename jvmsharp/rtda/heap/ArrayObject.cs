@@ -2,7 +2,7 @@
 
 namespace jvmsharp.rtda.heap
 {
-    partial class Object
+   unsafe partial class Object
     {
         internal byte[] Bytes()
         {
@@ -26,7 +26,7 @@ namespace jvmsharp.rtda.heap
 
         internal ushort[] Chars()
         {
-            return (ushort[])this.data;
+            return ((ushort[])this.data);
         }
 
         internal float[] Floats()
@@ -50,14 +50,24 @@ namespace jvmsharp.rtda.heap
             {
                 case "Byte[]": return ((byte[])data).Length;
                 case "Int16[]": return ((short[])data).Length;
-                case "Int32[]": return ((Int32[])data).Length;
-                case "Int64[]": return ((Int64[])data).Length;
-                case "UInt16[]": return ((UInt16[])data).Length;
-                case "Single[]": return ((Single[])data).Length;
+                case "Int32[]": return ((int[])data).Length;
+                case "Int64[]": return ((long[])data).Length;
+                case "UInt16[]": return ((ushort[])data).Length;
+                case "Single[]": return ((float[])data).Length;
                 case "Double[]": return ((double[])data).Length;
                 case "heap.Object[]": return ((Object[])data).Length;
                 default:throw new Exception("Not array!");
             }
         }
-    }
+
+        internal byte[]  GoBytes()    {
+            sbyte[] s = (sbyte[])data;
+            byte[] b = new byte[s.Length];
+            for(int i = 0; i < s.Length; i++)
+            {
+                b[i] = (byte)s[i];
+            }
+            return b;
+}
+}
 }

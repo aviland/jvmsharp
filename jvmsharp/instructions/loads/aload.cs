@@ -1,8 +1,10 @@
-﻿namespace jvmsharp.instructions.loads
+﻿using jvmsharp.rtda;
+
+namespace jvmsharp.instructions.loads
 {
-    class _ALOAD
+   unsafe class _ALOAD
     {
-        public static void _aload(ref rtda.Frame frame, uint index)
+        public static void _aload(ref Frame frame, uint index)
         {
             rtda.heap.Object val = frame.LocalVars().GetRef(index);
             frame.OperandStack().PushRef(val);

@@ -2,7 +2,7 @@
 
 namespace jvmsharp.instructions.conversions
 {
-    class L2I : NoOperandsInstruction
+     class L2I : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
@@ -13,18 +13,18 @@ namespace jvmsharp.instructions.conversions
         }
     }
 
-    class L2F: NoOperandsInstruction
+     class L2F : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
             rtda.OperandStack stack = frame.OperandStack();
             long l = stack.PopLong();
-            float f= Convert.ToSingle(l);
+            float f = Convert.ToSingle(l);
             stack.PushFloat(f);
         }
     }
 
-    class L2D : NoOperandsInstruction
+    unsafe class L2D : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {

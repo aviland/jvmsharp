@@ -2,7 +2,7 @@
 
 namespace jvmsharp.instructions.math
 {
-    class DREM : NoOperandsInstruction
+    unsafe class DREM : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
@@ -14,7 +14,7 @@ namespace jvmsharp.instructions.math
         }
     }
 
-    class FREM : NoOperandsInstruction
+    unsafe class FREM : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
@@ -30,7 +30,7 @@ namespace jvmsharp.instructions.math
         }
     }
 
-    class IREM : NoOperandsInstruction
+    unsafe class IREM : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
@@ -46,7 +46,7 @@ namespace jvmsharp.instructions.math
         }
     }
 
-    class LREM : NoOperandsInstruction
+   unsafe class LREM : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {

@@ -18,7 +18,7 @@ namespace jvmsharp.rtda.heap
                 case "[C": return new heap.Object(this, new UInt16[count]);
                 case "[S": return new heap.Object(this, new short[count]);
                 case "[I": return new heap.Object(this, new Int32[count]);
-                case "[J": return new heap.Object(this, new Int64[count]);
+                case "[J": return new heap.Object(this, new long[count]);
                 case "[F": return new heap.Object(this, new float[count]);
                 case "[D": return new heap.Object(this, new double[count]);
                 default: return new heap.Object(this, new heap.Object[count]);

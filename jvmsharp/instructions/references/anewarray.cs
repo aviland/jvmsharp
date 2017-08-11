@@ -4,16 +4,16 @@ using System;
 
 namespace jvmsharp.instructions.references
 {
-    class ANEW_ARRAY : Index16Instruction
+    unsafe class ANEW_ARRAY : Index16Instruction
     {
         public override void Execute(ref Frame frame)
         {
-            ConstantPool cp = frame.Method().Class().ConstantPool();
-            ConstantClassRef classRef =(ConstantClassRef) cp.GetConstant(Index);
+            ConstantPool cp = frame.method.Class().constantPool;
+            ConstantClassRef classRef = (ConstantClassRef)cp.GetConstant(Index);
             Class componentClass = classRef.ResolvedClass();
 
             OperandStack stack = frame.OperandStack();
-            int count = stack.PopInt();
+            int count =stack.PopInt();
             if (count < 0)
                 throw new Exception("java.lang.NegativeArraySizeException");
 

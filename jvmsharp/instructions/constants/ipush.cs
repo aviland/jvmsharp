@@ -1,6 +1,6 @@
 ﻿namespace jvmsharp.instructions.constants
 {
-    struct BIPUSH:Instruction
+    unsafe struct BIPUSH : Instruction
     {
         sbyte val;
         public void FetchOperands(ref BytecodeReader reader)
@@ -14,7 +14,7 @@
         }
     }
 
-    struct SIPUSH : Instruction
+     struct SIPUSH : Instruction
     {
         short val;
 
@@ -25,8 +25,7 @@
 
         public void Execute(ref rtda.Frame frame)
         {
-            int i= val;
-            frame.OperandStack().PushInt(i);
+            frame.OperandStack().PushInt((int)val);
         }
     }
 }

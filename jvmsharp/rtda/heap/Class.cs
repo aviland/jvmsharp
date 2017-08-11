@@ -7,7 +7,7 @@
         const int _fullyInitialized = 2; // This Class object is fully initialized and ready for use.
         const int _initFailed = 3;// This Class object is in an erroneous state, perhaps because initialization was attempted and failed.
 
-        ConstantPool constantPool;
+        internal readonly ConstantPool constantPool;
         public string name;
         public string superClassName;
         public string[] interfaceNames;
@@ -38,23 +38,20 @@
         {
             initStarted = true;
         }
+
         internal classpath.Entry LoadedFrom()
         {
             return loadedFrom;
         }
+
         public Method GetClinitMethod()
         {
             return GetStaticMethod("<clinit>", "()V");
         }
 
-     internal   Method GetStaticMethod(string name, string descriptor)
+        internal Method GetStaticMethod(string name, string descriptor)
         {
             return getMethod(name, descriptor, true);
-        }
-
-        public ConstantPool ConstantPool()
-        {
-            return constantPool;
         }
 
         public Class() { }
@@ -74,19 +71,19 @@
             initState = _fullyInitialized;
         }
 
-        public Class newClass(classfile.ClassFile cf)
+        public Class(classfile.ClassFile cf)
         {
-            Class c = new Class();
-            c.accessFlags = cf.AccessFlags();
+            //       Class c = new Class();
+            accessFlags = cf.AccessFlags();
 
-            c.name = cf.ClassName();
-            c.superClassName = cf.SuperClassName();
-            c.interfaceNames = cf.InterfacesNames();
+            name = cf.ClassName();
+            superClassName = cf.SuperClassName();
+            interfaceNames = cf.InterfacesNames();
 
-            c.constantPool = new ConstantPool().newConstantPool(ref c, ref cf.ConstantPool().constantInfos);
-            c.fields = new Field().newFields(ref c, cf.Fields());
-            c.methods = new Method().newMethods(ref c, cf.Methods());
-            return c;
+            constantPool = new ConstantPool().newConstantPool(this, ref cf.ConstantPool().constantInfos);
+            fields = new Field().newFields(this, cf.Fields());
+            methods = new Method().newMethods(this, cf.Methods());
+
         }
 
         public bool isAccessibleTo(ref Class other)
@@ -106,26 +103,9 @@
 
         public Object NewObject()
         {
-            return newObject(this);
+            return new Object().newObject(this);
         }
 
-        Object newObject(Class clas)
-        {
-            Slots s = new Slots(clas.instanceSlotCount);
-            return new heap.Object(clas, s);
-        }
-        /*      public Object NewObj()
-              {
-                  if (this.instanceFieldCount > 0)
-                  {
-                      System.Object[] fields = new System.Object[this.instanceFieldCount];
-                      Object obj = Object.newObj(this, fields, null);
-                      obj.initFields();
-                      return obj;
-                  }
-                  else
-                      return Object.newObj(this, null, null);
-              }*/
 
         public Field GetInstanceField(string name, string descriptor)
         {
@@ -148,7 +128,10 @@
         {
             return getStaticField("main", "([Ljava/lang/String;)V");
         }
-
+        internal ClassLoader Loader()
+        {
+            return loader;
+        }
         internal Method getStaticField(string name, string descriptor)
         {
             foreach (Method method in methods)
@@ -194,5 +177,15 @@
             return null;
         }
 
+         internal Object GetRefVar(string fieldName, string fieldDescriptor)
+        {
+            var field = getField(fieldName, fieldDescriptor, true);
+            return staticVars.GetRef(field.slotId);
+        }
+
+        internal Method GetInstanceMethod(string name, string descriptor)
+        {
+            return getMethod(name, descriptor, false);
+        }
     }
 }

@@ -17,14 +17,14 @@ namespace jvmsharp.rtda.heap
             this.consts = consts;
         }
 
-        public ConstantPool newConstantPool(ref  Class clas, ref classfile.ConstantInfo[] cfCp)//将ConstantInfo转换为ConstantPool
+        public ConstantPool newConstantPool( Class clas, ref classfile.ConstantInfo[] cfCp)//将ConstantInfo转换为ConstantPool
         {
             int cpCount = cfCp.Length;
             ConstantPool rtcp = new ConstantPool( clas, new Constant[cpCount]);//初始化运行时常量池
             for (int i = 1; i < cpCount; i++)
             {
                 cf.ConstantInfo cpInfo = cfCp[i];
-        //    Console.WriteLine("ConstantInfo:"+cpInfo.GetType().Name);
+    //   Console.WriteLine("ConstantInfo:"+cpInfo.GetType().Name);
                 switch (cpInfo.GetType().Name)
                 {
                     case "ConstantIntegerInfo":
@@ -68,7 +68,10 @@ namespace jvmsharp.rtda.heap
                     case "ConstantMethodTypeInfo":
                         rtcp.consts[i] = new ConstantMethodType((cf.ConstantMethodTypeInfo)cpInfo);
                         break;
-                    default: break;
+                    case "ConstantNameAndTypeInfo":
+                      //  rtcp.consts[i] = new ConstantMethodType((cf.ConstantMethodTypeInfo)cpInfo);
+                        break;
+                    default: throw new Exception("Unknown:"+ cpInfo.GetType().Name); 
                 }
             }
             return rtcp;

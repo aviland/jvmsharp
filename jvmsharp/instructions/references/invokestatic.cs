@@ -5,14 +5,12 @@ namespace jvmsharp.instructions.references
 {
     class INVOKE_STATIC : Index16Instruction
     {
-  //      Method method;
-
+        //      Method method;
         public override void Execute(ref Frame frame)
         {
-            var cp = frame.Method().Class().ConstantPool();
-            var k = cp.GetConstant(Index);
-            var methodRef = (ConstantMethodRef)k;
-            var resolvedMethod = methodRef.ResolvedMethod();
+            ConstantPool cp = frame.method.Class().constantPool;
+            ConstantMethodRef methodRef = (ConstantMethodRef)cp.GetConstant(Index);
+            Method resolvedMethod = methodRef.ResolvedMethod();
             if (!resolvedMethod.IsStatic())
                 throw new System.Exception("java.lang.IncompatibleClassChangeError");
 

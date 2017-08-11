@@ -2,7 +2,7 @@
 
 namespace jvmsharp.rtda.heap
 {
-    partial class Object
+    unsafe partial class Object
     {
         public Class clas;
         public object data;
@@ -14,17 +14,18 @@ namespace jvmsharp.rtda.heap
             this.data = new object[clas.instanceSlotCount];
         }
 
-        public Object GetRefVar(string name,string descriptor)
+        unsafe public Object GetRefVar(string name, string descriptor)
         {
             Field field = clas.getField(name, descriptor, false);
             Slots slots = Fields();
             return slots.GetRef(field.slotId);
         }
 
-        public Object newObj(Class clas, object data, object extra)
+        public Object newObject(Class clas)
         {
-            Object obj = new Object(clas);
-            obj.extra = extra;
+            Object obj = new Object();
+            obj.clas = clas;
+            obj.data = new Slots(clas.instanceSlotCount);
             return obj;
         }
         internal object Extra()
@@ -39,18 +40,19 @@ namespace jvmsharp.rtda.heap
 
         public Slots Fields()
         {
-            return new Slots(data);
+            return (Slots)(data);
         }
-        public void SetRefVar(string name,string descriptor,ref Object refs)
+
+        public void SetRefVar(string name, string descriptor, ref Object refs)
         {
             var field = clas.getField(name, descriptor, false);
-            var slots =(Slots) data;
+            var slots = (Slots)data;
             slots.SetRef(field.slotId, refs);
         }
+
         public void SetFieldValue(string fieldName, string fieldDescriptor, object value)
         {
             var field = clas.GetInstanceField(fieldName, fieldDescriptor);
-
             field.PutValue(this, value);
         }
     }

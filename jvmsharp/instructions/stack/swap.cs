@@ -7,8 +7,8 @@ namespace jvmsharp.instructions.stack
         public override void Execute(ref rtda.Frame frame)
         {
             rtda.OperandStack stack = frame.OperandStack();
-            object slot1 = stack.PopSlot();
-            object slot2 = stack.PopSlot();
+            Slot slot1 = stack.PopSlot();
+            Slot slot2 = stack.PopSlot();
             stack.PushSlot(ref slot1);
             stack.PushSlot(ref slot2);
         }

@@ -2,7 +2,7 @@
 
 namespace jvmsharp.native.java.lang
 {
-    class Double
+   unsafe class Double
     {
         public static void init()
         {
@@ -14,7 +14,7 @@ namespace jvmsharp.native.java.lang
         {
             var vars = frame.LocalVars();
             double value = vars.GetDouble(0);
-            var bits = BitConverter.ToInt64(BitConverter.GetBytes(value), 0);
+            long bits = BitConverter.ToInt64(BitConverter.GetBytes(value), 0);
             var stack = frame.OperandStack();
             stack.PushLong(bits);
         }
@@ -22,11 +22,10 @@ namespace jvmsharp.native.java.lang
         static void longBitsToDouble(ref rtda.Frame frame)
         {
             var vars = frame.LocalVars();
-            var bits = vars.GetLong(0);
-            var value = BitConverter.ToDouble(BitConverter.GetBytes(bits), 0);
+            long bits = vars.GetLong(0);
+            double value = BitConverter.ToDouble(BitConverter.GetBytes(bits), 0);
             var stack = frame.OperandStack();
             stack.PushDouble(value);
         }
-
     }
 }

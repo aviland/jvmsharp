@@ -3,16 +3,16 @@ using jvmsharp.rtda;
 
 namespace jvmsharp.instructions.references
 {
-    class PUT_FIELD : Index16Instruction
+    unsafe class PUT_FIELD : Index16Instruction
     {
-  public override void Execute(ref Frame frame)
+        public override void Execute(ref Frame frame)
         {
-            var currentMethod = frame.Method();
+            var currentMethod = frame.method;
             var currentClass = currentMethod.Class();
-            var cp = currentClass.ConstantPool();
-            var fieldRef = (rtda.heap.ConstantFieldRef)cp.GetConstant(Index);
+            var cp = currentClass.constantPool;
+            rtda.heap.ConstantFieldRef fieldRef = (rtda.heap.ConstantFieldRef)cp.GetConstant(Index);
             var field = fieldRef.ResolvedField();
-          
+
             if (field.IsStatic())
                 throw new Exception("java.lang.IncompatibleClassChangeError");
             if (field.IsFinal())
@@ -22,7 +22,7 @@ namespace jvmsharp.instructions.references
             string descriptor = field.Descriptor();
             uint slotId = field.slotId;
             OperandStack stack = frame.OperandStack();
-       //     Console.WriteLine("ddddddddddddddddddddd" + descriptor[0]);
+            //         Console.WriteLine("ddddddddddddddddddddd" + descriptor[0]);
             switch (descriptor[0])
             {
                 case 'Z':
@@ -34,7 +34,7 @@ namespace jvmsharp.instructions.references
                     rtda.heap.Object refs = stack.PopRef();
                     if (refs == null)
                         throw new Exception("java.lang.NullPointerException");
-                   refs.Fields().SetInt(slotId, val);
+                    refs.Fields().SetInt(slotId, val);
                     break;
                 case 'F':
                     float valf = stack.PopFloat();
@@ -55,6 +55,7 @@ namespace jvmsharp.instructions.references
                     var refsd = stack.PopRef();
                     if (refsd == null)
                         throw new Exception("java.lang.NullPointerException");
+                    //       Console.WriteLine("slotid:" + slotId+"\tsize:"+ refsd.Fields().slots.Length);
                     refsd.Fields().SetDouble(slotId, vald);
                     break;
                 case 'L':
@@ -63,7 +64,7 @@ namespace jvmsharp.instructions.references
                     var refsr = stack.PopRef();
                     if (refsr == null)
                         throw new Exception("java.lang.NullPointerException");
-                    refsr.Fields().SetRef(slotId,  valr);
+                    refsr.Fields().SetRef(slotId, valr);
                     break;
             }
         }

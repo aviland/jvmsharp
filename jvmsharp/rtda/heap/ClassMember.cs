@@ -42,7 +42,7 @@
 
         public ConstantPool ConstantPool()
         {
-            return clas.ConstantPool();
+            return clas.constantPool;
         }
     }
 }

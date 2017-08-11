@@ -16,7 +16,6 @@ namespace jvmsharp.classpath
             entryArray = new Entry[paths.Length];
             for (int i = 0; i < paths.Length - 1; i++)
             {
-               // Console.WriteLine(paths[i]);
                 Entry e = new CreateEntry().newEntry(paths[i]);
                 entryArray[i] = e;
             }

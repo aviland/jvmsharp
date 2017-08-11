@@ -1,6 +1,6 @@
 ﻿namespace jvmsharp.instructions.math
 {
-    class IADD : NoOperandsInstruction
+    unsafe class IADD : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
@@ -12,7 +12,7 @@
         }
     }
 
-    class LADD : NoOperandsInstruction
+    unsafe class LADD : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
@@ -24,7 +24,7 @@
         }
     }
 
-    class FADD : NoOperandsInstruction
+    unsafe  class FADD : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
@@ -36,7 +36,7 @@
         }
     }
 
-    class DADD : NoOperandsInstruction
+   unsafe class DADD : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {

@@ -9,7 +9,7 @@ namespace jvmsharp.classfile
         public override void readInfo(ref ClassReader reader)
         {
             uint bytes = reader.readUint32();
-            val = (int)bytes;
+            val = BitConverter.ToInt32(BitConverter.GetBytes(bytes), 0);
         }
 
         public int Value()
@@ -25,7 +25,7 @@ namespace jvmsharp.classfile
         public override void readInfo(ref ClassReader reader)
         {
             UInt64 bytes = reader.readUint64();
-            val = (long)bytes;
+            val = BitConverter.ToInt64(BitConverter.GetBytes(bytes), 0);
         }
 
         public long Value()
@@ -41,7 +41,7 @@ namespace jvmsharp.classfile
         public override void readInfo(ref ClassReader reader)
         {
             uint bytes = reader.readUint32();
-            val = Convert.ToSingle(bytes);
+            val = BitConverter.ToSingle(BitConverter.GetBytes(bytes), 0);
         }
 
         public float Value()
@@ -57,7 +57,7 @@ namespace jvmsharp.classfile
         public override void readInfo(ref ClassReader reader)
         {
             UInt64 bytes = reader.readUint64();
-            val = bytes;
+            val = BitConverter.ToDouble(BitConverter.GetBytes(bytes), 0);
         }
 
         public double Value()

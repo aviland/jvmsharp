@@ -2,23 +2,24 @@
 
 namespace jvmsharp.instructions.references
 {
-    class INSTANCE_OF : Index16Instruction
+    unsafe class INSTANCE_OF : Index16Instruction
     {
         public override void Execute(ref Frame frame)
         {
+            int i0 = 0, i1 = 1;
             var stack = frame.OperandStack();
             var refs = stack.PopRef();
             if (refs == null)
             {
-                stack.PushInt(0);
+                stack.PushInt(i0);
                 return;
             }
-            var cp = frame.Method().Class().ConstantPool();
-            var classRef = (rtda.heap.ConstantClassRef)cp.GetConstant(Index);
+            var cp = frame.method.Class().constantPool;
+            rtda.heap.ConstantClassRef classRef = (rtda.heap.ConstantClassRef)cp.GetConstant(Index);
             var clas = classRef.ResolvedClass();
             if (refs.IsInstanceOf(ref clas))
-                stack.PushInt(1);
-            else stack.PushInt(0);
+                stack.PushInt(i1);
+            else stack.PushInt(i0);
         }
     }
 }

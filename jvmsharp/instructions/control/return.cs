@@ -14,15 +14,15 @@ namespace jvmsharp.instructions.control
     {
         public override void Execute(ref Frame frame)
         {
-            var thread = frame.Thread();
-            var currentFrame = thread.PopFrame();
+            Thread thread = frame.Thread();
+            Frame currentFrame = thread.PopFrame();
             var invokerFrame = thread.TopFrame();
             var retVal = currentFrame.OperandStack().PopRef();
             invokerFrame.OperandStack().PushRef(retVal);
         }
     }
 
-    class DRETURN : NoOperandsInstruction
+   unsafe class DRETURN : NoOperandsInstruction
     {
         public override void Execute(ref Frame frame)
         {
@@ -33,7 +33,7 @@ namespace jvmsharp.instructions.control
             invokerFrame.OperandStack().PushDouble(retVal);
         }
     }
-    class FRETURN : NoOperandsInstruction
+ unsafe   class FRETURN : NoOperandsInstruction
     {
         public override void Execute(ref Frame frame)
         {
@@ -44,7 +44,7 @@ namespace jvmsharp.instructions.control
             invokerFrame.OperandStack().PushFloat(retVal);
         }
     }
-    class IRETURN : NoOperandsInstruction
+    unsafe class IRETURN : NoOperandsInstruction
     {
         public override void Execute(ref Frame frame)
         {
@@ -56,14 +56,14 @@ namespace jvmsharp.instructions.control
         }
     }
 
-    class LRETURN : NoOperandsInstruction
+    unsafe class LRETURN : NoOperandsInstruction
     {
         public override void Execute(ref Frame frame)
         {
             var thread = frame.Thread();
             var currentFrame = thread.PopFrame();
             var invokerFrame = thread.TopFrame();
-            var retVal = currentFrame.OperandStack().PopLong();
+            long retVal = currentFrame.OperandStack().PopLong();
             invokerFrame.OperandStack().PushLong(retVal);
         }
     }

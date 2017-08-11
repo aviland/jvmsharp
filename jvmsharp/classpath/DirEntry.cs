@@ -18,7 +18,6 @@ namespace jvmsharp.classpath
             if (File.Exists(className))
             {
                 byte[] data = File.ReadAllBytes(className);
-              //  Console.WriteLine("yes " + data.Length);
                 return Tuple.Create<byte[], Entry>(data, this);
             }
             return null;

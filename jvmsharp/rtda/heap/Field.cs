@@ -21,7 +21,7 @@ namespace jvmsharp.rtda.heap
             return descriptor == "J" || descriptor == "D";
         }
 
-        public Field[] newFields(ref Class clas, classfile.MemberInfo[] cfFields)
+        public Field[] newFields(Class clas, classfile.MemberInfo[] cfFields)
         {
             Field[] fields = new Field[cfFields.Length];
             for (int i = 0; i < cfFields.Length; i++)
@@ -42,7 +42,7 @@ namespace jvmsharp.rtda.heap
         }
         public void PutValue(Object refs, object val)
         {
-            var fields = refs.Fields();
+            Slots fields = refs.Fields();
             fields.slots[slotId].refer = (heap.Object)val;
         }
         public object defaultValue()

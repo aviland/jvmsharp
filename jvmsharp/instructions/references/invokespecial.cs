@@ -6,11 +6,11 @@ namespace jvmsharp.instructions.references
 {
     class INVOKE_SPECIAL : Index16Instruction
     {
-        public override void Execute(ref Frame frame)
+        unsafe public override void Execute(ref Frame frame)
         {
-            Class currentClass = frame.Method().Class();
-            var cp = currentClass.ConstantPool();
-            var methodRef = (ConstantMethodRef)cp.GetConstant(Index);
+            Class currentClass = frame.method.Class();
+            var cp = currentClass.constantPool;
+            ConstantMethodRef methodRef = (ConstantMethodRef)cp.GetConstant(Index);
      
             var resolvedClass = methodRef.ResolvedClass();
             Method resolvedMethod = methodRef.ResolvedMethod();
@@ -18,7 +18,7 @@ namespace jvmsharp.instructions.references
                 throw new Exception("java.lang.NoSuchMethodError");
             if (resolvedMethod.IsStatic())
                 throw new System.Exception("java.lang.IncompatibleClassChangeError");
-            rtda.heap.Object refs = frame.OperandStack().GetRefFromTop(resolvedMethod.ArgSlotCount()-1);
+            rtda.heap.Object refs = frame.OperandStack().GetRefFromTop(resolvedMethod.ArgSlotCount() - 1);
             if (refs == null)
                 throw new Exception("java.lang.NullPointerException");
             if (resolvedMethod.IsProtected() && resolvedMethod.Class().isSuperClassOf(currentClass) && resolvedMethod.Class().getPackageName() != currentClass.getPackageName() && refs.clas != currentClass && !refs.clas.isSubClassOf(currentClass))

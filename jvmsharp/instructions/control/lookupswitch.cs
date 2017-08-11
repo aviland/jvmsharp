@@ -14,7 +14,7 @@
             matchOffsets = reader.ReadInt32s(npairs * 2);
         }
 
-        public void Execute(ref rtda.Frame frame)
+      unsafe  public void Execute(ref rtda.Frame frame)
         {
             int key = frame.OperandStack().PopInt();
             for (int i = 0; i < npairs * 2; i += 2)

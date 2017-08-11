@@ -24,17 +24,19 @@ namespace jvmsharp.rtda.heap
         {
             if (className[0] == '[')
             {
-                string componetTypeDescriptor = className.Skip(1).ToString();
+                string componetTypeDescriptor = className.Substring(1);
                 return toClassName(componetTypeDescriptor);
             }
             throw new Exception("Not array: " + className);
         }
-
-        public static string toClassName(string descriptor)
+        public static string DotToSlash(string name)  {
+            return name.Replace('.', '/');
+}
+    public static string toClassName(string descriptor)
         {
             char ch = descriptor[0];
             if (ch == '[') return descriptor;
-            if (ch == 'L') return descriptor.Skip(1).Take(descriptor.Length - 1).ToString();
+            if (ch == 'L') return descriptor.Substring(1);
             foreach (var s in primitiveTypes)
             {
                 if (s.Value == descriptor)

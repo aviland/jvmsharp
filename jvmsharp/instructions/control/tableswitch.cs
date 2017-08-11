@@ -1,6 +1,6 @@
 ﻿namespace jvmsharp.instructions.control
 {
-    struct TABLE_SWITCH : Instruction
+  unsafe  struct TABLE_SWITCH : Instruction
     {
         int defaultOffset;
         int low;

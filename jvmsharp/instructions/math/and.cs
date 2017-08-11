@@ -1,6 +1,6 @@
 ﻿namespace jvmsharp.instructions.math
 {
-    class IAND:NoOperandsInstruction
+    unsafe class IAND : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
@@ -12,11 +12,11 @@
         }
     }
 
-    class LAND : NoOperandsInstruction
+    unsafe class LAND : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
-            var stack = frame.OperandStack();
+            rtda.OperandStack stack = frame.OperandStack();
             long v2 = stack.PopLong();
             long v1 = stack.PopLong();
             long result = v1 & v2;

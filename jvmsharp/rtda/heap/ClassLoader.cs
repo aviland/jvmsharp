@@ -5,8 +5,8 @@ namespace jvmsharp.rtda.heap
 {
     class ClassLoader//类加载器
     {
-        classpath.Classpath cp;
-        Dictionary<string, Class> classMap;//存储加载的所有的类
+       private classpath.Classpath cp;
+        static Dictionary<string, Class> classMap = new Dictionary<string, Class>();//存储加载的所有的类
         bool verboseFlag;
 
         const string jlObjectClassName = "java/lang/Object";
@@ -28,7 +28,6 @@ namespace jvmsharp.rtda.heap
         {
             ClassLoader loader = new ClassLoader();
             loader.cp = cp;
-            loader.classMap = new Dictionary<string, Class>();
             loader.verboseFlag = verboseFlag;
             loader.loadBasicClasses();
             loader.loadPrimitiveClasses();
@@ -91,13 +90,12 @@ namespace jvmsharp.rtda.heap
 
         void loadPrimitiveClass(string className)
         {
-
             Class clas = new Class();
             clas.accessFlags = AccessFlags.ACC_PUBLIC;
             clas.name = className;
             clas.loader = this;
             clas.initStarted = true;
-            clas.jClass = this.classMap["java/lang/Class"].NewObject();
+            clas.jClass = ClassLoader.classMap["java/lang/Class"].NewObject();
             clas.jClass.extra = clas;
             classMap[className] = clas;
         }
@@ -113,12 +111,12 @@ namespace jvmsharp.rtda.heap
 
         public Class LoadClass(string name)
         {
-            if (name != null && classMap!=null&& classMap.ContainsKey(name))//若类已加载，则直接查找并返回
+            if (name != null && classMap != null && classMap.ContainsKey(name))//若类已加载，则直接查找并返回
                 return classMap[name];
-            Class clas=null;
-                if (name[0] == '[')
-                    clas = loadArrayClass(name);
-                else clas = loadNonArrayClass(name);//否则加载该类
+            Class clas = null;
+            if (name[0] == '[')
+                clas = loadArrayClass(name);
+            else clas = loadNonArrayClass(name);//否则加载该类
             if (classMap != null && classMap.ContainsKey("java/lang/Class"))
             {
                 var jlClassClass = classMap["java/lang/Class"];
@@ -158,9 +156,9 @@ namespace jvmsharp.rtda.heap
         {
             try
             {
-            //    Console.WriteLine("-----------------"+cp.bootClasspath.GetType().Name);
+                //    Console.WriteLine("-----------------"+cp.bootClasspath.GetType().Name);
                 var v = cp.ReadClass(name);
-         //       Console.WriteLine(v == null);
+                //       Console.WriteLine(v == null);
                 Tuple<byte[], classpath.Entry> tbe = v;//从解析的类中读取数据
 
                 return tbe;
@@ -188,7 +186,7 @@ namespace jvmsharp.rtda.heap
             try
             {
                 classfile.ClassFile cf = new classfile.ClassFile().Parse(ref data);//读取二进制data，初始化classfile
-                Class c = new Class().newClass(cf);//将classfile转换为Class类型?
+                Class c = new Class(cf);//将classfile转换为Class类型?
                 return c;
             }
             catch (Exception e)
@@ -247,6 +245,8 @@ namespace jvmsharp.rtda.heap
                 {
                     f.slotId = slotId;
                     slotId++;
+                    if (f.IsLongOrDouble())
+                        slotId++;
                 }
             }
             clas.instanceSlotCount = slotId;
@@ -282,10 +282,10 @@ namespace jvmsharp.rtda.heap
             }
         }
 
-        void initStaticFinalVar(ref Class clas, ref Field f)
+        unsafe void initStaticFinalVar(ref Class clas, ref Field f)
         {
             Slots vars = clas.staticVars;
-            ConstantPool cp = clas.ConstantPool();
+            ConstantPool cp = clas.constantPool;
             uint cpIndex = f.ConstValueIndex();
             uint slotId = f.slotId;
             if (cpIndex > 0)
@@ -313,12 +313,19 @@ namespace jvmsharp.rtda.heap
                         vars.SetDouble(slotId, vald);
                         break;
                     case "Ljava/lang/String;":
-                        var goStr =(string) cp.GetConstant(cpIndex);
-                        var jStr = StringHelper.JString(ref clas.loader, goStr);
+                        string goStr = (string)cp.GetConstant(cpIndex);
+                        Object jStr = StringPool.JString(ref clas.loader, goStr);
                         vars.SetRef(slotId, jStr);
                         break;
                 }
             }
+        }
+
+     internal   Class FindLoadedClass(string name)
+        {
+            if (classMap.ContainsKey(name))
+                return classMap[name];
+            return null;
         }
     }
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace jvmsharp.instructions.stores
 {
-    class AASTORE : NoOperandsInstruction
+    unsafe class AASTORE : NoOperandsInstruction
     {
         public override void Execute(ref Frame frame)
         {
@@ -23,7 +23,8 @@ namespace jvmsharp.instructions.stores
             refs[index] = val;
         }
     }
-    class BASTORE : NoOperandsInstruction
+
+    unsafe class BASTORE : NoOperandsInstruction
     {
         public override void Execute(ref Frame frame)
         {
@@ -38,7 +39,8 @@ namespace jvmsharp.instructions.stores
             bytes[index] = Convert.ToByte(val);
         }
     }
-    class CASTORE : NoOperandsInstruction
+
+    unsafe class CASTORE : NoOperandsInstruction
     {
         public override void Execute(ref Frame frame)
         {
@@ -53,7 +55,8 @@ namespace jvmsharp.instructions.stores
             chars[index] = (UInt16)val;
         }
     }
-    class DASTORE : NoOperandsInstruction
+
+    unsafe class DASTORE : NoOperandsInstruction
     {
         public override void Execute(ref Frame frame)
         {
@@ -69,7 +72,7 @@ namespace jvmsharp.instructions.stores
         }
     }
 
-    class FASTORE : NoOperandsInstruction
+    unsafe class FASTORE : NoOperandsInstruction
     {
         public override void Execute(ref Frame frame)
         {
@@ -85,17 +88,16 @@ namespace jvmsharp.instructions.stores
         }
     }
 
-
-    class IASTORE : NoOperandsInstruction
+    unsafe class IASTORE : NoOperandsInstruction
     {
         public override void Execute(ref Frame frame)
         {
             OperandStack stack = frame.OperandStack();
             int val = stack.PopInt();
             int index = stack.PopInt();
-      //      Console.WriteLine("val" + val + "index" + index);
+            //      Console.WriteLine("val" + val + "index" + index);
             rtda.heap.Object arrRef = stack.PopRef();
-          //  Console.WriteLine(arrRef.data.GetType().Name);
+            //  Console.WriteLine(arrRef.data.GetType().Name);
 
             XAX.checkNotNull(arrRef);
             int[] ints = arrRef.Ints();
@@ -104,7 +106,7 @@ namespace jvmsharp.instructions.stores
         }
     }
 
-    class LASTORE : NoOperandsInstruction
+    unsafe class LASTORE : NoOperandsInstruction
     {
         public override void Execute(ref Frame frame)
         {
@@ -120,7 +122,7 @@ namespace jvmsharp.instructions.stores
         }
     }
 
-    class SASTORE : NoOperandsInstruction
+    unsafe class SASTORE : NoOperandsInstruction
     {
         public override void Execute(ref Frame frame)
         {

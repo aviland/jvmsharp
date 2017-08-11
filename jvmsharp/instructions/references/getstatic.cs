@@ -3,12 +3,12 @@ using System;
 
 namespace jvmsharp.instructions.references
 {
-    class GET_STATIC : Index16Instruction
+  unsafe  class GET_STATIC : Index16Instruction
     {
 
         public override void Execute(ref rtda.Frame frame)
         {
-            ConstantPool cp = frame.Method().Class().ConstantPool();
+            ConstantPool cp = frame.method.Class().constantPool;
             ConstantFieldRef fieldRef = (ConstantFieldRef)cp.GetConstant(Index);
             Field field = fieldRef.ResolvedField();
             Class clas = field.Class();

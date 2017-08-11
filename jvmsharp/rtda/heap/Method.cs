@@ -32,7 +32,7 @@ namespace jvmsharp.rtda.heap
             return maxLocals;
         }
 
-        public Method[] newMethods(ref Class clas, classfile.MemberInfo[] cfMethods)
+        public Method[] newMethods(Class clas, classfile.MemberInfo[] cfMethods)
         {
             Method[] methods = new Method[cfMethods.Length];
             for (int i = 0; i < cfMethods.Length; i++)

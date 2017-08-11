@@ -9,18 +9,15 @@ namespace jvmsharp.classpath
 
         public ZipEntry(string path)
         {
-            //    Console.WriteLine(Path.GetFullPath(path));
             absPath = Path.GetFullPath(path);
         }
 
         public Tuple<byte[],Entry> readClass(string className)
         {
             ZipArchive zipArchive = ZipFile.Open(absPath, ZipArchiveMode.Read);
-      //      if (absPath.Contains("rt"))
-   //             Console.WriteLine(absPath);
+
             foreach (ZipArchiveEntry entry in zipArchive.Entries)
             {
-            //    Console.WriteLine(entry.FullName);
                 if (entry.FullName.Contains(className))
                 {
                     byte[] data = new byte[entry.Length];

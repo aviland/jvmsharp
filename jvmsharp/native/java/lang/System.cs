@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace jvmsharp.native.java.lang
 {
-    class System
+ unsafe   class System
     {
         public static void init()
         {
@@ -24,23 +24,23 @@ namespace jvmsharp.native.java.lang
 
             // NullPointerException
             if (src == null || dest == null)
-                throw new Exception("NPE"); // todo
+                throw new Exception("java.lang.NullPointerException"); // todo
             // ArrayStoreException
             if (!checkArrayCopy(src, dest))
-                throw new Exception("ArrayStoreException");
+                throw new Exception("java.lang.ArrayStoreException");
             // IndexOutOfBoundsException
-            if (srcPos < 0 || destPos < 0 || length < 0 || srcPos + length > rtda.heap.Array.ArrayLength(src) || destPos + length > rtda.heap.Array.ArrayLength(dest))
-                throw new Exception("IndexOutOfBoundsException"); // todo
+            if (srcPos < 0 || destPos < 0 || length < 0 || srcPos + length >src.ArrayLength() || destPos + length > dest.ArrayLength())
+                throw new Exception("java.lang.IndexOutOfBoundsException"); // todo
             rtda.heap.Array.ArrayCopy(ref src, ref dest, ref srcPos,ref  destPos, ref length);
         }
 
         static bool checkArrayCopy(rtda.heap.Object src, rtda.heap.Object dest)
         {
-            var srcClass = src.Class();
-            var destClass = dest.Class();
+            rtda.heap.Class srcClass = src.Class();
+            rtda.heap.Class destClass = dest.Class();
             if (!srcClass.IsArray() || !destClass.IsArray())
                 return false;
-            if (srcClass.IsPrimitiveArray() || destClass.IsPrimitiveArray())
+            if (srcClass.ComponentClass().IsPrimitive() || destClass.ComponentClass().IsPrimitive())
                 return srcClass == destClass;
             return true;
         }

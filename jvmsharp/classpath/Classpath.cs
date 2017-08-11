@@ -17,15 +17,6 @@ namespace jvmsharp.classpath
             return cp;
         }
 
-     public   static bool IsBootClassPath(Entry entry)
-        {
-            if (entry == null)
-            {
-                return true;
-            }
-            return entry.String().StartsWith(options.Options.AbsJreLib);
-        }
-
         void parseBootAndExtClasspath(string jreOption)
         {
             //解析启动类路径
@@ -71,7 +62,6 @@ namespace jvmsharp.classpath
         public Tuple<byte[], Entry> ReadClass(string className)
         {
             className += ".class";
-            //     Console.WriteLine(className);
             return bootClasspath.readClass(className) ?? extClasspath.readClass(className) ?? usrClasspath.readClass(className);
         }
 

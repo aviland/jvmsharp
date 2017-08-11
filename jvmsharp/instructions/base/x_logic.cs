@@ -19,7 +19,7 @@ namespace jvmsharp.instructions
             if (clinit != null)//若无类初始化方法则添加一个
             {
                 Frame newFrame = thread.newFrame(ref clinit);
-                thread.PushFrame(ref newFrame);
+                Thread.PushFrame(ref newFrame);
             }
         }
 
@@ -46,25 +46,25 @@ namespace jvmsharp.instructions
 
     class invoke_logic
     {
-        public static void InvokeMethod(ref Frame invokerFrame, ref Method method)
+         public static void InvokeMethod(ref Frame invokerFrame, ref Method method)
         {
-
             Thread thread = invokerFrame.Thread();//获取当前帧所在的线程
             Frame newFrame = thread.newFrame(ref method);//传入method，创建新栈帧
-            thread.PushFrame(ref newFrame);
-
-    /*        if (method.IsNative())
-                if (method.Name() == "registerNatives")
-                    thread.PopFrame();
-                else throw new Exception("native method: " + method.Class().name + "." + method.Name() + method.Descriptor());
-                */
+            Thread.PushFrame(ref newFrame);//将新帧推入线程的虚栈
+            /*        if (method.IsNative())
+            if (method.Name() == "registerNatives")
+                thread.PopFrame();
+            else throw new Exception("native method: " + method.Class().name + "." + method.Name() + method.Descriptor());
+            */
             int argSlotslot = Convert.ToInt32(method.ArgSlotCount());//因为uint大小限制，所以需要转换为int
             if (argSlotslot > 0)
             {
                 for (int i = argSlotslot - 1; i >= 0; i--)
                 {
-                    object slot = invokerFrame.OperandStack().PopSlot();
-                    newFrame.localVars.SetSlot(Convert.ToUInt32(i), slot);
+                    Slot slot = invokerFrame.OperandStack().PopSlot();
+                    //      Console.WriteLine("+++++++++++++++++++" + method == null);
+                    UInt32 u = Convert.ToUInt32(i);
+                    newFrame.LocalVars().SetSlot(u, slot);
                 }
             }
         }

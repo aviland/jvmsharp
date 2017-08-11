@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using jvmsharp.rtda;
 using jvmsharp.rtda.heap;
 
@@ -15,7 +12,7 @@ namespace jvmsharp.instructions.references
 
         public void Execute(ref Frame frame)
         {
-            ConstantPool cp = frame.Method().Class().ConstantPool();
+            ConstantPool cp = frame.method.Class().constantPool;
             ConstantClassRef classRef = (ConstantClassRef)cp.GetConstant(index);
             Class arrClass = classRef.ResolvedClass();
 
@@ -31,9 +28,9 @@ namespace jvmsharp.instructions.references
             dimensions = reader.ReadUint8();
         }
 
-        int[] popAndCheckCounts(ref OperandStack stack, int dimensions)
+        unsafe int[] popAndCheckCounts(ref OperandStack stack, int dimensions)
         {
-            var counts = new int[dimensions];
+            int[] counts = new int[dimensions];
             for (int i = dimensions - 1; i >= 0; i--)
             {
                 counts[i] = stack.PopInt();

@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using jvmsharp.rtda;
-using jvmsharp.native.java.lang;
 
 namespace jvmsharp.instructions.reserved
 {
@@ -13,7 +8,7 @@ namespace jvmsharp.instructions.reserved
         public override void Execute(ref Frame frame)
         {
 
-            var method = frame.Method();
+            var method = frame.method;
             var className = method.Class().name;
             var methodName = method.Name();
             var methodDescriptor = method.Descriptor();

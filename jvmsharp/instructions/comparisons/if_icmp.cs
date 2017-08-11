@@ -12,7 +12,7 @@
         }
     }
 
-    class IF_ICMPNE : BranchInstruction
+     class IF_ICMPNE : BranchInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
@@ -48,7 +48,7 @@
         }
     }
 
-    class IF_ICMPGT : BranchInstruction
+  unsafe class IF_ICMPGT : BranchInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
@@ -60,7 +60,7 @@
         }
     }
 
-    class IF_ICMPGE : BranchInstruction
+  unsafe  class IF_ICMPGE : BranchInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {

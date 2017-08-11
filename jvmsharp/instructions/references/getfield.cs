@@ -4,11 +4,11 @@ using jvmsharp.rtda.heap;
 
 namespace jvmsharp.instructions.references
 {
-    class GET_FIELD : Index16Instruction
+    unsafe class GET_FIELD : Index16Instruction
     {
         public override void Execute(ref Frame frame)
         {
-            var cp = frame.Method().Class().ConstantPool();
+            var cp = frame.method.Class().constantPool;
             var fieldRef = (ConstantFieldRef)cp.GetConstant(Index);
             var field = fieldRef.ResolvedField();
             if (field.IsStatic())

@@ -2,7 +2,7 @@
 
 namespace jvmsharp.instructions.conversions
 {
-    class I2L : NoOperandsInstruction
+   unsafe class I2L : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
@@ -13,7 +13,7 @@ namespace jvmsharp.instructions.conversions
         }
     }
 
-    class I2F : NoOperandsInstruction
+    unsafe class I2F : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
@@ -24,7 +24,7 @@ namespace jvmsharp.instructions.conversions
         }
     }
 
-    class I2D : NoOperandsInstruction
+    unsafe class I2D : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
@@ -35,7 +35,7 @@ namespace jvmsharp.instructions.conversions
         }
     }
 
-    class I2B : NoOperandsInstruction
+ unsafe  class I2B : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
@@ -46,7 +46,7 @@ namespace jvmsharp.instructions.conversions
         }
     }
 
-    class I2C : NoOperandsInstruction
+    unsafe class I2C : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
@@ -57,7 +57,7 @@ namespace jvmsharp.instructions.conversions
         }
     }
 
-    class I2S : NoOperandsInstruction
+    unsafe class I2S : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {

@@ -17,11 +17,11 @@ namespace jvmsharp.instructions.loads
             {
                 throw new Exception("ArrayIndexOutOfBoundsException");
             }
-             
+
         }
     }
 
-    class AALOAD : NoOperandsInstruction
+    unsafe class AALOAD : NoOperandsInstruction
     {
         public override void Execute(ref Frame frame)
         {
@@ -35,7 +35,7 @@ namespace jvmsharp.instructions.loads
         }
     }
 
-    class BALOAD : NoOperandsInstruction
+    unsafe class BALOAD : NoOperandsInstruction
     {
         public override void Execute(ref Frame frame)
         {
@@ -43,13 +43,14 @@ namespace jvmsharp.instructions.loads
             int index = stack.PopInt();
             rtda.heap.Object arrRef = stack.PopRef();
             XAX.checkNotNull(arrRef);
-           byte[] bytes = arrRef.Bytes();
+            byte[] bytes = arrRef.Bytes();
             XAX.checkIndex(bytes.Length, index);
-            stack.PushInt(bytes[index]);
+            int x = bytes[index];
+            stack.PushInt(x);
         }
     }
 
-    class CALOAD : NoOperandsInstruction
+    unsafe class CALOAD : NoOperandsInstruction
     {
         public override void Execute(ref Frame frame)
         {
@@ -59,11 +60,12 @@ namespace jvmsharp.instructions.loads
             XAX.checkNotNull(arrRef);
             ushort[] chars = arrRef.Chars();
             XAX.checkIndex(chars.Length, index);
-            stack.PushInt(chars[index]);
+            int x = chars[index];
+            stack.PushInt(x);
         }
     }
 
-    class DALOAD : NoOperandsInstruction
+    unsafe class DALOAD : NoOperandsInstruction
     {
         public override void Execute(ref Frame frame)
         {
@@ -77,7 +79,7 @@ namespace jvmsharp.instructions.loads
         }
     }
 
-    class FALOAD : NoOperandsInstruction
+    unsafe class FALOAD : NoOperandsInstruction
     {
         public override void Execute(ref Frame frame)
         {
@@ -85,7 +87,7 @@ namespace jvmsharp.instructions.loads
             int index = stack.PopInt();
             rtda.heap.Object arrRef = stack.PopRef();
             XAX.checkNotNull(arrRef);
-           float[] floats = arrRef.Floats();
+            float[] floats = arrRef.Floats();
             XAX.checkIndex(floats.Length, index);
             stack.PushFloat(floats[index]);
         }
@@ -99,13 +101,13 @@ namespace jvmsharp.instructions.loads
             int index = stack.PopInt();
             rtda.heap.Object arrRef = stack.PopRef();
             XAX.checkNotNull(arrRef);
-           int[] ints = arrRef.Ints();
+            int[] ints = arrRef.Ints();
             XAX.checkIndex(ints.Length, index);
             stack.PushInt(ints[index]);
         }
     }
 
-    class LALOAD : NoOperandsInstruction
+    unsafe class LALOAD : NoOperandsInstruction
     {
         public override void Execute(ref Frame frame)
         {
@@ -119,7 +121,7 @@ namespace jvmsharp.instructions.loads
         }
     }
 
-    class SALOAD : NoOperandsInstruction
+    unsafe class SALOAD : NoOperandsInstruction
     {
         public override void Execute(ref Frame frame)
         {
@@ -127,6 +129,7 @@ namespace jvmsharp.instructions.loads
             int index = stack.PopInt();
             rtda.heap.Object arrRef = stack.PopRef();
             XAX.checkNotNull(arrRef);
+
             short[] shorts = arrRef.Shorts();
             XAX.checkIndex(shorts.Length, index);
             stack.PushInt(shorts[index]);

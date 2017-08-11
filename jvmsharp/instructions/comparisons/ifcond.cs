@@ -1,6 +1,6 @@
 ﻿namespace jvmsharp.instructions.comparisons
 {
-    class IFEQ : BranchInstruction
+    unsafe class IFEQ : BranchInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
@@ -12,7 +12,7 @@
         }
     }
 
-    class IFNE : BranchInstruction
+    unsafe class IFNE : BranchInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
@@ -24,7 +24,7 @@
         }
     }
 
-    class IFLT : BranchInstruction
+    unsafe class IFLT : BranchInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
@@ -36,7 +36,7 @@
         }
     }
 
-    class IFLE: BranchInstruction
+    unsafe class IFLE : BranchInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
@@ -48,19 +48,19 @@
         }
     }
 
-    class IFGT : BranchInstruction
+    unsafe class IFGT : BranchInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
             int val = frame.OperandStack().PopInt();
-            if (val> 0)
+            if (val > 0)
             {
                 branch_logic.Branch(ref frame, Offset);
             }
         }
     }
 
-    class IFGE : BranchInstruction
+    unsafe class IFGE : BranchInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {

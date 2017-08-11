@@ -86,5 +86,15 @@ namespace jvmsharp.rtda.heap
                 }
             }
         }
+
+        internal bool IsPrimitive()
+        {
+          foreach(PrimitiveType pt in PrimitiveTypes.primitiveTypes)
+            {
+                if (pt.Name == name)
+                    return true;
+            }
+            return false;
+        }
     }
 }

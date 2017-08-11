@@ -17,7 +17,7 @@ namespace jvmsharp.instructions.references
 
         public void Execute(ref Frame frame)
         {
-            ConstantPool cp = frame.Method().Class().ConstantPool();
+            ConstantPool cp = frame.method.Class().constantPool;
             ConstantInterfaceMethodref methodRef = (ConstantInterfaceMethodref)cp.GetConstant(index);
             Method resolvedMethod = methodRef.ResolvedInterfaceMethod();
             if (resolvedMethod.IsStatic() || resolvedMethod.IsPrivate())

@@ -21,13 +21,13 @@ namespace jvmsharp.instructions.references
         const byte AT_INT = 10;
         const byte AT_LONG = 11;
 
-        public void Execute(ref Frame frame)
+     unsafe   public void Execute(ref Frame frame)
         {
             var stack = frame.OperandStack();
             int count = stack.PopInt();
             if (count < 0)
                 throw new Exception("java.lang.NegativeArraySizeException");
-            var classLoader = frame.Method().Class().loader;
+            var classLoader = frame.method.Class().loader;
             var arrClass = getPrimitiveArrayClass(ref classLoader, atype);
             rtda.heap.Object arr = arrClass.NewArray((uint)count);
          //   Console.WriteLine("newarray:"+arr.data.GetType().Name);
@@ -41,7 +41,6 @@ namespace jvmsharp.instructions.references
 
         Class getPrimitiveArrayClass(ref ClassLoader loader,byte atype)
         {
-      //      Console.Write("________________________atype" + atype);
             switch (atype)
             {
                 case AT_BOOLEAN:return loader.LoadClass("[Z");

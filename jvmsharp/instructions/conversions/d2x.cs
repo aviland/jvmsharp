@@ -2,7 +2,7 @@
 
 namespace jvmsharp.instructions.conversions
 {
-    class D2F : NoOperandsInstruction
+    unsafe class D2F : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
@@ -13,7 +13,7 @@ namespace jvmsharp.instructions.conversions
         }
     }
 
-    class D2I : NoOperandsInstruction
+    unsafe class D2I : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
@@ -24,7 +24,7 @@ namespace jvmsharp.instructions.conversions
         }
     }
 
-    class D2L: NoOperandsInstruction
+    unsafe class D2L : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {

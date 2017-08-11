@@ -4,8 +4,8 @@ namespace jvmsharp.rtda
 {
     class Thread
     {
-        private int pc;//程序计数器
-        public Stack<Frame> stack;//虚拟机栈
+        private static int pc;//程序计数器
+        public static Stack<Frame> stack;//虚拟机栈
 
         public Thread() { }
 
@@ -21,18 +21,16 @@ namespace jvmsharp.rtda
 
         internal bool isStackEmpty()
         {
-            return this.stack.Count==0;
+            return Thread.stack.Count==0;
         }
-
 
         internal void InitClass(ref heap.Class clas)
         {
-
             //   initClass(this, clas);
         }
 
 
-        public void PushFrame(ref Frame frame)
+        public static void PushFrame(ref Frame frame)
         {
             stack.Push(frame);
         }
@@ -46,11 +44,6 @@ namespace jvmsharp.rtda
         {
             return stack.Peek();
         }
-
-     /*   public Frame newFrame(uint maxLocals, uint maxStack)
-        {
-            return new Frame(this, maxLocals, maxStack);
-        }*/
 
         public Frame newFrame(ref heap.Method method)
         {
@@ -69,7 +62,7 @@ namespace jvmsharp.rtda
 
         public void SetPC(int pc)
         {
-            this.pc = pc;
+            Thread.pc = pc;
         }
     }
 }

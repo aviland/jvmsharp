@@ -1,39 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace jvmsharp.rtda.heap
 {
-    class Slot
+    unsafe struct Slot
     {
-        public int num;//num存储数值
-        public object refer;//refer存储方法等引用
-
-        public Slot()
-        {
-            num = 0;
-            refer = null;
-        }
+        internal int num;//num存储数值
+        internal Object refer;//refer存储方法等引用
     }
 
-    class Slots
+    unsafe class Slots
     {
-        public Slot[] slots;
+        internal Slot[] slots;
 
         public Slots(uint slotCount)
         {
-            List<Slot> ls = new List<Slot>();
-            int i = 0;
-            while (i < slotCount)
+            if (slotCount > 0)
             {
-                ls.Add(new Slot());
-                i++;
+                slots = new Slot[slotCount];
             }
-            slots = ls.ToArray();
+            else slots = null;
         }
-
+        public Slots() { }
         public Slots(object slots)
         {
-            this.slots = ((Slots)slots).slots;
+            slots = ((Slots)slots);
         }
 
         public void SetInt(uint index, int val)
@@ -43,7 +33,8 @@ namespace jvmsharp.rtda.heap
 
         public int GetInt(uint index)
         {
-            return slots[index].num;
+            int i= slots[index].num;
+            return i;
         }
 
         public void SetFloat(uint index, float val)
@@ -53,31 +44,42 @@ namespace jvmsharp.rtda.heap
 
         public float GetFloat(uint index)
         {
-            return BitConverter.ToSingle(BitConverter.GetBytes((float)slots[index].num), 0);
+            float f = BitConverter.ToSingle(BitConverter.GetBytes(slots[index].num), 0);
+            return f;
         }
 
         public void SetLong(uint index, long val)
         {
-            slots[index].num = (int)val;
-            slots[index + 1].num = (int)(val >> 32);
+         //     Console.WriteLine("long set\t" + *val);
+            long x = val;
+            int i = (int)x;
+            int j = (int)(x >> 32);
+            slots[index].num = i;
+            slots[index + 1].num = j;
         }
 
         public long GetLong(uint index)
         {
             uint low = (uint)(slots[index].num);
-            uint high = (uint)(slots[index + 1].num);
-            return (long)high << 32 | low;
+            uint high = (uint)(slots[(index) + 1].num);
+            long lon = ((long)high )<< 32 | (long)low;
+    //            Console.WriteLine("long get\t" + lon);
+            return lon;
         }
 
         public void SetDouble(uint index, double val)
         {
-            SetLong(index, BitConverter.ToInt64(BitConverter.GetBytes(val), 0));
+     //       Console.WriteLine("double set:" + *val);
+            long l = BitConverter.ToInt64(BitConverter.GetBytes(val), 0);
+            SetLong(index, l);
         }
 
         public double GetDouble(uint index)
         {
-            long u64 = GetLong(index);
-            return BitConverter.ToDouble(BitConverter.GetBytes(u64), 0);
+            long l = GetLong(index);
+            double d = BitConverter.ToDouble(BitConverter.GetBytes(l), 0);
+    //        Console.WriteLine("double get:" + d);
+            return d;
         }
 
         public void SetRef(uint index, rtda.heap.Object refer)
@@ -87,7 +89,17 @@ namespace jvmsharp.rtda.heap
 
         public rtda.heap.Object GetRef(uint index)
         {
-            return (rtda.heap.Object)slots[index].refer;
+            return slots[index].refer;
+        }
+
+        public void SetSlot(uint index, Slot slot)
+        {
+            slots[index] = slot;
+        }
+
+        public Slot GetSlot(uint index)
+        {
+            return slots[index];
         }
     }
 }

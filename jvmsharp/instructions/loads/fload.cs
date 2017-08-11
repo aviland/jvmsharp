@@ -1,6 +1,6 @@
 ﻿namespace jvmsharp.instructions.loads
 {
-    class _FLOAD
+    unsafe class _FLOAD
     {
         public static void _fload(ref rtda.Frame frame, uint index)
         {

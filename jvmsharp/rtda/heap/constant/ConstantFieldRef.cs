@@ -45,13 +45,14 @@ namespace jvmsharp.rtda.heap
                 if (field.Name() == name && field.Descriptor() == descriptor)
                     return field;
             }
-            if (c.interfaces != null && c.interfaces.Length > 0)
+            if (c.interfaces != null) { 
                 for (int i = 0; i < c.interfaces.Length; i++)
                 {
                     Field field = lookupField(ref c.interfaces[i], ref name, ref descriptor);
                     if (field != null)
                         return field;
                 }
+            }
             if (c.superClass != null)
                 return lookupField(ref c.superClass, ref name, ref descriptor);
             return null;

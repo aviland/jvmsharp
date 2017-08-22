@@ -1,6 +1,6 @@
 ﻿namespace jvmsharp.instructions.math
 {
-    unsafe class IOR : NoOperandsInstruction
+     class IOR : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
@@ -12,7 +12,7 @@
         }
     }
 
-  unsafe  class LOR : NoOperandsInstruction
+    class LOR : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {

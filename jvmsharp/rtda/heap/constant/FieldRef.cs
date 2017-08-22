@@ -1,21 +1,24 @@
-﻿using System;
+﻿using jvmsharp.classfile;
+using System;
 
 namespace jvmsharp.rtda.heap
 {
-    class ConstantFieldRef : MemberRef
+    class FieldRef : MemberRef
     {
-        Field field;
+        public Field field;
 
         public ConstantPool CP()
         {
             return cp;
         }
 
-        public ConstantFieldRef(ref ConstantPool cp, classfile.ConstantFieldrefInfo refInfo)
+        public FieldRef newConstantFieldRef(ref ConstantPool cp,ref classfile.ConstantFieldrefInfo refInfo)
         {
-            this.cp = cp;
-            classfile.ConstantMemberrefInfo cmi = refInfo;
-            copyMemberRefInfo(ref cmi);
+            FieldRef refs = new FieldRef();
+            refs.cp = cp;
+            ConstantMemberrefInfo cmi = refInfo;
+            refs.copyMemberRefInfo(cmi);
+            return refs;
         }
 
         public Field ResolvedField()
@@ -33,7 +36,7 @@ namespace jvmsharp.rtda.heap
             Field f = lookupField(ref c, ref name, ref descriptor);
             if (f == null)
                 throw new Exception("java.lang.NoSuchFieldError");
-            if (!f.isAccessibleTo(ref d))
+            if (!f.isAccessibleTo( d))
                 throw new Exception("java.lang.IllegalAccessError");
             field = f;
         }

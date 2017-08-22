@@ -8,27 +8,10 @@ namespace jvmsharp.classfile
         ushort bootstrapMethodAttrIndex;
         ushort nameAndTypeIndex;
 
-        public ConstantInvokeDynamicInfo(ConstantPool cp)
-        {
-            this.cp = cp;
-        }
-
         public override void readInfo(ref ClassReader reader)
         {
             bootstrapMethodAttrIndex = reader.readUint16();
             nameAndTypeIndex = reader.readUint16();
-        }
-
-        public Tuple<string, string> NameAndType()
-        {
-            return cp.getNameAndType(nameAndTypeIndex);
-        }
-
-        public Tuple<ushort, ushort[]> BootstrapMethodInfo()
-        {
-            BootstrapMethodsAttribute bmAttr = cp.cf.BootstrapMethodsAttribute();
-            BootstrapMethod bm = bmAttr.bootstrapMethods[bootstrapMethodAttrIndex];
-            return Tuple.Create<UInt16, UInt16[]>(bm.GetBootstrapMethodRef(), bm.GetBootstrapArguments());
         }
     }
 

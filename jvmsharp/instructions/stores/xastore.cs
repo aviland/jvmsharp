@@ -40,7 +40,7 @@ namespace jvmsharp.instructions.stores
         }
     }
 
-    unsafe class CASTORE : NoOperandsInstruction
+     class CASTORE : NoOperandsInstruction
     {
         public override void Execute(ref Frame frame)
         {
@@ -56,7 +56,7 @@ namespace jvmsharp.instructions.stores
         }
     }
 
-    unsafe class DASTORE : NoOperandsInstruction
+     class DASTORE : NoOperandsInstruction
     {
         public override void Execute(ref Frame frame)
         {
@@ -72,7 +72,7 @@ namespace jvmsharp.instructions.stores
         }
     }
 
-    unsafe class FASTORE : NoOperandsInstruction
+     class FASTORE : NoOperandsInstruction
     {
         public override void Execute(ref Frame frame)
         {
@@ -88,7 +88,7 @@ namespace jvmsharp.instructions.stores
         }
     }
 
-    unsafe class IASTORE : NoOperandsInstruction
+     class IASTORE : NoOperandsInstruction
     {
         public override void Execute(ref Frame frame)
         {

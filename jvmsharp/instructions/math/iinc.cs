@@ -9,8 +9,8 @@ namespace jvmsharp.instructions.math
 
         public void FetchOperands(ref BytecodeReader reader)
         {
-            Index = Convert.ToUInt32(reader.ReadUint8());
-            Const = Convert.ToInt32(reader.ReadInt8());
+            Index = reader.ReadUint8();
+            Const = reader.ReadInt8();
         }
 
         public void Execute(ref rtda.Frame frame)
@@ -18,7 +18,7 @@ namespace jvmsharp.instructions.math
             var localVars = frame.LocalVars();
             int val = localVars.GetInt(Index);
             val += Const;
-            localVars.SetInt(Index, val);
+            frame.LocalVars().SetInt(Index, val);
         }
     }
 }

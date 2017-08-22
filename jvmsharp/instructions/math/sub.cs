@@ -1,6 +1,6 @@
 ﻿namespace jvmsharp.instructions.math
 {
-    unsafe class ISUB : NoOperandsInstruction
+     class ISUB : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
@@ -12,7 +12,7 @@
         }
     }
 
-    unsafe class LSUB : NoOperandsInstruction
+     class LSUB : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
@@ -24,7 +24,7 @@
         }
     }
 
-    unsafe class FSUB : NoOperandsInstruction
+     class FSUB : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
@@ -36,7 +36,7 @@
         }
     }
 
-   unsafe class DSUB : NoOperandsInstruction
+    class DSUB : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {

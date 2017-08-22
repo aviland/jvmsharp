@@ -10,7 +10,7 @@
             this.cp = cp;
         }
 
-        public void readInfo(ref ClassReader reader)
+        public override void readInfo(ref ClassReader reader)
         {
             signatureIndex = reader.readUint16();
         }

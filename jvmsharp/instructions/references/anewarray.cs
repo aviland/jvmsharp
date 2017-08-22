@@ -9,7 +9,7 @@ namespace jvmsharp.instructions.references
         public override void Execute(ref Frame frame)
         {
             ConstantPool cp = frame.method.Class().constantPool;
-            ConstantClassRef classRef = (ConstantClassRef)cp.GetConstant(Index);
+            ClassRef classRef = (ClassRef)cp.GetConstant(Index);
             Class componentClass = classRef.ResolvedClass();
 
             OperandStack stack = frame.OperandStack();
@@ -19,7 +19,7 @@ namespace jvmsharp.instructions.references
 
             Class arrClass = componentClass.ArrayClass();
             rtda.heap.Object arr = arrClass.NewArray((uint)count);
-            stack.PushRef(arr);
+            frame.OperandStack().PushRef(arr);
         }
     }
 }

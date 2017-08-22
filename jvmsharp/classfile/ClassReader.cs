@@ -22,7 +22,6 @@ namespace jvmsharp.classfile
         public ushort readUint16()
         {
             byte[] newd = new byte[2];
-
             Array.Copy(data, 0, newd, 0, 2);
             Array.Reverse(newd);//intel cpu是小端芯片，需要倒序
             data = data.Skip(2).ToArray();

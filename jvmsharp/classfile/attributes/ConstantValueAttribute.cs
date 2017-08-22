@@ -4,7 +4,7 @@
     {
         ushort constantValueIndex;
 
-        public void readInfo(ref ClassReader reader)
+        public override void readInfo(ref ClassReader reader)
         {
             constantValueIndex = reader.readUint16();
         }

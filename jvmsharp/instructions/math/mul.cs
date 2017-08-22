@@ -1,18 +1,17 @@
 ﻿namespace jvmsharp.instructions.math
 {
-    unsafe class IMUL : NoOperandsInstruction
+     class IMUL : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
-            rtda.OperandStack stack = frame.OperandStack();
-            int v2 = stack.PopInt();
-            int v1 = stack.PopInt();
+            int v2 = frame.OperandStack().PopInt();
+            int v1 = frame.OperandStack().PopInt();
             int result = v1 * v2;
-            stack.PushInt(result);
+            frame.OperandStack().PushInt(result);
         }
     }
 
-    unsafe class LMUL : NoOperandsInstruction
+     class LMUL : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {

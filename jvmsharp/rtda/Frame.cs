@@ -1,4 +1,7 @@
-﻿namespace jvmsharp.rtda
+﻿using jvmsharp.rtda.heap;
+using System;
+
+namespace jvmsharp.rtda
 {
     class Frame
     {
@@ -6,27 +9,19 @@
         internal  OperandStack operandStack;
         internal Thread thread;
         internal int nextPC;
-        internal  heap.Method method;
-
+        internal  Method method;
+        internal Frame lower;
         public Frame(Thread thread, heap.Method method)
         {
             this.thread = thread;
             this.method = method;
-            localVars = new LocalVars(method.MaxLocals());
-            operandStack = new OperandStack(method.MaxStack());
+            this.localVars = new LocalVars().newLocalVars(method.MaxLocals());
+            this.operandStack = new rtda.OperandStack().newOperandStack(method.maxStack);
         }
 
-        public Frame(Thread thread, uint maxLocals, uint maxStack)
+        internal Method Method()
         {
-            this.thread = thread;
-            localVars = new LocalVars(maxLocals);
-            operandStack = new OperandStack(maxStack);
-        }
-
-        public Frame( uint maxLocals, uint maxStack)
-        {
-            localVars = new LocalVars(maxLocals);
-            operandStack = new OperandStack(maxStack);
+            return this.method;
         }
 
         internal int NextPC()
@@ -56,7 +51,7 @@
 
         internal void RevertNextPC()
         {
-            nextPC = thread.PC();
+            nextPC = thread.pc;
         }
     }
 }

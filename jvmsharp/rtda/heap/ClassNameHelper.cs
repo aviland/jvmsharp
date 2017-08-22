@@ -20,7 +20,7 @@ namespace jvmsharp.rtda.heap
             { "double","D"}
         };
 
-        public static string getComponentClassName(string className)
+        public  string getComponentClassName(string className)
         {
             if (className[0] == '[')
             {
@@ -29,20 +29,38 @@ namespace jvmsharp.rtda.heap
             }
             throw new Exception("Not array: " + className);
         }
-        public static string DotToSlash(string name)  {
+         string toDescriptor(string className)
+        {
+            if (className[0] == '[')
+                return className;
+            string d = null;
+            if (primitiveTypes.ContainsKey(className))
+                d = primitiveTypes[className];
+            if (d != null)
+                return d;
+            return 'L' + className + ";";
+        }
+        public static string DotToSlash(string name)
+        {
             return name.Replace('.', '/');
-}
-    public static string toClassName(string descriptor)
+        }
+        public  string getArrayClassName(string className)
+        {
+            return "[" + toDescriptor(className);
+        }
+        public  string toClassName(string descriptor)
         {
             char ch = descriptor[0];
             if (ch == '[') return descriptor;
-            if (ch == 'L') return descriptor.Substring(1);
+            if (ch == 'L') return descriptor.Substring(1, descriptor.Length - 2);
             foreach (var s in primitiveTypes)
             {
                 if (s.Value == descriptor)
+                {
                     return s.Key;
+                }
             }
-            throw new Exception("Invalid descriptor:" + descriptor);
+            throw new Exception("Invalid raw:" + descriptor);
         }
     }
 }

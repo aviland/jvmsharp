@@ -2,13 +2,13 @@
 
 namespace jvmsharp.rtda.heap
 {
-    unsafe struct Slot
+     struct Slot
     {
         internal int num;//num存储数值
         internal Object refer;//refer存储方法等引用
     }
 
-    unsafe class Slots
+    class Slots
     {
         internal Slot[] slots;
 
@@ -33,8 +33,7 @@ namespace jvmsharp.rtda.heap
 
         public int GetInt(uint index)
         {
-            int i= slots[index].num;
-            return i;
+            return slots[index].num;
         }
 
         public void SetFloat(uint index, float val)
@@ -62,7 +61,7 @@ namespace jvmsharp.rtda.heap
         {
             uint low = (uint)(slots[index].num);
             uint high = (uint)(slots[(index) + 1].num);
-            long lon = ((long)high )<< 32 | (long)low;
+            long lon = ((long)high )<< 32 | low;
     //            Console.WriteLine("long get\t" + lon);
             return lon;
         }
@@ -87,7 +86,7 @@ namespace jvmsharp.rtda.heap
             slots[index].refer = refer;
         }
 
-        public rtda.heap.Object GetRef(uint index)
+        internal Object GetRef(uint index)
         {
             return slots[index].refer;
         }

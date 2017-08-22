@@ -2,7 +2,7 @@
 
 namespace jvmsharp.instructions.loads
 {
-   unsafe class _ALOAD
+   class _ALOAD
     {
         public static void _aload(ref Frame frame, uint index)
         {

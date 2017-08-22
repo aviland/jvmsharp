@@ -6,7 +6,7 @@ namespace jvmsharp.instructions.constants
 {
     class _LDC
     {
-  unsafe      public static void _ldc(ref Frame frame, uint index)
+        public static void _ldc(ref Frame frame, uint index)
         {
             OperandStack stack = frame.OperandStack();
             Class clas = frame.method.Class();
@@ -16,18 +16,18 @@ namespace jvmsharp.instructions.constants
             {
                 case "Int32":
                     int ic = (int)c;
-                    stack.PushInt(ic); break;
+                    frame.operandStack.PushInt(ic); break;
                 case "Single":
                     float fc = (float)c;
-                    stack.PushFloat(fc); break;
+                    frame.operandStack.PushFloat(fc); break;
                 case "String":
-                    var internedStr = StringPool.JString(ref clas.loader, (string)c);
-                    stack.PushRef(internedStr);
+                    var internedStr = StringPool.JString( clas.loader, (string)c);
+                    frame.operandStack.PushRef(internedStr);
                     break;
-                case "ConstantClassRef":
-                    ConstantClassRef classRef = (ConstantClassRef)c;
+                case "ClassRef":
+                    ClassRef classRef = (ClassRef)c;
                     rtda.heap.Object classObj = classRef.ResolvedClass().jClass;
-                    stack.PushRef(classObj);
+                    frame.operandStack.PushRef(classObj);
                     break;
                 default:
                     // todo

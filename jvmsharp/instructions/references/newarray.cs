@@ -21,7 +21,7 @@ namespace jvmsharp.instructions.references
         const byte AT_INT = 10;
         const byte AT_LONG = 11;
 
-     unsafe   public void Execute(ref Frame frame)
+        public void Execute(ref Frame frame)
         {
             var stack = frame.OperandStack();
             int count = stack.PopInt();

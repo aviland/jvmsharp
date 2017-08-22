@@ -21,18 +21,19 @@ namespace jvmsharp.native
         public static NativeMethod FindNativeMethod(string className, string methodName, string methodDescriptor)
         {
             string key = className + "~" + methodName + "~" + methodDescriptor;
-         //   Console.WriteLine(key);
+            // Console.WriteLine(key);
             if (registry.ContainsKey(key))
                 return registry[key];
-            if (methodDescriptor == "()V" && methodName == "registerNatives")
+            if (methodDescriptor == "()V")
             {
-                return emptyNativeMethod;
+                if (methodName == "registerNatives" || methodName == "initIDs")
+                {
+                    return emptyNativeMethod;
+                }
             }
             return null;
         }
-        private static void emptyNativeMethod(ref rtda.Frame frame)
-        {
-        }
 
+        private static void emptyNativeMethod(ref rtda.Frame frame) { }
     }
 }

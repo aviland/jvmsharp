@@ -1,6 +1,8 @@
-﻿namespace jvmsharp.instructions.control
+﻿using System;
+
+namespace jvmsharp.instructions.control
 {
-    class LOOKUP_SWITCH:Instruction
+    class LOOKUP_SWITCH : Instruction
     {
         int defaultOffset;
         int npairs;
@@ -14,7 +16,7 @@
             matchOffsets = reader.ReadInt32s(npairs * 2);
         }
 
-      unsafe  public void Execute(ref rtda.Frame frame)
+        public void Execute(ref rtda.Frame frame)
         {
             int key = frame.OperandStack().PopInt();
             for (int i = 0; i < npairs * 2; i += 2)
@@ -22,11 +24,11 @@
                 if (matchOffsets[i] == key)
                 {
                     int offset = matchOffsets[i + 1];
-                    branch_logic.Branch(ref frame, offset);
+                    BranchLogic.Branch(ref frame, offset);
                     return;
                 }
             }
-            branch_logic.Branch(ref frame, defaultOffset);
+            BranchLogic.Branch(ref frame, defaultOffset);
         }
     }
 }

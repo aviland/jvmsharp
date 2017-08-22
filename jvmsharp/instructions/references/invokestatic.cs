@@ -9,7 +9,7 @@ namespace jvmsharp.instructions.references
         public override void Execute(ref Frame frame)
         {
             ConstantPool cp = frame.method.Class().constantPool;
-            ConstantMethodRef methodRef = (ConstantMethodRef)cp.GetConstant(Index);
+            MethodRef methodRef = (MethodRef)cp.GetConstant(Index);
             Method resolvedMethod = methodRef.ResolvedMethod();
             if (!resolvedMethod.IsStatic())
                 throw new System.Exception("java.lang.IncompatibleClassChangeError");
@@ -18,11 +18,11 @@ namespace jvmsharp.instructions.references
             if (!clas.InitStarted())
             {
                 frame.RevertNextPC();
-                classInit_logic.InitClass(ref frame.thread, ref clas);
+                ClassInitLogic.InitClass(ref frame.thread, ref clas);
                 return;
             }
 
-            invoke_logic.InvokeMethod(ref frame, ref resolvedMethod);
+            InvokeLogic.InvokeMethod(ref frame, ref resolvedMethod);
         }
     }
 }

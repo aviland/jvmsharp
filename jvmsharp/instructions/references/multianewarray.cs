@@ -13,7 +13,7 @@ namespace jvmsharp.instructions.references
         public void Execute(ref Frame frame)
         {
             ConstantPool cp = frame.method.Class().constantPool;
-            ConstantClassRef classRef = (ConstantClassRef)cp.GetConstant(index);
+            ClassRef classRef = (ClassRef)cp.GetConstant(index);
             Class arrClass = classRef.ResolvedClass();
 
             OperandStack stack = frame.OperandStack();
@@ -28,7 +28,7 @@ namespace jvmsharp.instructions.references
             dimensions = reader.ReadUint8();
         }
 
-        unsafe int[] popAndCheckCounts(ref OperandStack stack, int dimensions)
+         int[] popAndCheckCounts(ref OperandStack stack, int dimensions)
         {
             int[] counts = new int[dimensions];
             for (int i = dimensions - 1; i >= 0; i--)

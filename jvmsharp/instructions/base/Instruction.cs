@@ -1,4 +1,6 @@
-﻿namespace jvmsharp.instructions
+﻿using System;
+
+namespace jvmsharp.instructions
 {
     interface Instruction
     {
@@ -21,7 +23,9 @@
 
          void Instruction.FetchOperands(ref BytecodeReader reader)
          {
-            Offset = reader.ReadInt16();
+            Offset =  reader.ReadInt16();
+         //   Console.WriteLine("00000000000000000000000");
+        //    Console.WriteLine(Offset);
          }
 
          public abstract void Execute(ref rtda.Frame frame);
@@ -41,11 +45,11 @@
 
      abstract class Index16Instruction : Instruction
     {
-        protected static ushort Index;
+        protected uint Index;
 
         void Instruction.FetchOperands(ref BytecodeReader reader)
         {
-            Index16Instruction.Index = reader.ReadUint16();
+            Index = reader.ReadUint16();
         }
 
        public  abstract void Execute(ref rtda.Frame frame);

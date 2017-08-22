@@ -9,7 +9,7 @@ namespace jvmsharp.instructions.conversions
             rtda.OperandStack stack = frame.OperandStack();
             long l = stack.PopLong();
             int i = Convert.ToInt32(l);
-            stack.PushInt(i);
+            frame.operandStack.PushInt(i);
         }
     }
 
@@ -20,7 +20,7 @@ namespace jvmsharp.instructions.conversions
             rtda.OperandStack stack = frame.OperandStack();
             long l = stack.PopLong();
             float f = Convert.ToSingle(l);
-            stack.PushFloat(f);
+            frame.operandStack.PushFloat(f);
         }
     }
 
@@ -31,7 +31,7 @@ namespace jvmsharp.instructions.conversions
             rtda.OperandStack stack = frame.OperandStack();
             long l = stack.PopLong();
             double d = Convert.ToDouble(l);
-            stack.PushDouble(d);
+            frame.operandStack.PushDouble(d);
         }
     }
 }

@@ -18,7 +18,7 @@
                 i = 1;
             else
                 i = -1;
-            stack.PushInt(i);
+            frame.operandStack.PushInt(i);
         }
     }
 

@@ -9,8 +9,8 @@ namespace jvmsharp.instructions.stack
             rtda.OperandStack stack = frame.OperandStack();
             Slot slot1 = stack.PopSlot();
             Slot slot2 = stack.PopSlot();
-            stack.PushSlot(ref slot1);
-            stack.PushSlot(ref slot2);
+            stack.PushSlot( slot1);
+            stack.PushSlot( slot2);
         }
     }
 }

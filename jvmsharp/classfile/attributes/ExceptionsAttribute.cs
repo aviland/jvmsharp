@@ -4,11 +4,11 @@
     {
         ushort[] exceptionIndexTable;
 
-        public void readInfo(ref ClassReader reader)
+        public override void readInfo(ref ClassReader reader)
         {
             exceptionIndexTable = reader.readUint16s();
         }
 
-        ushort[] ExceptionIndexTable() { return exceptionIndexTable; }
+       internal ushort[] ExceptionIndexTable() { return exceptionIndexTable; }
     }
 }

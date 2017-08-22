@@ -1,10 +1,12 @@
-﻿namespace jvmsharp.instructions.control
+﻿using System;
+
+namespace jvmsharp.instructions.control
 {
     class  GOTO:BranchInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
-            branch_logic.Branch(ref frame, Offset);
+            BranchLogic.Branch(ref frame, this.Offset);
         }
     }
 }

@@ -10,49 +10,48 @@ namespace jvmsharp.rtda.heap
     {
         object cloneData()
         {
-            object elements, elements2;
             switch (data.GetType().Name)
             {
-                case "Byte[]":
-                    elements = (Byte[])data;
-                    elements2 = new Object[((Byte[])elements).Length];
-                    System.Array.Copy((Byte[])elements, (Byte[])elements2, ((Byte[])elements).Length);
-                    return elements2;
+                case "SByte[]":
+                    SByte[] elementsSByte = (SByte[])data;
+                    SByte[] elements2SByte = new SByte[elementsSByte.Length];
+                    System.Array.Copy(elementsSByte, elements2SByte, elementsSByte.Length);
+                    return elementsSByte;
                 case "Int16[]":
-                    elements = (Int16[])data;
-                    elements2 = new Object[((Int16[])elements).Length];
-                    System.Array.Copy((Int16[])elements, (Int16[])elements2, ((Int16[])elements).Length);
-                    return elements2;
+                    Int16[] elementsInt16 = (Int16[])data;
+                    Int16[] elements2Int16 = new Int16[elementsInt16.Length];
+                    System.Array.Copy(elementsInt16, elements2Int16, elementsInt16.Length);
+                    return elements2Int16;
                 case "UInt16[]":
-                    elements = (UInt16[])data;
-                    elements2 = new Object[((UInt16[])elements).Length];
-                    System.Array.Copy((UInt16[])elements, (UInt16[])elements2, ((UInt16[])elements).Length);
-                    return elements2;
+                    UInt16[]  elementsUInt16 = (UInt16[])data;
+                    UInt16[] elements2UInt16 = new UInt16[elementsUInt16.Length];
+                    System.Array.Copy(elementsUInt16, elements2UInt16, elementsUInt16.Length);
+                    return elements2UInt16;
                 case "Int32[]":
-                    elements = (Int32[])data;
-                    elements2 = new Object[((Int32[])elements).Length];
-                    System.Array.Copy((Int32[])elements, (Int32[])elements2, ((Int32[])elements).Length);
-                    return elements2;
+                    Int32[] elementsInt32 = (Int32[])data;
+                    Int32[] elements2Int32 = new Int32[elementsInt32.Length];
+                    System.Array.Copy(elementsInt32, elements2Int32, elementsInt32.Length);
+                    return elements2Int32;
                 case "Int64[]":
-                    elements = (Int64[])data;
-                    elements2 = new Object[((Int64[])elements).Length];
-                    System.Array.Copy((Int64[])elements, (Int64[])elements2, ((Int64[])elements).Length);
-                    return elements2;
+                    Int64[] elementsInt64 = (Int64[])data;
+                    Int64[] elements2Int64 = new Int64[elementsInt64.Length];
+                    System.Array.Copy(elementsInt64, elements2Int64, elementsInt64.Length);
+                    return elements2Int64;
                 case "Single[]":
-                    elements = (Single[])data;
-                    elements2 = new Object[((Single[])elements).Length];
-                    System.Array.Copy((Single[])elements, (Single[])elements2, ((Single[])elements).Length);
-                    return elements2;
+                    Single[] elementsSingle = (Single[])data;
+                    Single[] elements2Single = new Single[elementsSingle.Length];
+                    System.Array.Copy(elementsSingle, elements2Single, elementsSingle.Length);
+                    return elements2Single;
                 case "Double[]":
-                    elements = (Double[])data;
-                    elements2 = new Object[((Double[])elements).Length];
-                    System.Array.Copy((Double[])elements, (Double[])elements2, ((Double[])elements).Length);
-                    return elements2;
+                    Double[] elementsDouble = (Double[])data;
+                    Double[] elements2Double = new Double[elementsDouble.Length];
+                    System.Array.Copy(elementsDouble, elements2Double,elementsDouble.Length);
+                    return elements2Double;
                 case "Object[]":
-                    elements = (Object[])data;
-                    elements2 = new Object[((Object[])elements).Length];
-                    System.Array.Copy((Object[])elements, (Object[])elements2, ((Object[])elements).Length);
-                    return elements2;
+                    Object[] elementsObject = (Object[])data;
+                    Object[] elements2Object = new Object[elementsObject.Length];
+                    System.Array.Copy(elementsObject, elements2Object, elementsObject.Length);
+                    return elements2Object;
                 default:
                     Slots slots =(Slots) data;
                     Slots slots2 = new Slots((uint)slots.slots.Length);
@@ -60,6 +59,7 @@ namespace jvmsharp.rtda.heap
                     return slots2;
             }
         }
+
         internal Object Clone()
         {
             return new Object(clas, cloneData());

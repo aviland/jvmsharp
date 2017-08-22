@@ -10,7 +10,7 @@ namespace jvmsharp.instructions.references
             var currentMethod = frame.method;
             var currentClass = currentMethod.Class();
             var cp = currentClass.constantPool;
-            rtda.heap.ConstantFieldRef fieldRef = (rtda.heap.ConstantFieldRef)cp.GetConstant(Index);
+            rtda.heap.FieldRef fieldRef = (rtda.heap.FieldRef)cp.GetConstant(Index);
             var field = fieldRef.ResolvedField();
 
             if (field.IsStatic())
@@ -22,7 +22,7 @@ namespace jvmsharp.instructions.references
             string descriptor = field.Descriptor();
             uint slotId = field.slotId;
             OperandStack stack = frame.OperandStack();
-            //         Console.WriteLine("ddddddddddddddddddddd" + descriptor[0]);
+            //         Console.WriteLine("ddddddddddddddddddddd" + raw[0]);
             switch (descriptor[0])
             {
                 case 'Z':

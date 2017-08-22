@@ -11,12 +11,12 @@ namespace jvmsharp.instructions.references
     {
         public override void Execute(ref Frame frame)
         {
-            OperandStack stack = frame.OperandStack();
-            rtda.heap.Object arrRef = stack.PopRef();
+            rtda.heap.Object arrRef = frame.operandStack.PopRef();
             if (arrRef == null)
                 throw new Exception("java.lang.NullPointerException");
             int arrLen = arrRef.ArrayLength();
-            stack.PushInt(arrLen);
+      //   Console.WriteLine("ARRAY_LENGTH"+arrLen);
+            frame.operandStack.PushInt(arrLen);
         }
     }
 }

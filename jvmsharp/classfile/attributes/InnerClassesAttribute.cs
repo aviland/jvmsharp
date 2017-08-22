@@ -16,11 +16,11 @@
         }
     }
 
-    struct InnerClassesAttribute : AttributeInfoInterface
+    class InnerClassesAttribute : AttributeInfoInterface
     {
         InnerClassInfo[] classes;
 
-        public void readInfo(ref ClassReader reader)
+        public override void readInfo(ref ClassReader reader)
         {
             ushort numberOfClasses = reader.readUint16();
             classes = new InnerClassInfo[numberOfClasses];

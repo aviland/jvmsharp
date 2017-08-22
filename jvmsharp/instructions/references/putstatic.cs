@@ -11,13 +11,13 @@ namespace jvmsharp.instructions.references
             Method currentMethod = frame.method;
             Class currentClass = currentMethod.Class();
             ConstantPool cp = currentClass.constantPool;
-            ConstantFieldRef fieldRef = (ConstantFieldRef)cp.GetConstant(Index);
+            FieldRef fieldRef = (FieldRef)cp.GetConstant(Index);
             Field field = fieldRef.ResolvedField();
-            Class clas = field.Class();
+            Class clas = field.clas;
             if (!clas.InitStarted())
             {
                 frame.RevertNextPC();
-                classInit_logic.InitClass(ref frame.thread, ref clas);
+                ClassInitLogic.InitClass(ref frame.thread, ref clas);
                 return;
             }
 
@@ -28,7 +28,7 @@ namespace jvmsharp.instructions.references
                     throw new Exception("java.lang.IllegalAccessError");
             var descriptor = field.Descriptor();
             uint slotId = field.slotId;
-            //  Slots slots = clas.staticVars;
+      //        Slots slots = clas.staticVars;
             OperandStack stack = frame.OperandStack();
             switch (descriptor[0])
             {
@@ -50,8 +50,7 @@ namespace jvmsharp.instructions.references
                     break;
                 case 'L':
                 case '[':
-                    rtda.heap.Object rho = stack.PopRef();
-                    clas.staticVars.SetRef(slotId, rho);
+                    clas.staticVars.SetRef(slotId, stack.PopRef());
                     break;
             }
         }

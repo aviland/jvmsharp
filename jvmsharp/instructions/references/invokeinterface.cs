@@ -18,7 +18,7 @@ namespace jvmsharp.instructions.references
         public void Execute(ref Frame frame)
         {
             ConstantPool cp = frame.method.Class().constantPool;
-            ConstantInterfaceMethodref methodRef = (ConstantInterfaceMethodref)cp.GetConstant(index);
+            InterfaceMethodref methodRef = (InterfaceMethodref)cp.GetConstant(index);
             Method resolvedMethod = methodRef.ResolvedInterfaceMethod();
             if (resolvedMethod.IsStatic() || resolvedMethod.IsPrivate())
                 throw new Exception("java.lang.IncompatibleClassChangeError");
@@ -27,12 +27,12 @@ namespace jvmsharp.instructions.references
                 throw new Exception("java.lang.NullPointerException");
             if (!refs.clas.isImplements(methodRef.ResolvedClass()))
                 throw new Exception("java.lang.IncompatibleClassChangeError");
-            Method methodToBeInvoked = new ConstantMethodRef().lookupMethodInClass(ref refs.clas, methodRef.Name(), methodRef.Descriptor());
+            Method methodToBeInvoked = MethodLookup.lookupMethodInClass(ref refs.clas, methodRef.Name(), methodRef.Descriptor());
             if (methodToBeInvoked == null || methodToBeInvoked.IsAbstract())
                 throw new Exception("java.lang.AbstractMethodError");
-            if (methodToBeInvoked.IsPublic())
+            if (!methodToBeInvoked.IsPublic())
                 throw new Exception("java.lang.IllegalAccessError");
-            invoke_logic.InvokeMethod(ref frame, ref methodToBeInvoked);
+            InvokeLogic.InvokeMethod(ref frame, ref methodToBeInvoked);
         }
     }
 }

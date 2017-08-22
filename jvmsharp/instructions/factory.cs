@@ -8,6 +8,7 @@ using jvmsharp.instructions.conversions;
 using jvmsharp.instructions.stores;
 using jvmsharp.instructions.stack;
 using jvmsharp.instructions.reserved;
+using jvmsharp.instructions.comparisons;
 #region  jvmsharp.instructions.math
 using iadd = jvmsharp.instructions.math.IADD;
 using ladd = jvmsharp.instructions.math.LADD;
@@ -73,9 +74,9 @@ namespace jvmsharp.instructions
 {
     class factory
     {
-        public Instruction NewInstruction(byte opcode)
+        public static Instruction NewInstruction(byte opcode)
         {
-           // Console.WriteLine("0x" + Convert.ToString(opcode, 16));
+            // Console.WriteLine("0x" + Convert.ToString(opcode, 16));
             switch (Convert.ToInt32(opcode))
             {
                 #region  constants
@@ -239,23 +240,23 @@ namespace jvmsharp.instructions
                 case 0x93: return new I2S();
                 #endregion
                 #region conparisons
-                case 0x94: return new lcmp();
-                case 0x95: return new fcmpl();
-                case 0x96: return new fcmpg();
+                case 0x94: return new LCMP();
+                case 0x95: return new FCMPL();
+                case 0x96: return new FCMPG();
                 case 0x97: return new dcmpl();
                 case 0x98: return new dcmpg();
                 case 0x99: return new ifeq();
                 case 0x9a: return new ifne();
-                case 0x9b: return new iflt();
+                case 0x9b: return new IFLT();
                 case 0x9c: return new ifge();
                 case 0x9d: return new ifgt();
                 case 0x9e: return new ifle();
-                case 0x9f: return new if_icmpeq();
-                case 0xa0: return new if_icmpne();
-                case 0xa1: return new if_icmplt();
-                case 0xa2: return new if_icmpge();
+                case 0x9f: return new IF_ICMPEQ();
+                case 0xa0: return new IF_ICMPNE();
+                case 0xa1: return new IF_ICMPLT();
+                case 0xa2: return new IF_ICMPGE();
                 case 0xa3: return new if_icmpgt();
-                case 0xa4: return new if_icmple();
+                case 0xa4: return new IF_ICMPLE();
                 case 0xa5: return new if_acmpeq();
                 case 0xa6: return new if_acmpne();
                 #endregion
@@ -286,11 +287,11 @@ namespace jvmsharp.instructions
                 case 0xbc: return new NEW_ARRAY();
                 case 0xbd: return new ANEW_ARRAY();
                 case 0xbe: return new ARRAY_LENGTH();
-                /*  case 0xbf:*/
+                case 0xbf: return new ATHROW();
                 case 0xc0: return new CHECK_CAST();
                 case 0xc1: return new INSTANCE_OF();
-                /*   case 0xc2: 
-                 case 0xc3: */
+                case 0xc2: return new MONITOR_ENTER();
+                case 0xc3: return new MONITOR_EXIT();
                 #endregion
                 #region extended
                 case 0xc4: return new WIDE();
@@ -298,9 +299,9 @@ namespace jvmsharp.instructions
                 case 0xc6: return new IFNULL();
                 case 0xc7: return new IFNONNULL();
                 case 0xc8: return new GOTO_W();
-                case 0xc9:
+                /*   case 0xc9:*/
                 #endregion
-                case 0xfe:return new INVOKE_NATIVE();
+                case 0xfe: return new INVOKE_NATIVE();
                 default: throw new Exception("Unsupported opcode: 0x" + Convert.ToString(opcode, 16) + "!");
             }
         }

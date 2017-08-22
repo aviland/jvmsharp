@@ -21,7 +21,7 @@ namespace jvmsharp.instructions.loads
         }
     }
 
-    unsafe class AALOAD : NoOperandsInstruction
+     class AALOAD : NoOperandsInstruction
     {
         public override void Execute(ref Frame frame)
         {
@@ -31,11 +31,11 @@ namespace jvmsharp.instructions.loads
             XAX.checkNotNull(arrRef);
             rtda.heap.Object[] refs = arrRef.Refs();
             XAX.checkIndex(refs.Length, index);
-            stack.PushRef(refs[index]);
+            frame.operandStack.PushRef(refs[index]);
         }
     }
 
-    unsafe class BALOAD : NoOperandsInstruction
+     class BALOAD : NoOperandsInstruction
     {
         public override void Execute(ref Frame frame)
         {
@@ -46,7 +46,7 @@ namespace jvmsharp.instructions.loads
             byte[] bytes = arrRef.Bytes();
             XAX.checkIndex(bytes.Length, index);
             int x = bytes[index];
-            stack.PushInt(x);
+            frame.operandStack.PushInt(x);
         }
     }
 
@@ -61,11 +61,11 @@ namespace jvmsharp.instructions.loads
             ushort[] chars = arrRef.Chars();
             XAX.checkIndex(chars.Length, index);
             int x = chars[index];
-            stack.PushInt(x);
+            frame.OperandStack().PushInt(x);
         }
     }
 
-    unsafe class DALOAD : NoOperandsInstruction
+     class DALOAD : NoOperandsInstruction
     {
         public override void Execute(ref Frame frame)
         {
@@ -75,11 +75,11 @@ namespace jvmsharp.instructions.loads
             XAX.checkNotNull(arrRef);
             double[] doubles = arrRef.Doubles();
             XAX.checkIndex(doubles.Length, index);
-            stack.PushDouble(doubles[index]);
+            frame.OperandStack().PushDouble(doubles[index]);
         }
     }
 
-    unsafe class FALOAD : NoOperandsInstruction
+     class FALOAD : NoOperandsInstruction
     {
         public override void Execute(ref Frame frame)
         {
@@ -89,7 +89,7 @@ namespace jvmsharp.instructions.loads
             XAX.checkNotNull(arrRef);
             float[] floats = arrRef.Floats();
             XAX.checkIndex(floats.Length, index);
-            stack.PushFloat(floats[index]);
+            frame.OperandStack().PushFloat(floats[index]);
         }
     }
 
@@ -107,7 +107,7 @@ namespace jvmsharp.instructions.loads
         }
     }
 
-    unsafe class LALOAD : NoOperandsInstruction
+     class LALOAD : NoOperandsInstruction
     {
         public override void Execute(ref Frame frame)
         {
@@ -121,7 +121,7 @@ namespace jvmsharp.instructions.loads
         }
     }
 
-    unsafe class SALOAD : NoOperandsInstruction
+     class SALOAD : NoOperandsInstruction
     {
         public override void Execute(ref Frame frame)
         {
@@ -132,7 +132,7 @@ namespace jvmsharp.instructions.loads
 
             short[] shorts = arrRef.Shorts();
             XAX.checkIndex(shorts.Length, index);
-            stack.PushInt(shorts[index]);
+            frame.OperandStack().PushInt(shorts[index]);
         }
     }
 }

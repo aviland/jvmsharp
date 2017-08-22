@@ -18,10 +18,10 @@
         }
     }
 
-    struct LocalVariableTypeTableAttribute : AttributeInfoInterface
+    class LocalVariableTypeTableAttribute : AttributeInfoInterface
     {
         LocalVariableTypeTableEntry[] localVariableTypeTable;
-        public void readInfo(ref ClassReader reader)
+        public override void readInfo(ref ClassReader reader)
         {
             ushort localVariableTypeTableLength = reader.readUint16();
             localVariableTypeTable = new LocalVariableTypeTableEntry[localVariableTypeTableLength];

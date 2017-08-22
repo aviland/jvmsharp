@@ -6,10 +6,9 @@ namespace jvmsharp.instructions.stack
     {
         public override void Execute(ref rtda.Frame frame)
         {
-            var stack = frame.OperandStack();
-            Slot slot = stack.PopSlot();
-            stack.PushSlot(ref slot);
-            stack.PushSlot(ref slot);
+            Slot slot = frame.OperandStack().PopSlot();
+            frame.OperandStack().PushSlot( slot);
+            frame.OperandStack().PushSlot( slot);
         }
     }
 
@@ -20,9 +19,9 @@ namespace jvmsharp.instructions.stack
             rtda.OperandStack stack = frame.OperandStack();
             Slot val1 = stack.PopSlot();
             Slot val2 = stack.PopSlot();
-            stack.PushSlot(ref val1);
-            stack.PushSlot(ref val2);
-            stack.PushSlot(ref val1);
+            stack.PushSlot(val1);
+            stack.PushSlot(val2);
+            stack.PushSlot(val1);
         }
     }
 
@@ -34,10 +33,10 @@ namespace jvmsharp.instructions.stack
             Slot val1 = stack.PopSlot();
             Slot val2 = stack.PopSlot();
             Slot val3 = stack.PopSlot();
-            stack.PushSlot(ref val1);
-            stack.PushSlot(ref val3);
-            stack.PushSlot(ref val2);
-            stack.PushSlot(ref val1);
+            stack.PushSlot(val1);
+            stack.PushSlot( val3);
+            stack.PushSlot( val2);
+            stack.PushSlot( val1);
         }
     }
 
@@ -48,10 +47,10 @@ namespace jvmsharp.instructions.stack
             rtda.OperandStack stack = frame.OperandStack();
             Slot val1 = stack.PopSlot();
             Slot val2 = stack.PopSlot();
-            stack.PushSlot(ref val2);
-            stack.PushSlot(ref val1);
-            stack.PushSlot(ref val2);
-            stack.PushSlot(ref val1);
+            stack.PushSlot( val2);
+            stack.PushSlot( val1);
+            stack.PushSlot( val2);
+            stack.PushSlot( val1);
         }
     }
 
@@ -63,11 +62,11 @@ namespace jvmsharp.instructions.stack
             Slot val1 = stack.PopSlot();
             Slot val2 = stack.PopSlot();
             Slot val3 = stack.PopSlot();
-            stack.PushSlot(ref val2);
-            stack.PushSlot(ref val1);
-            stack.PushSlot(ref val3);
-            stack.PushSlot(ref val2);
-            stack.PushSlot(ref val1);
+            stack.PushSlot( val2);
+            stack.PushSlot( val1);
+            stack.PushSlot( val3);
+            stack.PushSlot( val2);
+            stack.PushSlot( val1);
         }
     }
 
@@ -80,12 +79,12 @@ namespace jvmsharp.instructions.stack
             Slot val2 = stack.PopSlot();
             Slot val3 = stack.PopSlot();
             Slot val4 = stack.PopSlot();
-            stack.PushSlot(ref val2);
-            stack.PushSlot(ref val1);
-            stack.PushSlot(ref val4);
-            stack.PushSlot(ref val3);
-            stack.PushSlot(ref val2);
-            stack.PushSlot(ref val1);
+            stack.PushSlot( val2);
+            stack.PushSlot( val1);
+            stack.PushSlot( val4);
+            stack.PushSlot( val3);
+            stack.PushSlot( val2);
+            stack.PushSlot( val1);
         }
     }
 }

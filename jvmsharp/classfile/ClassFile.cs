@@ -2,18 +2,19 @@
 
 namespace jvmsharp.classfile
 {
-    class ClassFile : AttributeTable
+    class ClassFile
     {
         // uint magic;
-        private ushort minorVersion;
-        private ushort majorVersion;
-        private ConstantPool constantPool;//常量池
-        private UInt16 accessFlags;
-        private ushort thisClass;//该类信息
-        private ushort superClass;//超类信息
-        private ushort[] interfaces;//接口信息
-        private MemberInfo[] fields;//字段信息
-        private MemberInfo[] methods;//方法信息
+        internal ushort minorVersion;
+        internal ushort majorVersion;
+        internal ConstantPool constantPool;//常量池
+        internal UInt16 accessFlags;
+        internal ushort thisClass;//该类信息
+        internal ushort superClass;//超类信息
+        internal ushort[] interfaces;//接口信息
+        internal MemberInfo[] fields;//字段信息
+        internal MemberInfo[] methods;//方法信息
+        internal AttributeInfoInterface[] attributes;
 
         public ClassFile Parse(ref byte[] classData)//二进制数据解析
         {
@@ -32,9 +33,9 @@ namespace jvmsharp.classfile
             thisClass = reader.readUint16();
             superClass = reader.readUint16();
             interfaces = reader.readUint16s();
-            fields = new MemberInfo().readMembers(ref reader, constantPool);
-            methods = new MemberInfo().readMembers(ref reader, constantPool);
-            attributes = new AttributeTable().readAttributes(ref reader, constantPool);
+            fields = new MemberInfo().readMembers(ref reader, ref constantPool);
+            methods = new MemberInfo().readMembers(ref reader,ref  constantPool);
+            attributes = new AttributeInfo().readAttributes(ref reader, ref constantPool);
         }
 
         public void readAndCheckMaigc(ref ClassReader reader)
@@ -99,6 +100,19 @@ namespace jvmsharp.classfile
                 interfacesNames[i] = constantPool.getClassName(interfaces[i]);
             }
             return interfacesNames;
+        }
+
+        internal SourceFileAttribute SourceFileAttribute()
+        {
+            foreach (AttributeInfoInterface attrInfo in attributes)
+            {
+                switch (attrInfo.GetType().Name)
+                {
+                    case "SourceFileAttribute":
+                        return (SourceFileAttribute)attrInfo;
+                }
+            }
+            return null;
         }
 
         public UInt16 AccessFlags() { return accessFlags; }

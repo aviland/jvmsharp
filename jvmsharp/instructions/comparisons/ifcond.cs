@@ -1,73 +1,73 @@
 ﻿namespace jvmsharp.instructions.comparisons
 {
-    unsafe class IFEQ : BranchInstruction
+     class IFEQ : BranchInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
             int val = frame.OperandStack().PopInt();
             if (val == 0)
             {
-                branch_logic.Branch(ref frame, Offset);
+                BranchLogic.Branch(ref frame, Offset);
             }
         }
     }
 
-    unsafe class IFNE : BranchInstruction
+     class IFNE : BranchInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
             int val = frame.OperandStack().PopInt();
             if (val != 0)
             {
-                branch_logic.Branch(ref frame, Offset);
+                BranchLogic.Branch(ref frame, Offset);
             }
         }
     }
 
-    unsafe class IFLT : BranchInstruction
+     class IFLT : BranchInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
             int val = frame.OperandStack().PopInt();
             if (val < 0)
             {
-                branch_logic.Branch(ref frame, Offset);
+                BranchLogic.Branch(ref frame, Offset);
             }
         }
     }
 
-    unsafe class IFLE : BranchInstruction
+     class IFLE : BranchInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
             int val = frame.OperandStack().PopInt();
             if (val <= 0)
             {
-                branch_logic.Branch(ref frame, Offset);
+                BranchLogic.Branch(ref frame, Offset);
             }
         }
     }
 
-    unsafe class IFGT : BranchInstruction
+     class IFGT : BranchInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
             int val = frame.OperandStack().PopInt();
             if (val > 0)
             {
-                branch_logic.Branch(ref frame, Offset);
+                BranchLogic.Branch(ref frame, Offset);
             }
         }
     }
 
-    unsafe class IFGE : BranchInstruction
+     class IFGE : BranchInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
             int val = frame.OperandStack().PopInt();
             if (val >= 0)
             {
-                branch_logic.Branch(ref frame, Offset);
+                BranchLogic.Branch(ref frame, Offset);
             }
         }
     }

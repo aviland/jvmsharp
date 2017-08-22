@@ -1,23 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace jvmsharp.rtda.heap
 {
-    partial class Class : ClassAttributes
+    partial class Class
     {
 
-        public bool isSubClassOf(Class c)//是否为c的子类
+        public bool IsSubClassOf(Class other)//是否为c的子类
         {
             for (Class k = superClass; k != null; k = k.superClass)
             {
-                if (k == c)
+                if (k == other)
                     return true;
             }
             return false;
         }
 
-        public bool isSuperClassOf(Class c)//是否为c的超类
+        public bool IsSuperClassOf(Class c)//是否为c的超类
         {
-            return c.isSubClassOf(this);
+            return c.IsSubClassOf(this);
         }
 
         public bool isSubInterfaceOf(Class iface)
@@ -35,6 +36,7 @@ namespace jvmsharp.rtda.heap
         {
             for (Class k = this; k != null; k = k.superClass)
             {
+                if(k.interfaces!=null)
                 foreach (Class i in k.interfaces)
                 {
                     if (i == iface || i.isSubInterfaceOf(iface))
@@ -49,7 +51,7 @@ namespace jvmsharp.rtda.heap
             return iface.isSubInterfaceOf(this);
         }
 
-        public bool IsAssignableFrom(Class other)
+        public bool IsAssignableFrom(ref Class other)
         {
             Class s = other;
             Class t = this;
@@ -60,7 +62,7 @@ namespace jvmsharp.rtda.heap
                 if (!s.IsInterface())
                 {
                     if (!t.IsInterface())
-                        return s.isSubClassOf(t);
+                        return s.IsSubClassOf(t);
                     else return s.isImplements(t);
                 }
                 else
@@ -82,19 +84,9 @@ namespace jvmsharp.rtda.heap
                 {
                     var sc = s.ComponentClass();
                     var tc = t.ComponentClass();
-                    return sc == tc || tc.IsAssignableFrom(sc);
+                    return sc == tc || tc.IsAssignableFrom(ref sc);
                 }
             }
-        }
-
-        internal bool IsPrimitive()
-        {
-          foreach(PrimitiveType pt in PrimitiveTypes.primitiveTypes)
-            {
-                if (pt.Name == name)
-                    return true;
-            }
-            return false;
         }
     }
 }

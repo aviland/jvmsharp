@@ -2,16 +2,16 @@
 {
     class GOTO_W:Instruction
     {
-        int offset;
+        int Offset;
 
         public void FetchOperands(ref BytecodeReader reader)
         {
-            offset = reader.ReadInt32();
+            Offset = reader.ReadInt32();
         }
 
         public void Execute(ref rtda.Frame frame)
         {
-            branch_logic.Branch(ref frame, offset);
+            BranchLogic.Branch(ref frame, Offset);
         }
     }
 }

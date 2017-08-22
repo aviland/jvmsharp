@@ -10,7 +10,7 @@ namespace jvmsharp.instructions.references
         {
             Class currentClass = frame.method.Class();
             var cp = currentClass.constantPool;
-            ConstantMethodRef methodRef = (ConstantMethodRef)cp.GetConstant(Index);
+            MethodRef methodRef = (MethodRef)cp.GetConstant(Index);
      
             var resolvedClass = methodRef.ResolvedClass();
             Method resolvedMethod = methodRef.ResolvedMethod();
@@ -21,16 +21,16 @@ namespace jvmsharp.instructions.references
             rtda.heap.Object refs = frame.OperandStack().GetRefFromTop(resolvedMethod.ArgSlotCount() - 1);
             if (refs == null)
                 throw new Exception("java.lang.NullPointerException");
-            if (resolvedMethod.IsProtected() && resolvedMethod.Class().isSuperClassOf(currentClass) && resolvedMethod.Class().getPackageName() != currentClass.getPackageName() && refs.clas != currentClass && !refs.clas.isSubClassOf(currentClass))
+            if (resolvedMethod.IsProtected() && resolvedMethod.Class().IsSuperClassOf(currentClass) && resolvedMethod.Class().getPackageName() != currentClass.getPackageName() && refs.clas != currentClass && !refs.clas.IsSubClassOf(currentClass))
                 throw new Exception("java.lang.IllegalAccessError");
  
             Method methodToBeInvoked = resolvedMethod;
-            if (currentClass.IsSuper() && resolvedClass.isSuperClassOf(currentClass) && resolvedMethod.Name() != "<init>")
-                methodToBeInvoked = new ConstantMethodRef().lookupMethodInClass(ref currentClass.superClass, methodRef.Name(), methodRef.Descriptor());
+            if (currentClass.IsSuper() && resolvedClass.IsSuperClassOf(currentClass) && resolvedMethod.Name() != "<init>")
+                methodToBeInvoked =MethodLookup.lookupMethodInClass(ref currentClass.superClass, methodRef.Name(), methodRef.Descriptor());
 
             if (methodToBeInvoked==null||methodToBeInvoked.IsAbstract())
                 throw new Exception("java.lang.AbstractMethodError");
-            invoke_logic.InvokeMethod(ref frame, ref methodToBeInvoked);
+            InvokeLogic.InvokeMethod(ref frame, ref methodToBeInvoked);
 
         }
     }

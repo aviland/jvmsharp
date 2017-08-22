@@ -1,6 +1,6 @@
 ﻿namespace jvmsharp.instructions.control
 {
-  unsafe  struct TABLE_SWITCH : Instruction
+    struct TABLE_SWITCH : Instruction
     {
         int defaultOffset;
         int low;
@@ -24,7 +24,7 @@
             if (index >= low && index <= high)
                 offset = jumpOffsets[index - low];
             else offset = defaultOffset;
-            branch_logic.Branch(ref frame, offset);
+            BranchLogic.Branch(ref frame, offset);
         }
     }
 }

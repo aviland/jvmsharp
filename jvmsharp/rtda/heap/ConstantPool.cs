@@ -17,13 +17,13 @@ namespace jvmsharp.rtda.heap
             this.consts = consts;
         }
 
-        public ConstantPool newConstantPool( Class clas, ref classfile.ConstantInfo[] cfCp)//将ConstantInfo转换为ConstantPool
+        public ConstantPool newConstantPool( ref Class clas,ref  classfile.ConstantPool cfCp)//将ConstantInfo转换为ConstantPool
         {
-            int cpCount = cfCp.Length;
+            int cpCount = cfCp.constantInfos.Length;
             ConstantPool rtcp = new ConstantPool( clas, new Constant[cpCount]);//初始化运行时常量池
             for (int i = 1; i < cpCount; i++)
             {
-                cf.ConstantInfo cpInfo = cfCp[i];
+                cf.ConstantInfo cpInfo = cfCp.constantInfos[i];
     //   Console.WriteLine("ConstantInfo:"+cpInfo.GetType().Name);
                 switch (cpInfo.GetType().Name)
                 {
@@ -44,34 +44,22 @@ namespace jvmsharp.rtda.heap
                     case "ConstantStringInfo":
                         rtcp.consts[i] = ((cf.ConstantStringInfo)cpInfo).String();//运行时常量池可以直接存储string
                         break;
-                    case "ConstantUtf8Info":
-                        rtcp.consts[i] = new ConstantUtf8((cf.ConstantUtf8Info)cpInfo);//运行时常量池可以存储utf8对象
-                        break;
                     case "ConstantClassInfo":
-                        rtcp.consts[i] = new ConstantClassRef(ref rtcp, (cf.ConstantClassInfo)cpInfo);//运行时常量池可以存储类符号引用
+                        rtcp.consts[i] = new ClassRef().newClassRef(ref rtcp, (cf.ConstantClassInfo)cpInfo);//运行时常量池可以存储类符号引用
                         break;
                     case "ConstantFieldrefInfo":
-                        rtcp.consts[i] = new ConstantFieldRef(ref rtcp,(cf.ConstantFieldrefInfo)cpInfo);//运行时常量池可以存储字段符号引用
+                        cf.ConstantFieldrefInfo fieldrefInfo = (cf.ConstantFieldrefInfo)cpInfo;
+                        rtcp.consts[i] = new FieldRef().newConstantFieldRef(ref rtcp,ref fieldrefInfo);//运行时常量池可以存储字段符号引用
                         break;
                     case "ConstantMethodrefInfo":
-                        rtcp.consts[i] = new ConstantMethodRef(ref rtcp, (cf.ConstantMethodrefInfo)cpInfo);
+                        rtcp.consts[i] = new MethodRef().newMethodRef(ref rtcp, (cf.ConstantMethodrefInfo)cpInfo);
                         break;
                     case "ConstantInterfaceMethodrefInfo":
-                        rtcp.consts[i] = new ConstantInterfaceMethodref(ref rtcp, (cf.ConstantInterfaceMethodrefInfo)cpInfo);
+                        cf.ConstantInterfaceMethodrefInfo methodrefInfo = (classfile.ConstantInterfaceMethodrefInfo)cpInfo;
+                        rtcp.consts[i] = new InterfaceMethodref().newInterfaceMethodref(ref rtcp, methodrefInfo);
                         break;
-                    case "ConstantInvokeDynamicInfo":
-                        rtcp.consts[i] = new ConstantInvokeDynamic(ref rtcp, (cf.ConstantInvokeDynamicInfo)cpInfo);
+                    default: //throw new Exception("Unknown:"+ cpInfo.GetType().Name); 
                         break;
-                    case "ConstantMethodHandleInfo":
-                        rtcp.consts[i] = new ConstantMethodHandle((cf.ConstantMethodHandleInfo)cpInfo);
-                        break;
-                    case "ConstantMethodTypeInfo":
-                        rtcp.consts[i] = new ConstantMethodType((cf.ConstantMethodTypeInfo)cpInfo);
-                        break;
-                    case "ConstantNameAndTypeInfo":
-                      //  rtcp.consts[i] = new ConstantMethodType((cf.ConstantMethodTypeInfo)cpInfo);
-                        break;
-                    default: throw new Exception("Unknown:"+ cpInfo.GetType().Name); 
                 }
             }
             return rtcp;
@@ -82,7 +70,7 @@ namespace jvmsharp.rtda.heap
             // todo
             Constant c = consts[index];
             if (c != null)
-                return consts[index];
+                return c;
             throw new Exception("No constants at index " + index);
         }
     }

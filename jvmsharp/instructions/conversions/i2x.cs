@@ -6,10 +6,9 @@ namespace jvmsharp.instructions.conversions
     {
         public override void Execute(ref rtda.Frame frame)
         {
-            rtda.OperandStack stack = frame.OperandStack();
-            int i = stack.PopInt();
+            int i = frame.OperandStack().PopInt();
             long l = Convert.ToInt64(i);
-            stack.PushLong(l);
+            frame.OperandStack().PushLong(l);
         }
     }
 
@@ -20,7 +19,7 @@ namespace jvmsharp.instructions.conversions
             rtda.OperandStack stack = frame.OperandStack();
             int i = stack.PopInt();
             float f = Convert.ToSingle(i);
-            stack.PushFloat(f);
+            frame.OperandStack().PushFloat(f);
         }
     }
 
@@ -31,7 +30,7 @@ namespace jvmsharp.instructions.conversions
             rtda.OperandStack stack = frame.OperandStack();
             int i = stack.PopInt();
             double d = Convert.ToDouble(i);
-            stack.PushDouble(d);
+            frame.OperandStack().PushDouble(d);
         }
     }
 
@@ -39,10 +38,9 @@ namespace jvmsharp.instructions.conversions
     {
         public override void Execute(ref rtda.Frame frame)
         {
-            var stack = frame.OperandStack();
-            var i = stack.PopInt();
-            var b = Convert.ToInt32(Convert.ToSByte(i));
-            stack.PushInt(b);
+            int i = frame.OperandStack().PopInt();
+            int b = Convert.ToInt32(Convert.ToSByte(i));
+            frame.OperandStack().PushInt(b);
         }
     }
 
@@ -64,7 +62,7 @@ namespace jvmsharp.instructions.conversions
             var stack = frame.OperandStack();
             var i = stack.PopInt();
             var s = Convert.ToInt32(Convert.ToInt16(i));
-            stack.PushInt(s);
+            frame.OperandStack().PushInt(s);
         }
     }
 }

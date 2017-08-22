@@ -16,7 +16,7 @@
         {
             rtda.OperandStack stack = frame.OperandStack();
             long val = -stack.PopLong();
-            stack.PushLong(val);
+            frame.OperandStack().PushLong(val);
         }
     }
 

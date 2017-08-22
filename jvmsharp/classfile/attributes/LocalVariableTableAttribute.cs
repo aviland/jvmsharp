@@ -22,7 +22,7 @@
     {
         LocalVariableTableEntry[] localVariableTable;
 
-        public void readInfo(ref ClassReader reader)
+        public override void readInfo(ref ClassReader reader)
         {
             ushort localVariableTableLength = reader.readUint16();
             localVariableTable = new LocalVariableTableEntry[localVariableTableLength];

@@ -3,49 +3,99 @@ using System.Collections.Generic;
 
 namespace jvmsharp.rtda.heap
 {
-    struct MethodDescriptor
+    class MethodDescriptor
     {
-        internal List<string> parameterTypes;//存储参数类型的数组
+        internal List<string> parameterTypes=new List<string>();//存储参数类型的数组
         internal string returnType;//返回类型
+
+        public void addParameterType(string t)
+        {
+            parameterTypes.Add(t);
+        }
     }
 
     class MethodDescriptorParser
     {
-        internal string descriptor;
-        internal int offset = 0;
-        internal MethodDescriptor md;
+        internal string raw;
+        internal int offset;
+        internal MethodDescriptor parsed;
 
         public MethodDescriptor parseMethodDescriptor(String descriptor)
         {
-            this.md = new MethodDescriptor();
-            md.parameterTypes = new List<string>();
-            this.descriptor = descriptor;   //descriptor的例子：([Ljava/lang/Object;)V
-            char ch = Convert.ToChar(readUint8());//ch取自descriptor的第一个char
-            if (ch != '(') causePanic();//startParams()，descriptor以(开头则继续
-            for (;;) // parseParamTypes();
+            var parser = new MethodDescriptorParser();
+            return parser.parse(descriptor);
+        }
+
+        private MethodDescriptor parse(string descriptor)
+        {
+            raw = descriptor;
+            parsed = new MethodDescriptor();
+            startParams();
+            parseParamTypes();
+            endParams();
+            parseReturnType();
+            finish();
+
+            return parsed;
+        }
+
+        private void finish()
+        {
+            if (offset != raw.Length)
             {
-                string t = parseFieldType();
-                if (t != null)
-                    md.parameterTypes.Add(t);
+                causePanic();
+            }
+        }
+
+        private void parseReturnType()
+        {
+            if (readUint8() == 'V')
+            {
+                parsed.returnType = "V";
+                return;
+            }
+            unreadUint8();
+            var t = parseFieldType();
+            if (t != "")
+            {
+                parsed.returnType = t;
+                return;
+            }
+            causePanic();
+        }
+
+        private void endParams()
+        {
+            if (readUint8() != ')')
+            {
+                causePanic();
+            }
+        }
+
+        private void parseParamTypes()
+        {
+            for (;;)
+            {
+                var t = parseFieldType();
+                if (t != "")
+                {
+                    parsed.addParameterType(t);
+                }
                 else break;
             }
+        }
 
-            char ch2 = Convert.ToChar(readUint8());//endParams();
-            if (ch2 != ')')
+        private void startParams()
+        {
+            if (readUint8() != '(')
+            {
                 causePanic();
-            var t2 = parseFieldType();//  parseReturnType();
-            if (t2 != null)
-                md.returnType = t2;
-            else causePanic();
-            if (offset != descriptor.Length)// finish();
-                causePanic();
-
-            return md;
+            }
         }
 
         string parseFieldType()
         {
-            char ch = Convert.ToChar(readUint8());
+            char ch = readUint8();
             switch (ch)
             {
                 case 'B':
@@ -63,7 +113,7 @@ namespace jvmsharp.rtda.heap
                     return parseArrayType();
                 default:
                     unreadUint8();
-                    return null;
+                    return "";
             }
         }
 
@@ -74,20 +124,20 @@ namespace jvmsharp.rtda.heap
 
         string parseObjectType()//返回例子：Ljava/lang/Object;
         {
-            var unread = this.descriptor.Substring(offset);
+            var unread = this.raw.Substring(offset);
             var semicolonIndex = unread.IndexOf(';');//strings.IndexRune(unread, ';')
             if (semicolonIndex == -1)
             {
                 causePanic();
-                return null;
+                return "";
             }
             else
             {
                 var objStart = offset - 1;
                 var objEnd = offset + semicolonIndex + 1;
                 offset = objEnd;
-                string newdescriptor = this.descriptor.Substring(objStart, objEnd - objStart);
-                return newdescriptor;
+                string descriptor = raw.Substring(objStart, objEnd - objStart);
+                return descriptor;
             }
         }
 
@@ -96,20 +146,20 @@ namespace jvmsharp.rtda.heap
             int arrStart = offset - 1;
             parseFieldType();
             int arrEnd = offset;
-            var descriptor = this.descriptor.Substring(arrStart, arrEnd - arrStart);
+            var descriptor = this.raw.Substring(arrStart, arrEnd - arrStart);
             return descriptor;
         }
 
-        byte readUint8()
+        char readUint8()
         {
-            char b = descriptor[offset];
+            char b = raw[offset];
             this.offset++;
-            return Convert.ToByte(b);
+            return b;
         }
 
         void causePanic()
         {
-            throw new Exception("BAD descriptor: " + descriptor);
+            throw new Exception("BAD raw: " + raw);
         }
     }
 }

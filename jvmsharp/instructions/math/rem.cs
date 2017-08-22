@@ -30,7 +30,7 @@ namespace jvmsharp.instructions.math
         }
     }
 
-    unsafe class IREM : NoOperandsInstruction
+     class IREM : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
@@ -42,11 +42,11 @@ namespace jvmsharp.instructions.math
                 throw new Exception("java.lang.ArithmeticException: / by zero");
             }
             int result = v1 % v2;
-            stack.PushInt(result);
+            frame.OperandStack().PushInt(result);
         }
     }
 
-   unsafe class LREM : NoOperandsInstruction
+    class LREM : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {

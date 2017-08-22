@@ -13,7 +13,7 @@ namespace jvmsharp.instructions.references
             stack.PushRef(refs);
             if (refs == null) return;
             var cp = frame.method.Class().constantPool;
-            var classRef = (ConstantClassRef)cp.GetConstant(Index);
+            var classRef = (ClassRef)cp.GetConstant(Index);
             var clas = classRef.ResolvedClass();
             if (!refs.IsInstanceOf(ref clas))
                 throw new Exception("java.lang.ClassCastExcption");

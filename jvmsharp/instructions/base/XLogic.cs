@@ -4,9 +4,9 @@ using System;
 
 namespace jvmsharp.instructions
 {
-    class classInit_logic//类初始化
+     class ClassInitLogic//类初始化
     {
-        public static void InitClass(ref Thread thread, ref Class clas)
+        internal static void InitClass(ref Thread thread, ref Class clas)
         {
             clas.StartInit();
             scheduleClinit(ref thread, ref clas);//类初始化
@@ -16,10 +16,10 @@ namespace jvmsharp.instructions
         static void scheduleClinit(ref Thread thread, ref Class cla)
         {
             Method clinit = cla.GetClinitMethod();//获取类初始化方法（clinit方法）
-            if (clinit != null)//若无类初始化方法则添加一个
+            if (clinit != null && clinit.Class() == cla)//若无类初始化方法则添加一个
             {
                 Frame newFrame = thread.newFrame(ref clinit);
-                Thread.PushFrame(ref newFrame);
+                thread.PushFrame( newFrame);
             }
         }
 
@@ -34,7 +34,7 @@ namespace jvmsharp.instructions
         }
     }
 
-    class branch_logic
+     class BranchLogic
     {
         internal static void Branch(ref Frame frame, int offset)
         {
@@ -44,27 +44,26 @@ namespace jvmsharp.instructions
         }
     }
 
-    class invoke_logic
+     class InvokeLogic
     {
-         public static void InvokeMethod(ref Frame invokerFrame, ref Method method)
+        internal static void InvokeMethod(ref Frame invokerFrame, ref Method method)
         {
+           
             Thread thread = invokerFrame.Thread();//获取当前帧所在的线程
             Frame newFrame = thread.newFrame(ref method);//传入method，创建新栈帧
-            Thread.PushFrame(ref newFrame);//将新帧推入线程的虚栈
-            /*        if (method.IsNative())
-            if (method.Name() == "registerNatives")
-                thread.PopFrame();
-            else throw new Exception("native method: " + method.Class().name + "." + method.Name() + method.Descriptor());
-            */
+            thread.PushFrame( newFrame);//将新帧推入线程的虚栈
+
             int argSlotslot = Convert.ToInt32(method.ArgSlotCount());//因为uint大小限制，所以需要转换为int
+            //      if (newFrame.LocalVars() != null)
+            //             Console.WriteLine(newFrame.LocalVars().localVars.Length);
             if (argSlotslot > 0)
             {
                 for (int i = argSlotslot - 1; i >= 0; i--)
                 {
+                    //Console.WriteLine(i+" " + newFrame.LocalVars().localVars.Length);
                     Slot slot = invokerFrame.OperandStack().PopSlot();
-                    //      Console.WriteLine("+++++++++++++++++++" + method == null);
-                    UInt32 u = Convert.ToUInt32(i);
-                    newFrame.LocalVars().SetSlot(u, slot);
+                //    Console.WriteLine("+++++++++++++");
+                    newFrame.LocalVars().SetSlot((uint)i, slot);
                 }
             }
         }

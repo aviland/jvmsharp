@@ -1,33 +1,33 @@
-﻿namespace jvmsharp.rtda.heap
+﻿using System;
+using jvmsharp.classfile;
+using System.Collections.Generic;
+
+namespace jvmsharp.rtda.heap
 {
-    partial class Class : ClassAttributes
+    partial class Class
     {
-        const int _notInitialized = 0;// This Class object is verified and prepared but not initialized.
-        const int _beingInitialized = 1;// This Class object is being initialized by some particular thread T.
-        const int _fullyInitialized = 2; // This Class object is fully initialized and ready for use.
-        const int _initFailed = 3;// This Class object is in an erroneous state, perhaps because initialization was attempted and failed.
-
-        internal readonly ConstantPool constantPool;
-        public string name;
-        public string superClassName;
-        public string[] interfaceNames;
-        internal bool initStarted;
-        public Field[] fields;
-        public Method[] methods;
-        //    public uint instanceFieldCount;
-        //public uint staticFieldCount;
-        //   public object[] staticFieldSlots;
-        //     public Method[] vtable;// virtual method table
-        public Object jClass;  // java.lang.Class instance
-        public Class superClass;
-        public Class[] interfaces;
-        public classpath.Entry loadedFrom; // todo
-        public int initState;
+        internal ushort accessFlags;
+        internal string name;
+        internal string superClassName;
+        internal string[] interfaceNames;
+        internal  ConstantPool constantPool;
+        internal Field[] fields;
+        internal Method[] methods;
+        internal string sourceFile;
         internal ClassLoader loader;
+        internal Class superClass;
+        internal Class[] interfaces;
+        internal uint instanceSlotCount;
+        internal uint staticSlotCount;
+        internal Slots staticVars;
+        internal bool initStarted;
+        public Object jClass;
 
-        public uint instanceSlotCount;
-        public uint staticSlotCount;
-        public Slots staticVars;
+        internal void SetRefVar(string fieldName, string fieldDescriptor, heap.Object refs)
+        {
+            var field = getField(fieldName, fieldDescriptor, true);
+            staticVars.SetRef(field.slotId, refs);
+        }
 
         public bool InitStarted()
         {
@@ -39,14 +39,9 @@
             initStarted = true;
         }
 
-        internal classpath.Entry LoadedFrom()
-        {
-            return loadedFrom;
-        }
-
         public Method GetClinitMethod()
         {
-            return GetStaticMethod("<clinit>", "()V");
+            return getMethod("<clinit>", "()V",true);
         }
 
         internal Method GetStaticMethod(string name, string descriptor)
@@ -61,36 +56,76 @@
             return name.Replace('/', '.');
         }
 
+        internal Class SuperClass()
+        {
+            return this.superClass;
+        }
+
         public Class(string name)
         {
             this.name = name;
         }
 
-        public void MarkFullyInitialized()
+        public Class newClass(ref ClassFile cf)
         {
-            initState = _fullyInitialized;
+            Class c = new Class();
+            c.accessFlags = cf.AccessFlags();
+
+            c.name = cf.ClassName();
+            c.superClassName = cf.SuperClassName();
+            c.interfaceNames = cf.InterfacesNames();
+
+            c.constantPool = new ConstantPool().newConstantPool(ref c,ref cf.constantPool);
+            c.fields = new Field().newFields(ref c, ref cf.fields);
+            c.methods = new Method().newMethods(ref c, ref cf.methods);
+            c.sourceFile = getSourceFile(ref cf);
+            return c;
         }
 
-        public Class(classfile.ClassFile cf)
+        private string getSourceFile(ref ClassFile cf)
         {
-            //       Class c = new Class();
-            accessFlags = cf.AccessFlags();
-
-            name = cf.ClassName();
-            superClassName = cf.SuperClassName();
-            interfaceNames = cf.InterfacesNames();
-
-            constantPool = new ConstantPool().newConstantPool(this, ref cf.ConstantPool().constantInfos);
-            fields = new Field().newFields(this, cf.Fields());
-            methods = new Method().newMethods(this, cf.Methods());
-
+            SourceFileAttribute sfAttr = cf.SourceFileAttribute();
+            if (sfAttr != null)
+                return sfAttr.FileName();
+            return "Unknown";
+        }
+        bool IsPublic()
+        {
+            return 0 != (this.accessFlags & AccessFlags.ACC_PUBLIC);
+        }
+        public bool IsFinal()
+        {
+            return 0 != (accessFlags & AccessFlags.ACC_FINAL);
+        }
+        public bool IsSuper()
+        {
+            return 0 != (accessFlags & AccessFlags.ACC_SUPER);
+        }
+        public bool IsInterface()
+        {
+            return 0 != (accessFlags & AccessFlags.ACC_INTERFACE);
+        }
+        public bool IsAbstract()
+        {
+            return 0 != (accessFlags & AccessFlags.ACC_ABSTRACT);
+        }
+        public bool IsSynthetic()
+        {
+            return 0 != (accessFlags & AccessFlags.ACC_SYNTHETIC);
+        }
+        public bool IsAnnotation()  {
+            return 0 != (accessFlags & AccessFlags.ACC_ANNOTATION);
+    }
+        public bool IsEnum()
+        {
+            return 0 != (accessFlags & AccessFlags.ACC_ENUM);
         }
 
         public bool isAccessibleTo(ref Class other)
         {
             return IsPublic() || getPackageName() == other.getPackageName();
         }
-
+      
         public string getPackageName()
         {
             int i = name.LastIndexOf('/');
@@ -114,19 +149,19 @@
 
         public bool isJlObject()
         {
-            return this == ClassLoader._jlObjectClass;
+            return name == "java/lang/Object";
         }
         public bool isJlCloneable()
         {
-            return this == ClassLoader._jlCloneableClass;
+            return name == "java/lang/Cloneable";
         }
         public bool isJioSerializable()
         {
-            return this == ClassLoader._ioSerializableClass;
+            return name == "java/io/Serializable";
         }
         public Method GetMainMethod()
         {
-            return getStaticField("main", "([Ljava/lang/String;)V");
+            return getMethod("main", "([Ljava/lang/String;)V",true);
         }
         internal ClassLoader Loader()
         {
@@ -136,7 +171,7 @@
         {
             foreach (Method method in methods)
             {
-                // Console.WriteLine("method name: " + method.Name()+ "\tstatic: " + method.IsStatic()+ "\tmethod descriptor:" + method.Descriptor());
+                // Console.WriteLine("method name: " + method.Name()+ "\tstatic: " + method.IsStatic()+ "\tmethod raw:" + method.Descriptor());
                 if (method.IsStatic() && method.Name() == name && method.Descriptor() == descriptor)
                 {
                     return method;
@@ -145,18 +180,13 @@
             return null;
         }
 
-        internal bool InitializationNotStarted()
-        {
-            return initState < _beingInitialized;
-        }
-
         internal Method getMethod(string name, string descriptor, bool isStatic)
         {
-            for (var k = this; k != null; k = k.superClass)
+            for (Class k = this; k != null; k = k.superClass)
             {
                 foreach (var method in k.methods)
                 {
-                    if (method.IsStatic() == isStatic && method.Name() == name && method.Descriptor() == descriptor)
+                    if (method.IsStatic() == isStatic && method.Name() == name && method.descriptor == descriptor)
                         return method;
                 }
             }
@@ -168,7 +198,7 @@
         {
             for (var k = this; k != null; k = k.superClass)
             {
-                foreach (Field field in fields)
+                foreach (Field field in k.fields)
                 {
                     if (field.IsStatic() == isStatic && field.Name() == name && field.Descriptor() == descriptor)
                         return field;
@@ -176,8 +206,62 @@
             }
             return null;
         }
+        internal Method[] GetConstructors(bool publicOnly)
+        {
+            List<Method> constructors = new List<Method>();
+            foreach (Method method in methods)
+            {
+                if (method.isConstructor())
+                {
+                    if (!publicOnly || method.IsPublic())
+                        constructors.Add(method);
+                }
+            }
+            return constructors.ToArray();
+        }
+        Method[] GetMethods(bool publicOnly)
+        {
+            List<Method> methods = new List<Method>();
+            foreach (Method method in this.methods)
+            {
+                if (!method.isClinit() && !method.isConstructor())
+                {
+                    if (!publicOnly || method.IsPublic() ){
+                        methods.Add(method);
+                    }
+                }
+            }
+            return methods.ToArray();
+        }
+        internal Method GetConstructor(string descriptor)
+        {
+            return GetInstanceMethod("<init>", descriptor);
+        }
+        internal bool IsPrimitive()
+        {
+            foreach (string na in ClassNameHelper.primitiveTypes.Keys)
+            {
+                if (this.name== na)
+                    return true;
+            }
+            return false;
+        }
+        internal Field[] GetFields(bool publicOnly)
+        {
+            if (publicOnly)
+            {
+                List<Field> publicFields = new List<Field>();
+                foreach (Field field in fields)
+                {
+                    if (field.IsPublic())
+                        publicFields.Add(field);
+                }
+                return publicFields.ToArray();
+            }
+            else return fields;
+        }
 
-         internal Object GetRefVar(string fieldName, string fieldDescriptor)
+        internal Object GetRefVar(string fieldName, string fieldDescriptor)
         {
             var field = getField(fieldName, fieldDescriptor, true);
             return staticVars.GetRef(field.slotId);
@@ -186,6 +270,17 @@
         internal Method GetInstanceMethod(string name, string descriptor)
         {
             return getMethod(name, descriptor, false);
+        }
+
+        internal string SourceFile()
+        {
+            return this.sourceFile;
+        }
+
+        internal Class ArrayClass()
+        {
+            string arrayClassName = new ClassNameHelper().getArrayClassName(this.name);
+            return this.loader.LoadClass(arrayClassName);
         }
     }
 }

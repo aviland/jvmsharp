@@ -1,18 +1,45 @@
 ﻿namespace jvmsharp.rtda.heap
 {
-    class ClassMember : AccessFlags
+    class ClassMember 
     {
-        protected string name;
-        protected string descriptor;
-        protected Class clas;
-     //   protected string signature;
-       // protected byte[] annotationData;// RuntimeVisibleAnnotations_attribute
+        internal ushort accessFlags;
+        internal string name;
+        internal string descriptor;
+        internal Class clas;
+        internal string signature;
+        internal byte[] annotationData;// RuntimeVisibleAnnotations_attribute
 
-        protected void copyMemberInfo(ref classfile.MemberInfo memberfInfo)
+        internal void copyMemberInfo(ref classfile.MemberInfo memberfInfo)
         {
-            accessFlags = memberfInfo.AccessFlags();
+            this.accessFlags = memberfInfo.AccessFlags();
             name = memberfInfo.Name();
             descriptor = memberfInfo.Descriptor();
+        }
+        public bool IsPublic()
+        {
+            return 0 != (accessFlags & AccessFlags. ACC_PUBLIC);
+        }
+
+        public bool IsPrivate()
+        {
+            return 0 != (accessFlags & AccessFlags.ACC_PRIVATE);
+        }
+        public bool IsProtected()
+        {
+            return 0 != (accessFlags & AccessFlags.ACC_PROTECTED);
+        }
+
+        public bool IsStatic()
+        {
+            return 0 != (accessFlags & AccessFlags.ACC_STATIC);
+        }
+        public bool IsFinal()
+        {
+            return 0 != (accessFlags & AccessFlags.ACC_FINAL);
+        }
+        public bool IsSynthetic()
+        {
+            return 0 != (accessFlags & AccessFlags.ACC_SYNTHETIC);
         }
 
         public string Name()
@@ -23,26 +50,36 @@
         {
             return descriptor;
         }
+        internal string Signature()
+        {
+            return this.signature;
+        }
+
+        internal byte[] AnnotationData()
+        {
+            return annotationData;
+        }
         public Class Class()
         {
             return clas;
         }
 
-        internal bool isAccessibleTo(ref Class d)
+        internal bool isAccessibleTo(Class d)
         {
             if (IsPublic())
                 return true;
             Class c = clas;
             if (IsProtected())
-                return d == c || d.isSubClassOf( c) || c.getPackageName() == d.getPackageName();
+                return d == c || d.IsSubClassOf(c) || c.getPackageName() == d.getPackageName();
             if (!IsPrivate())
                 return c.getPackageName() == d.getPackageName();
             return d == c;
         }
 
-        public ConstantPool ConstantPool()
+        internal ConstantPool ConstantPool()
         {
             return clas.constantPool;
         }
+
     }
 }

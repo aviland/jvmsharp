@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace jvmsharp
 {
@@ -37,25 +38,30 @@ namespace jvmsharp
                             case "-help":
                             case "?":
                                 cmdStruct.helpFlag = true;
+                                cmdStruct.args = cmdStruct.args.Skip(1).ToArray();
                                 //    Console.WriteLine("print help message");
                                 break;
                             case "-version":
                                 cmdStruct.versionFlag = true;
+                                cmdStruct.args = cmdStruct.args.Skip(1).ToArray();
                                 //    Console.WriteLine("print version and exit");
                                 break;
                             case "-classpath":
                             case "-cp":
                                 cmdStruct.cpOption = args[i + 1];
+                                cmdStruct.args = cmdStruct.args.Skip(1).ToArray();
                                 break;
                             case "-Xjre":
                             case "-xjre":
                                 cmdStruct.XjreOption = args[i + 1];
                                 cmdStruct.classes = args[i + 2];
+                                cmdStruct.args = cmdStruct.args.Skip(3).ToArray();
                                 break;
                             //    Console.WriteLine("path to jre");
                             case "-Xss":
                             case "-xss":
                                 cmdStruct.XssOption = args[i + 1];
+                                cmdStruct.args = cmdStruct.args.Skip(1).ToArray();
                                 break;
                         }
                     }

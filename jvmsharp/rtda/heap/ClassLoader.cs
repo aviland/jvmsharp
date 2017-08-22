@@ -5,10 +5,14 @@ namespace jvmsharp.rtda.heap
 {
     class ClassLoader//类加载器
     {
-       private classpath.Classpath cp;
-        static Dictionary<string, Class> classMap = new Dictionary<string, Class>();//存储加载的所有的类
-        bool verboseFlag;
+        internal classpath.Classpath cp;
+        internal bool verboseFlag;
+          Dictionary<string, Class> classMap;//存储加载的所有的类
 
+     internal    Dictionary<string, Class> ClassMap()
+        {
+            return classMap; 
+        }
         const string jlObjectClassName = "java/lang/Object";
         const string jlClassClassName = "java/lang/Class";
         const string jlStringClassName = "java/lang/String";
@@ -16,19 +20,12 @@ namespace jvmsharp.rtda.heap
         const string jlCloneableClassName = "java/lang/Cloneable";
         const string ioSerializableClassName = "java/io/Serializable";
 
-        public static ClassLoader bootLoader;
-        public static Class _jlObjectClass;
-        public static Class _jlClassClass;
-        public static Class _jlStringClass;
-        public static Class _jlThreadClass;
-        public static Class _jlCloneableClass;
-        public static Class _ioSerializableClass;
-
         public ClassLoader newClassLoader(ref classpath.Classpath cp, bool verboseFlag)
         {
             ClassLoader loader = new ClassLoader();
             loader.cp = cp;
             loader.verboseFlag = verboseFlag;
+            loader.classMap = new Dictionary<string, Class>();
             loader.loadBasicClasses();
             loader.loadPrimitiveClasses();
             return loader;
@@ -47,45 +44,10 @@ namespace jvmsharp.rtda.heap
                     }
                 }
         }
-
-        public void InitBootLoader(classpath.Classpath cp)
-        {
-            bootLoader = new ClassLoader().newClassLoader(ref cp, verboseFlag);
-            bootLoader._init();
-        }
-
-        public Class JLStringClass()
-        {
-            return _jlStringClass;
-        }
-        public void _init()
-        {
-            _jlObjectClass = LoadClass(jlObjectClassName);
-            _jlClassClass = LoadClass(jlClassClassName);
-            foreach (Class clas in classMap.Values)
-            {
-                if (clas.jClass == null)
-                {
-                    clas.jClass = _jlClassClass.NewObject();
-                }
-            }
-            _jlCloneableClass = LoadClass(jlCloneableClassName); ;
-            _ioSerializableClass = LoadClass(ioSerializableClassName);
-            _jlThreadClass = LoadClass(jlThreadClassName);
-            _jlStringClass = LoadClass(jlStringClassName);
-            this.loadPrimitiveClasses();
-            this.loadPrimitiveArrayClasses();
-        }
-        void loadPrimitiveArrayClasses()
-        {
-            foreach (PrimitiveType pt in PrimitiveTypes.primitiveTypes)
-                loadArrayClass(pt.ArrayClassName);
-        }
-
         void loadPrimitiveClasses()
         {
-            foreach (PrimitiveType pt in PrimitiveTypes.primitiveTypes)
-                loadPrimitiveClass(pt.Name);
+            foreach (string key in ClassNameHelper.primitiveTypes.Keys)
+                loadPrimitiveClass(key);
         }
 
         void loadPrimitiveClass(string className)
@@ -95,9 +57,9 @@ namespace jvmsharp.rtda.heap
             clas.name = className;
             clas.loader = this;
             clas.initStarted = true;
-            clas.jClass = ClassLoader.classMap["java/lang/Class"].NewObject();
+            clas.jClass = classMap["java/lang/Class"].NewObject();
             clas.jClass.extra = clas;
-            classMap[className] = clas;
+            this.classMap[className] = clas;
         }
 
         public Class getClass(string name)
@@ -156,9 +118,7 @@ namespace jvmsharp.rtda.heap
         {
             try
             {
-                //    Console.WriteLine("-----------------"+cp.bootClasspath.GetType().Name);
                 var v = cp.ReadClass(name);
-                //       Console.WriteLine(v == null);
                 Tuple<byte[], classpath.Entry> tbe = v;//从解析的类中读取数据
 
                 return tbe;
@@ -172,13 +132,22 @@ namespace jvmsharp.rtda.heap
         Class defineClass(ref byte[] data)
         {
             Class clas = parseClass(ref data);
+            hackClass(ref clas);
             clas.loader = this;
 
             resolveSuperClass(ref clas);
-
-            resolveInterfaces(ref clas);
+                        resolveInterfaces(ref clas);
             classMap[clas.name] = clas;
             return clas;
+        }
+
+        private void hackClass(ref Class clas)
+        {
+            if (clas.name == "java/lang/ClassLoader")
+            {
+                Method loadLibrary = clas.GetStaticMethod("loadLibrary", "(Ljava/lang/Class;Ljava/lang/String;Z)V");
+                loadLibrary.code = new byte[] { 0xb1 };// return void
+            }
         }
 
         Class parseClass(ref byte[] data)
@@ -186,7 +155,7 @@ namespace jvmsharp.rtda.heap
             try
             {
                 classfile.ClassFile cf = new classfile.ClassFile().Parse(ref data);//读取二进制data，初始化classfile
-                Class c = new Class(cf);//将classfile转换为Class类型?
+                Class c = new Class().newClass(ref cf);//将classfile转换为Class类型?
                 return c;
             }
             catch (Exception e)
@@ -266,12 +235,10 @@ namespace jvmsharp.rtda.heap
                 }
             }
             clas.staticSlotCount = slotId;
-            //  Console.WriteLine("yyyyyyyyyyyyyyyyyyyyyyyy" + clas.staticSlotCount);
         }
 
         void allocAndInitStaticVars(ref Class clas)
         {
-            //   Console.WriteLine("----------------------create" + clas.staticSlotCount);
             clas.staticVars = new Slots(clas.staticSlotCount);
             for (int i = 0; i < clas.fields.Length; i++)
             {
@@ -284,7 +251,6 @@ namespace jvmsharp.rtda.heap
 
         unsafe void initStaticFinalVar(ref Class clas, ref Field f)
         {
-            Slots vars = clas.staticVars;
             ConstantPool cp = clas.constantPool;
             uint cpIndex = f.ConstValueIndex();
             uint slotId = f.slotId;
@@ -298,34 +264,27 @@ namespace jvmsharp.rtda.heap
                     case "S":
                     case "I":
                         int val = (int)cp.GetConstant(cpIndex);
-                        vars.SetInt(slotId, val);
+                        clas.staticVars.SetInt(slotId, val);
                         break;
                     case "J":
                         long val2 = (long)cp.GetConstant(cpIndex);
-                        vars.SetLong(slotId, val2);
+                        clas.staticVars.SetLong(slotId, val2);
                         break;
                     case "F":
                         float val3 = (float)cp.GetConstant(cpIndex);
-                        vars.SetFloat(slotId, val3);
+                        clas.staticVars.SetFloat(slotId, val3);
                         break;
                     case "D":
                         double vald = (double)cp.GetConstant(cpIndex);
-                        vars.SetDouble(slotId, vald);
+                        clas.staticVars.SetDouble(slotId, vald);
                         break;
                     case "Ljava/lang/String;":
                         string goStr = (string)cp.GetConstant(cpIndex);
-                        Object jStr = StringPool.JString(ref clas.loader, goStr);
-                        vars.SetRef(slotId, jStr);
+                        Object jStr = StringPool.JString( clas.loader, goStr);
+                        clas.staticVars.SetRef(slotId, jStr);
                         break;
                 }
             }
-        }
-
-     internal   Class FindLoadedClass(string name)
-        {
-            if (classMap.ContainsKey(name))
-                return classMap[name];
-            return null;
         }
     }
 }

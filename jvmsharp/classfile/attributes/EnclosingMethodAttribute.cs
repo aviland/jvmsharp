@@ -13,7 +13,7 @@ namespace jvmsharp.classfile
             this.cp = cp;
         }
 
-        public void readInfo(ref ClassReader reader)
+        public override void readInfo(ref ClassReader reader)
         {
             classIndex = reader.readUint16();
             methodIndex = reader.readUint16();
@@ -28,7 +28,7 @@ namespace jvmsharp.classfile
         {
             if (methodIndex > 0)
                 return cp.getNameAndType(methodIndex);
-            else return Tuple.Create<string, string>("", "");
+            else return Tuple.Create("", "");
         }
     }
 }

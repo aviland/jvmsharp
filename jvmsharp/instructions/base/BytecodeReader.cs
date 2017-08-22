@@ -1,4 +1,6 @@
-﻿namespace jvmsharp.instructions
+﻿using System;
+
+namespace jvmsharp.instructions
 {
     struct BytecodeReader
     {
@@ -25,23 +27,29 @@
 
         public sbyte ReadInt8()
         {
-            byte b = ReadUint8();
-            if (b > 127)//将 byte 转为 sbyte。当 byte 小于 128 时其值保持不变，大于等于 128 时就将其减去 256
-            {
-                return (sbyte)(b - 256);
-            }
-            else return (sbyte)b;
+            /*      byte b = ReadUint8();
+                   if (b > 127)//将 byte 转为 sbyte。当 byte 小于 128 时其值保持不变，大于等于 128 时就将其减去 256
+                   {
+                       return (sbyte)(b - 256);
+                   }
+                   else return (sbyte)b;*/
+            return (sbyte)ReadUint8();
         }
 
-        public ushort ReadUint16()
+        public UInt16 ReadUint16()
         {
-            byte b1 = ReadUint8();
-            byte b2 = ReadUint8();
-            return (ushort)((b1 << 8) | b2);
+            UInt16 b1 = ReadUint8();
+            UInt16 b2 = ReadUint8();
+            return Convert.ToUInt16((b1 << 8) | b2);
         }
 
         public short ReadInt16()
         {
+          /*  ushort s = ReadUint16();
+            if (s > 32767)
+            {
+                return (short)(s - 65536);
+            }*/
             return (short)ReadUint16();
         }
 
@@ -57,7 +65,7 @@
         public int[] ReadInt32s(int n)
         {
             int[] ints = new int[n];
-            foreach (int i in ints)
+            for (int i =0;i<n;i++)
             {
                 ints[i] = ReadInt32();
             }

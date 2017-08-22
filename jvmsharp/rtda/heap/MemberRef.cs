@@ -12,7 +12,7 @@ namespace jvmsharp.rtda.heap
             return name;
         }
 
-        public void copyMemberRefInfo(ref classfile.ConstantMemberrefInfo refInfo)
+        public void copyMemberRefInfo(classfile.ConstantMemberrefInfo refInfo)
         {
             className = refInfo.ClassName();
             name = refInfo.NameAndDescriptor().Item1;

@@ -1,26 +1,24 @@
-﻿namespace jvmsharp.instructions.comparisons
+﻿using System;
+
+namespace jvmsharp.instructions.comparisons
 {
     class IF_ICMPEQ : BranchInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
-            rtda.OperandStack stack = frame.OperandStack();
-            int val2 = stack.PopInt();
-            int val1 = stack.PopInt();
-            if (val1 == val2)
-                branch_logic.Branch(ref frame, Offset);
+            Tuple<int, int> t = ICMPPOP.icmpPop(ref frame);
+            if (t.Item1 == t.Item2)
+                BranchLogic.Branch(ref frame, Offset);
         }
     }
 
-     class IF_ICMPNE : BranchInstruction
+    class IF_ICMPNE : BranchInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
-            rtda.OperandStack stack = frame.OperandStack();
-            int val2 = stack.PopInt();
-            int val1 = stack.PopInt();
-            if (val1 != val2)
-                branch_logic.Branch(ref frame, Offset);
+            Tuple<int, int> t = ICMPPOP.icmpPop(ref frame);
+            if (t.Item1!= t.Item2)
+                BranchLogic.Branch(ref frame, Offset);
         }
     }
 
@@ -28,11 +26,9 @@
     {
         public override void Execute(ref rtda.Frame frame)
         {
-            rtda.OperandStack stack = frame.OperandStack();
-            int val2 = stack.PopInt();
-            int val1 = stack.PopInt();
-            if (val1 < val2)
-                branch_logic.Branch(ref frame, Offset);
+            Tuple<int, int> t = ICMPPOP.icmpPop(ref frame);
+            if (t.Item1< t.Item2)
+                BranchLogic.Branch(ref frame, Offset);
         }
     }
 
@@ -40,35 +36,42 @@
     {
         public override void Execute(ref rtda.Frame frame)
         {
-            rtda.OperandStack stack = frame.OperandStack();
-            int val2 = stack.PopInt();
-            int val1 = stack.PopInt();
-            if (val1 <= val2)
-                branch_logic.Branch(ref frame, Offset);
+            Tuple<int, int> t = ICMPPOP.icmpPop(ref frame);
+            if (t.Item1<= t.Item2)
+                BranchLogic.Branch(ref frame, Offset);
         }
     }
 
-  unsafe class IF_ICMPGT : BranchInstruction
+    class IF_ICMPGT : BranchInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
-            rtda.OperandStack stack = frame.OperandStack();
-            int val2 = stack.PopInt();
-            int val1 = stack.PopInt();
-            if (val1 > val2)
-                branch_logic.Branch(ref frame, Offset);
+            Tuple<int, int> t = ICMPPOP.icmpPop(ref frame);
+            if (t.Item1 > t.Item2)
+                BranchLogic.Branch(ref frame, Offset);
         }
     }
 
-  unsafe  class IF_ICMPGE : BranchInstruction
+    class IF_ICMPGE : BranchInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
-            rtda.OperandStack stack = frame.OperandStack();
-            int val2 = stack.PopInt();
-            int val1 = stack.PopInt();
-            if (val1 >= val2)
-                branch_logic.Branch(ref frame, Offset);
+            Tuple<int, int> t = ICMPPOP.icmpPop(ref frame);
+            if (t.Item1 >= t.Item2)
+            {
+                BranchLogic.Branch(ref frame, Offset);
+            }
+        }
+    }
+
+    class ICMPPOP
+    {
+    internal    static Tuple<int, int> icmpPop(ref rtda.Frame frame)
+        {
+            var stack = frame.OperandStack();
+            var val2 = stack.PopInt();
+            var val1 = stack.PopInt();
+            return Tuple.Create(val1, val2);
         }
     }
 }

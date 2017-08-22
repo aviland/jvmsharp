@@ -5,16 +5,6 @@
         private ushort bootstrapMethodRef;
         private ushort[] bootstrapArguments;
 
-        public ushort GetBootstrapMethodRef()
-        {
-            return bootstrapMethodRef;
-        }
-
-        public ushort[] GetBootstrapArguments()
-        {
-            return bootstrapArguments;
-        }
-
         public BootstrapMethod(ushort bootstrapMethodRef, ushort[] bootstrapArguments)
         {
             this.bootstrapMethodRef = bootstrapMethodRef;
@@ -25,7 +15,7 @@
     class BootstrapMethodsAttribute : AttributeInfoInterface
     {
         public BootstrapMethod[] bootstrapMethods;
-        public void readInfo(ref ClassReader reader)
+        public override void readInfo(ref ClassReader reader)
         {
             ushort numBootstrapMethods = reader.readUint16();
             bootstrapMethods = new BootstrapMethod[numBootstrapMethods];

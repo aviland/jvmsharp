@@ -2,25 +2,17 @@
 
 namespace jvmsharp.rtda.heap
 {
-    unsafe partial class Object
+     partial class Object
     {
-        public Class clas;
-        public object data;
-        public object extra;
+        internal Class clas;
+        internal object data;
+        internal object extra;
         public Object() { }
-        public Object(Class clas)
-        {
-            this.clas = clas;
-            this.data = new object[clas.instanceSlotCount];
-        }
 
-        unsafe public Object GetRefVar(string name, string descriptor)
+        internal Class Class()
         {
-            Field field = clas.getField(name, descriptor, false);
-            Slots slots = Fields();
-            return slots.GetRef(field.slotId);
+            return this.clas;
         }
-
         public Object newObject(Class clas)
         {
             Object obj = new Object();
@@ -28,32 +20,65 @@ namespace jvmsharp.rtda.heap
             obj.data = new Slots(clas.instanceSlotCount);
             return obj;
         }
+        internal object Data()
+        {
+            return data;
+        }
         internal object Extra()
         {
             return extra;
         }
+
         public Object(Class clas, object data)
         {
             this.clas = clas;
             this.data = data;
         }
-
+        public Object(Class clas, object data,object extra)
+        {
+            this.clas = clas;
+            this.data = data;
+            this.extra = extra;
+        }
         public Slots Fields()
         {
             return (Slots)(data);
         }
-
-        public void SetRefVar(string name, string descriptor, ref Object refs)
+        public bool IsInstanceOf(ref Class clas)
         {
-            var field = clas.getField(name, descriptor, false);
-            var slots = (Slots)data;
+            return clas.IsAssignableFrom(ref this.clas);
+        }
+        internal void SetRefVar(string name, string descriptor, ref Object refs)
+        {
+            Field field = clas.getField(name, descriptor, false);
+            Slots slots = (Slots)data;
             slots.SetRef(field.slotId, refs);
+            data = slots;
+        }
+        internal Object GetRefVar(string name, string descriptor)
+        {
+            Field field = clas.getField(name, descriptor, false);
+            Slots slots = (Slots)data;
+            return slots.GetRef(field.slotId);
+        }
+        internal void SetIntVar(string name, string descriptor, int val)
+        {
+            Field field = clas.getField(name, descriptor, false);
+            Slots slots = (Slots)data;
+            slots.SetInt(field.slotId, val);
+            data = slots;
         }
 
-        public void SetFieldValue(string fieldName, string fieldDescriptor, object value)
+        internal int GetIntVar(string name, string descriptor)
         {
-            var field = clas.GetInstanceField(fieldName, fieldDescriptor);
-            field.PutValue(this, value);
+            Field field = clas.getField(name, descriptor, false);
+            Slots slots = (Slots)data;
+            return slots.GetInt(field.slotId);
+        }
+
+        internal void SetExtra(object extra)
+        {
+            this.extra = extra;
         }
     }
 }

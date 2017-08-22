@@ -12,25 +12,23 @@ namespace jvmsharp.instructions.constants
         }
     }
 
-  unsafe  class DCONST_0 : NoOperandsInstruction
+    class DCONST_0 : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
-            double d = 0;
-            frame.OperandStack().PushDouble(d);
+            frame.OperandStack().PushDouble(0.0D);
         }
     }
 
-    unsafe class DCONST_1 : NoOperandsInstruction
+     class DCONST_1 : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
-            double d =1;
-            frame.OperandStack().PushDouble(d);
+            frame.OperandStack().PushDouble(1.0D);
         }
     }
 
-    unsafe class FCONST_0 : NoOperandsInstruction
+     class FCONST_0 : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
@@ -38,102 +36,91 @@ namespace jvmsharp.instructions.constants
         }
     }
 
-    unsafe class FCONST_1 : NoOperandsInstruction
+     class FCONST_1 : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
-            float f = 1;
-            frame.OperandStack().PushFloat(f);
+            frame.OperandStack().PushFloat(1f);
         }
     }
 
-    unsafe class FCONST_2 : NoOperandsInstruction
+     class FCONST_2 : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
-            float f = 2;
-            frame.OperandStack().PushFloat(f);
+            frame.OperandStack().PushFloat(2f);
         }
     }
 
-    unsafe class ICONST_M1 : NoOperandsInstruction
+     class ICONST_M1 : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
-            int i = -1;
-            frame.OperandStack().PushInt(i);
+            frame.OperandStack().PushInt(-1);
         }
     }
 
-    unsafe class ICONST_0 : NoOperandsInstruction
+     class ICONST_0 : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
-            int i = 0;
-            frame.OperandStack().PushInt(i);
+            frame.OperandStack().PushInt(0);
         }
     }
 
-    unsafe class ICONST_1 : NoOperandsInstruction
+     class ICONST_1 : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
-            int i = 1;
-            frame.OperandStack().PushInt(i);
+            frame.OperandStack().PushInt(1);
         }
     }
 
-    unsafe class ICONST_2 : NoOperandsInstruction
+     class ICONST_2 : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
-            int i = 2;
-            frame.OperandStack().PushInt(i);
+            frame.OperandStack().PushInt(2);
         }
     }
 
-    unsafe class ICONST_3 : NoOperandsInstruction
+     class ICONST_3 : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
-            int i =3;
-            frame.OperandStack().PushInt(i);
+            frame.OperandStack().PushInt(3);
         }
     }
 
-    unsafe class ICONST_4 : NoOperandsInstruction
+     class ICONST_4 : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
-            int i =4;
-            frame.OperandStack().PushInt(i);
+            frame.OperandStack().PushInt(4);
         }
     }
 
-    unsafe class ICONST_5 : NoOperandsInstruction
+     class ICONST_5 : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
-            int i = 5;
-            frame.OperandStack().PushInt(i);
+            frame.OperandStack().PushInt(5);
         }
     }
 
-    unsafe class LCONST_0 : NoOperandsInstruction
+     class LCONST_0 : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
-            long l = 0;
-            frame.OperandStack().PushLong(l);
+            frame.OperandStack().PushLong(0L);
         }
     }
 
-    unsafe class LCONST_1 : NoOperandsInstruction
+     class LCONST_1 : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
-            long l = 1;
-            frame.OperandStack().PushLong(l);
+            frame.OperandStack().PushLong(1L);
         }
     }
 }

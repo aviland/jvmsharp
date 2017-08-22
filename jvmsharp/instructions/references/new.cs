@@ -9,12 +9,12 @@ namespace jvmsharp.instructions.references
         public override void Execute(ref Frame frame)
         {
             ConstantPool cp = frame.method.Class().constantPool;//获取常量池
-            ConstantClassRef classRef = (ConstantClassRef)cp.GetConstant(Index);//从常量池中获取类的符号引用
+            ClassRef classRef = (ClassRef)cp.GetConstant(Index);//从常量池中获取类的符号引用
             Class clas = classRef.ResolvedClass();//解析该引用（在存储类的classMap中查找），得到class数据
             if (!clas.InitStarted())
             {
                 frame.RevertNextPC();
-                classInit_logic.InitClass(ref frame.thread, ref clas);
+                ClassInitLogic.InitClass(ref frame.thread, ref clas);
                 return;
             }
             

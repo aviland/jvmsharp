@@ -6,7 +6,7 @@
         {
             rtda.heap.Object ref1 = frame.OperandStack().PopRef();
             if(ref1==null){
-                branch_logic.Branch(ref frame, Offset);
+                BranchLogic.Branch(ref frame, Offset);
             }
         }
     }
@@ -18,7 +18,7 @@
             rtda.heap.Object ref1 = frame.OperandStack().PopRef();
             if (ref1 != null)
             {
-                branch_logic.Branch(ref frame, Offset);
+                BranchLogic.Branch(ref frame, Offset);
             }
         }
     }

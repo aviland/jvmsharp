@@ -16,7 +16,7 @@
     {
         LineNumberTableEntry[] lineNumberTable;
 
-        public void readInfo(ref ClassReader reader)
+        public override void readInfo(ref ClassReader reader)
         {
             ushort lineNumberTableLength = reader.readUint16();
             lineNumberTable = new LineNumberTableEntry[lineNumberTableLength];

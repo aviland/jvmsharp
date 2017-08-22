@@ -9,13 +9,15 @@ namespace jvmsharp.instructions.references
         public override void Execute(ref rtda.Frame frame)
         {
             ConstantPool cp = frame.method.Class().constantPool;
-            ConstantFieldRef fieldRef = (ConstantFieldRef)cp.GetConstant(Index);
+            FieldRef fieldRef = (FieldRef)cp.GetConstant(Index);
+          //  Console.WriteLine(fieldRef.field == null);
             Field field = fieldRef.ResolvedField();
             Class clas = field.Class();
+          //  Console.WriteLine(clas.InitStarted());
             if (!clas.InitStarted())
             {
                 frame.RevertNextPC();
-                classInit_logic.InitClass(ref frame.thread, ref clas);
+                ClassInitLogic.InitClass(ref frame.thread, ref clas);
                 return;
             }
 
@@ -26,7 +28,7 @@ namespace jvmsharp.instructions.references
             var slotId = field.slotId;
             rtda.heap.Slots slots = clas.staticVars;
             var stack = frame.OperandStack();
-
+           // Console.WriteLine(raw[0]);
             switch (descriptor[0])
             {
                 case 'Z':
@@ -47,8 +49,7 @@ namespace jvmsharp.instructions.references
                     break;
                 case 'L':
                 case '[':
-                    rtda.heap.Object rho = slots.GetRef(slotId);
-                    stack.PushRef(rho);
+                    stack.PushRef(slots.GetRef(slotId));
                     break;
             }
         }

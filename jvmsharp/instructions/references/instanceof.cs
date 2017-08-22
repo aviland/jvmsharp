@@ -15,7 +15,7 @@ namespace jvmsharp.instructions.references
                 return;
             }
             var cp = frame.method.Class().constantPool;
-            rtda.heap.ConstantClassRef classRef = (rtda.heap.ConstantClassRef)cp.GetConstant(Index);
+            rtda.heap.ClassRef classRef = (rtda.heap.ClassRef)cp.GetConstant(Index);
             var clas = classRef.ResolvedClass();
             if (refs.IsInstanceOf(ref clas))
                 stack.PushInt(i1);

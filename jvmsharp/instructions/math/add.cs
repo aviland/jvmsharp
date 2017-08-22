@@ -1,6 +1,6 @@
 ﻿namespace jvmsharp.instructions.math
 {
-    unsafe class IADD : NoOperandsInstruction
+     class IADD : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
@@ -8,11 +8,11 @@
             int v2 = stack.PopInt();
             int v1 = stack.PopInt();
             int result = v1 + v2;
-            stack.PushInt(result);
+            frame.OperandStack().PushInt(result);
         }
     }
 
-    unsafe class LADD : NoOperandsInstruction
+     class LADD : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
@@ -24,7 +24,7 @@
         }
     }
 
-    unsafe  class FADD : NoOperandsInstruction
+      class FADD : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {
@@ -36,7 +36,7 @@
         }
     }
 
-   unsafe class DADD : NoOperandsInstruction
+    class DADD : NoOperandsInstruction
     {
         public override void Execute(ref rtda.Frame frame)
         {

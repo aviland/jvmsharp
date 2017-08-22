@@ -10,7 +10,7 @@ namespace jvmsharp.instructions.comparisons
             rtda.heap.Object ref2 = stack.PopRef();
             rtda.heap.Object ref1 = stack.PopRef();
             if (ref1 == ref2)
-                branch_logic.Branch(ref frame, Offset);
+                BranchLogic.Branch(ref frame, Offset);
         }
     }
 
@@ -22,7 +22,7 @@ namespace jvmsharp.instructions.comparisons
             rtda.heap.Object ref2 = stack.PopRef();
             rtda.heap.Object ref1 = stack.PopRef();
             if (ref1 != ref2)
-                branch_logic.Branch(ref frame, Offset);
+                BranchLogic.Branch(ref frame, Offset);
         }
     }
 }

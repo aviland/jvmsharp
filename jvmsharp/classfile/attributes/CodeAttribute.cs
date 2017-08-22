@@ -1,57 +1,62 @@
-﻿namespace jvmsharp.classfile
+﻿using System;
+
+namespace jvmsharp.classfile
 {
     struct ExceptionTableEntry
     {
-        public ushort startPc;
-        public ushort endPc;
-        public ushort handlerPc;
-        public ushort catchType;
+        internal ushort startPc;
+        internal ushort endPc;
+        internal ushort handlerPc;
+        internal ushort catchType;
 
-        ushort StartPc() { return startPc; }
-        ushort EndPc() { return endPc; }
-        ushort HandlerPc() { return handlerPc; }
-        ushort CatchType() { return catchType; }
+        public ExceptionTableEntry(ushort startPc,         ushort endPc,         ushort handlerPc,         ushort catchType)
+        {
+            this.startPc = startPc;
+            this.endPc = endPc;
+            this.handlerPc = handlerPc;
+            this.catchType = catchType;
+        }
     }
 
     class CodeAttribute : AttributeInfoInterface
     {
-        private ConstantPool cp;
-       private ushort maxStack;
-       private ushort maxLocals;
-       private byte[] code;
-       private ExceptionTableEntry[] exceptionTable;
-       private AttributeInfoInterface[] attributes;
+        internal ConstantPool cp;
+        internal ushort maxStack;
+        internal ushort maxLocals;
+        internal byte[] code;
+        internal ExceptionTableEntry[] exceptionTable;
+        internal AttributeInfoInterface[] attributes;
 
         public CodeAttribute(ConstantPool cp)
         {
             this.cp = cp;
         }
 
-        public byte[] Code() {  return code; }
+        public byte[] Code() { return code; }
 
-        public ushort MaxStack()
+        public uint MaxStack()
         {
             return maxStack;
         }
 
-        public ushort MaxLocals()
+        public uint MaxLocals()
         {
             return maxLocals;
         }
 
-        public void readInfo(ref ClassReader reader)
+        public override void readInfo(ref ClassReader reader)
         {
             maxStack = reader.readUint16();
             maxLocals = reader.readUint16();
             uint codeLength = reader.readUint32();
             code = reader.readBytes(codeLength);
             exceptionTable = readExceptionTable(ref reader);
-            attributes = new AttributeTable().readAttributes(ref reader, cp);
+            attributes = new AttributeInfo().readAttributes(ref reader,ref cp);
         }
 
-        ExceptionTableEntry[] ExceptionTable() { return exceptionTable; }
+        internal ExceptionTableEntry[] ExceptionTable() { return exceptionTable; }
 
-        ExceptionTableEntry[] readExceptionTable(ref ClassReader reader)
+        internal ExceptionTableEntry[] readExceptionTable(ref ClassReader reader)
         {
             ushort exceptionTableLength = reader.readUint16();
             ExceptionTableEntry[] exceptionTable = new ExceptionTableEntry[exceptionTableLength];
@@ -64,6 +69,19 @@
                 exceptionTable[i].catchType = reader.readUint16();
             }
             return exceptionTable;
+        }
+
+        internal LineNumberTableAttribute LineNumberTableAttribute()
+        {
+            foreach (var attrInfo in attributes)
+            {
+                switch (attrInfo.GetType().Name)
+                {
+                    case "LineNumberTableAttribute":
+                        return (LineNumberTableAttribute)attrInfo;
+                }
+            }
+            return null;
         }
     }
 }

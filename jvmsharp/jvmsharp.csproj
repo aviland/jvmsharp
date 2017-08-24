@@ -140,7 +140,7 @@
     <Compile Include="instructions\loads\xaload.cs" />
     <Compile Include="instructions\references\anewarray.cs" />
     <Compile Include="instructions\references\arraylength.cs" />
-    <Compile Include="instructions\references\AThrow.cs" />
+    <Compile Include="instructions\references\Athrow.cs" />
     <Compile Include="instructions\references\checkcast.cs" />
     <Compile Include="instructions\references\getfield.cs" />
     <Compile Include="instructions\references\instanceof.cs" />

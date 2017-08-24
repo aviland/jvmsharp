@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace jvmsharp.rtda.heap
+﻿namespace jvmsharp.rtda.heap
 {
     class ExceptionHandler
     {
@@ -46,9 +44,6 @@ namespace jvmsharp.rtda.heap
                     if (handler.catchType==null)
                         return handler;
                     var catchClass = handler.catchType.ResolvedClass();
-                    Console.WriteLine("yes");
-                    Console.WriteLine(catchClass.name);
-                    Console.WriteLine(exClass.name);
                     if (catchClass.Equals(exClass) || catchClass.IsSuperClassOf(exClass))
                         return handler;
                 }

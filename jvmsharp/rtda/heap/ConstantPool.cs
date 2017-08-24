@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using cf = jvmsharp.classfile;
 using Constant = System.Object;
 
@@ -6,21 +8,15 @@ namespace jvmsharp.rtda.heap
 {
     class ConstantPool//运行时常量池
     {
-        public Class clas;//存储当前载入的class文件的类
-        public Constant[] consts;//存储运行时常量信息
-
-        public ConstantPool() { }
-
-        public ConstantPool( Class clas,Constant[] consts)
-        {
-            this.clas = clas;
-            this.consts = consts;
-        }
-
+        internal Class clas;//存储当前载入的class文件的类
+        internal Constant[] consts;//存储运行时常量信息
+         
         public ConstantPool newConstantPool( ref Class clas,ref  classfile.ConstantPool cfCp)//将ConstantInfo转换为ConstantPool
         {
             int cpCount = cfCp.constantInfos.Length;
-            ConstantPool rtcp = new ConstantPool( clas, new Constant[cpCount]);//初始化运行时常量池
+            ConstantPool rtcp = new ConstantPool();//初始化运行时常量池
+            rtcp.clas = clas;
+            rtcp.consts = new Constant[cpCount];
             for (int i = 1; i < cpCount; i++)
             {
                 cf.ConstantInfo cpInfo = cfCp.constantInfos[i];
@@ -68,7 +64,7 @@ namespace jvmsharp.rtda.heap
         public Constant GetConstant(uint index)
         {
             // todo
-            Constant c = consts[index];
+            Constant c = consts[(int)index];
             if (c != null)
                 return c;
             throw new Exception("No constants at index " + index);

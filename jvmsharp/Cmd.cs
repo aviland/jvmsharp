@@ -14,6 +14,9 @@ namespace jvmsharp
         public string classes;
         public string[] args;
         public string XssOption;
+    }
+    class CmdClass
+    {
 
         public Cmd parseCmd(string[] args)
         {

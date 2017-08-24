@@ -10,7 +10,9 @@ namespace jvmsharp.instructions.references
         {
             ConstantPool cp = frame.method.Class().constantPool;//获取常量池
             ClassRef classRef = (ClassRef)cp.GetConstant(Index);//从常量池中获取类的符号引用
+
             Class clas = classRef.ResolvedClass();//解析该引用（在存储类的classMap中查找），得到class数据
+            
             if (!clas.InitStarted())
             {
                 frame.RevertNextPC();

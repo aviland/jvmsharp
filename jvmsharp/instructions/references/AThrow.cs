@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using jvmsharp.rtda;
 using jvmsharp.rtda.heap;
 using System.Reflection;
+using jvmsharp.native.java.lang;
 
 namespace jvmsharp.instructions.references
 {
@@ -21,22 +22,22 @@ namespace jvmsharp.instructions.references
                 handleUncaughtException(ref thread, ref ex);
         }
 
-        private void handleUncaughtException(ref Thread thread, ref rtda.heap.Object ex)
+        private void handleUncaughtException(ref rtda.Thread thread, ref rtda.heap.Object ex)
         {
             thread.ClearStack();
             var jMsg = ex.GetRefVar("detailMessage", "Ljava/lang/String;");
             var goMsg = StringPool.GoString(ref jMsg);
             Console.WriteLine(ex.clas.JavaName() + ": " + goMsg);
-            var stes = ex.Extra().GetType().GetEnumValues();
+            StackTraceElement[] stes =(StackTraceElement[]) ex.Extra();
 
             for (int i = 0; i < stes.Length; i++)
             {
-                var ste = stes.GetValue(i).ToString();
+                var ste = stes[i].String();
                 Console.WriteLine("\tat " + ste);
             }
         }
 
-        private bool findAndGotoExceptionHandler(ref Thread thread, ref rtda.heap.Object ex)
+        private bool findAndGotoExceptionHandler(ref rtda.Thread thread, ref rtda.heap.Object ex)
         {
             for (;;)
             {

@@ -9,21 +9,22 @@ namespace jvmsharp
     {
         static void Main(string[] args)
         {
-            Cmd cmdStruct = new Cmd().parseCmd(args);
-            if (cmdStruct.versionFlag)
+            CmdClass cmdClass = new CmdClass();
+            Cmd cmd = cmdClass.parseCmd(args);
+            if (cmd.versionFlag)
                 Console.WriteLine("version 0.0.1");
-            else if (cmdStruct.helpFlag || cmdStruct.classes == "")
+            else if (cmd.helpFlag || cmd.classes == "")
             {
                 if (args.Length > 0)
                 {
                     MethodBase method = new System.Diagnostics.StackTrace().GetFrame(0).GetMethod();
                     string className = method.ReflectedType.Namespace;
-                    cmdStruct.printUsage(className);
+                    cmdClass.printUsage(className);
                 }
             }
             else
             {
-                new Jvm(cmdStruct).start();
+                new Jvm(cmd).start();
             }
         }
 

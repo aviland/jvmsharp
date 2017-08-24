@@ -12,7 +12,7 @@ namespace jvmsharp.native.java.lang
         string methodName;
         int lineNumber;
 
-        string String()
+       internal string String()
         {
             return className + "." + methodName + "(" + fileName + ":" + lineNumber + ")";
         }

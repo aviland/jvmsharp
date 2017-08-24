@@ -7,18 +7,12 @@ namespace jvmsharp.rtda.heap
     {
         internal classpath.Classpath cp;
         internal bool verboseFlag;
-          Dictionary<string, Class> classMap;//存储加载的所有的类
+        internal Dictionary<string, Class> classMap;//存储加载的所有的类
 
-     internal    Dictionary<string, Class> ClassMap()
+        internal Dictionary<string, Class> ClassMap()
         {
-            return classMap; 
+            return classMap;
         }
-        const string jlObjectClassName = "java/lang/Object";
-        const string jlClassClassName = "java/lang/Class";
-        const string jlStringClassName = "java/lang/String";
-        const string jlThreadClassName = "java/lang/Thread";
-        const string jlCloneableClassName = "java/lang/Cloneable";
-        const string ioSerializableClassName = "java/io/Serializable";
 
         public ClassLoader newClassLoader(ref classpath.Classpath cp, bool verboseFlag)
         {
@@ -120,7 +114,6 @@ namespace jvmsharp.rtda.heap
             {
                 var v = cp.ReadClass(name);
                 Tuple<byte[], classpath.Entry> tbe = v;//从解析的类中读取数据
-
                 return tbe;
             }
             catch (Exception exp)
@@ -136,7 +129,7 @@ namespace jvmsharp.rtda.heap
             clas.loader = this;
 
             resolveSuperClass(ref clas);
-                        resolveInterfaces(ref clas);
+            resolveInterfaces(ref clas);
             classMap[clas.name] = clas;
             return clas;
         }
@@ -280,7 +273,7 @@ namespace jvmsharp.rtda.heap
                         break;
                     case "Ljava/lang/String;":
                         string goStr = (string)cp.GetConstant(cpIndex);
-                        Object jStr = StringPool.JString( clas.loader, goStr);
+                        Object jStr = StringPool.JString(clas.loader, goStr);
                         clas.staticVars.SetRef(slotId, jStr);
                         break;
                 }

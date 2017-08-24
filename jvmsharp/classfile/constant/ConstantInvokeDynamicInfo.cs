@@ -4,7 +4,7 @@ namespace jvmsharp.classfile
 {
     class ConstantInvokeDynamicInfo : ConstantInfo
     {
-        ConstantPool cp;
+       // ConstantPool cp;
         ushort bootstrapMethodAttrIndex;
         ushort nameAndTypeIndex;
 
